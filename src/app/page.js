@@ -1,12 +1,16 @@
 import Footer from "./components/Footer";
-import HeroSection from "./components/HomePage";
+import HomePage from "./components/HomePage";
+import RecuerdosSection from './components/Recuerdossection';
+import MetasSection from './components/Metassection';
 import NavbarPublic from "./components/NavbarPublic";
 
 export default function Home() {
   return (
     <>
       <NavbarPublic />
-      <HeroSection />
+      <HomePage />
+      <RecuerdosSection />
+      <MetasSection />
       <Footer />
     </>
   );

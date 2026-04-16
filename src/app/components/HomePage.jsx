@@ -1,19 +1,21 @@
-"use client";
+'use client';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Heart, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
-
   const frases = [
     "Siempre eres tú 💖",
     "Aunque no lo veas, estoy aquí contigo 💌",
     "Nuestra historia apenas comienza ✨",
     "Cada mes me acerca más a ti 🌙",
-    "Esto es solo nuestro capítulo 1 💕"
+    "Esto es solo nuestro capítulo 1 💕",
+    "Te amo más cada día que pasa 🌹",
+    "Contigo quiero todo lo hermoso de la vida 💫"
   ];
 
   const [frase, setFrase] = useState(frases[0]);
-
+  const [fraseIndex, setFraseIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     months: 12,
     days: 0,
@@ -25,14 +27,18 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("loading");
 
+  // Cambiar frases cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      setFrase(frases[Math.floor(Math.random() * frases.length)]);
-    }, 4000);
+      const newIndex = (fraseIndex + 1) % frases.length;
+      setFraseIndex(newIndex);
+      setFrase(frases[newIndex]);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fraseIndex, frases]);
 
+  // Fetch data del backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,6 +53,9 @@ export default function HomePage() {
 
       } catch (error) {
         console.error(error);
+        // Datos por defecto si falla la petición
+        setStatus("in_progress");
+        setMessage("Cada mes es una parte de mí llegando a ti 💌");
       }
     };
 
@@ -54,92 +63,184 @@ export default function HomePage() {
   }, []);
 
   const isNotStarted = status === "not_started";
+  const isFinished = status === "finished";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-pink-900 to-purple-900">
-
-      <div className="bg-black/60 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl w-[360px] text-white">
-
-        {/* 💖 TITULO */}
-        <h1 className="text-2xl font-bold mb-1">
-          💖 Always You
-        </h1>
-
-        {/* ⏳ MENSAJE BLOQUEADO */}
+    <div className="min-h-screen bg-white pt-24 pb-20">
+      {/* Decorative gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-white to-purple-50 opacity-40 pointer-events-none" />
+      
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        
+        {/* Estado: NO INICIADO */}
         {isNotStarted && (
-          <div className="text-center py-10">
-
-            <p className="text-yellow-300 text-sm animate-pulse mb-2">
-              ⏳ Aún no comienza nuestra historia...
+          <div className="text-center py-16 animate-fade-in">
+            <div className="mb-8 flex justify-center">
+              <Sparkles className="w-12 h-12 text-rose-400 animate-pulse" />
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4">
+              Preparando algo especial...
+            </h2>
+            <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
+              Dentro de poco comenzará nuestra historia. <br/> 
+              <span className="text-rose-500 font-medium">Cada momento contigo será un capítulo.</span>
             </p>
+            
+            {/* Countdown para inicio */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
+              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.months}</p>
+                <span className="text-xs text-gray-500 uppercase tracking-widest">Meses</span>
+              </div>
+              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.days}</p>
+                <span className="text-xs text-gray-500 uppercase tracking-widest">Días</span>
+              </div>
+              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.hours}</p>
+                <span className="text-xs text-gray-500 uppercase tracking-widest">Horas</span>
+              </div>
+              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.minutes}</p>
+                <span className="text-xs text-gray-500 uppercase tracking-widest">Min</span>
+              </div>
+            </div>
 
-            <p className="text-gray-400 text-xs">
-              Este contenido se desbloqueará pronto 💌
-            </p>
-
+            <div className="text-center text-sm text-gray-500">
+              <p>Estoy preparando {message}</p>
+            </div>
           </div>
         )}
 
-        {/* 💖 CONTENIDO NORMAL */}
+        {/* Estado: EN PROGRESO o TERMINADO */}
         {!isNotStarted && (
-          <>
-            {/* 💌 MENSAJE BACKEND */}
-            <p className="text-sm text-pink-300 italic mb-3">
-              {message}
-            </p>
-
-            {/* 💌 FRASE */}
-            <p className="text-sm text-gray-200 mb-4 italic">
-              {frase}
-            </p>
-
-            {/* ⏳ CONTADOR (SOLO SI YA INICIÓ) */}
-            <div className="grid grid-cols-2 gap-2 mb-4">
-
-              <div className="bg-white/10 p-2 rounded-lg text-center">
-                <p className="text-lg font-bold">{timeLeft.months}</p>
-                <span className="text-xs text-gray-300">Meses</span>
+          <div className="space-y-12 animate-fade-in">
+            
+            {/* Hero Section */}
+            <div className="text-center mb-16">
+              <div className="mb-6 flex justify-center">
+                <Heart className="w-10 h-10 text-rose-500 animate-pulse" />
               </div>
-
-              <div className="bg-white/10 p-2 rounded-lg text-center">
-                <p className="text-lg font-bold">{timeLeft.days}</p>
-                <span className="text-xs text-gray-300">Días</span>
-              </div>
-
-              <div className="bg-white/10 p-2 rounded-lg text-center">
-                <p className="text-lg font-bold">{timeLeft.hours}</p>
-                <span className="text-xs text-gray-300">Horas</span>
-              </div>
-
-              <div className="bg-white/10 p-2 rounded-lg text-center">
-                <p className="text-lg font-bold">{timeLeft.minutes}</p>
-                <span className="text-xs text-gray-300">Min</span>
-              </div>
-
+              <h1 className="text-5xl lg:text-6xl font-serif font-bold text-gray-900 mb-4">
+                Always You
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Nuestros 12 meses de momentos especiales, cartas de amor y recuerdos que viviremos juntos.
+              </p>
             </div>
 
-            {/* 💎 PROGRESS BAR */}
-            <div className="w-full bg-white/10 rounded-full h-2 mb-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-700"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+            {/* Main Grid: Countdown + Frase */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+              
+              {/* IZQUIERDA: Countdown */}
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-sm uppercase tracking-widest text-gray-400 font-semibold mb-4">Nuestra Cuenta Regresiva</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="group">
+                      <div className="bg-gradient-to-br from-rose-100 to-pink-100 p-8 rounded-2xl border border-rose-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-rose-600 text-center mb-2">{timeLeft.months}</p>
+                        <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Meses</span>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <div className="bg-gradient-to-br from-rose-100 to-pink-100 p-8 rounded-2xl border border-rose-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-rose-600 text-center mb-2">{timeLeft.days}</p>
+                        <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Días</span>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-2xl border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-purple-600 text-center mb-2">{timeLeft.hours}</p>
+                        <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Horas</span>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-2xl border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-purple-600 text-center mb-2">{timeLeft.minutes}</p>
+                        <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Minutos</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <p className="text-xs text-gray-400 mb-4">
-              Historia completada: {progress}%
-            </p>
-          </>
+                {/* Progress Bar */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-gray-700">Progreso de nuestra historia</p>
+                    <p className="text-sm font-bold text-rose-500">{progress}%</p>
+                  </div>
+                  <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-1000 ease-out"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  {!isFinished && (
+                    <p className="text-xs text-gray-500">
+                      {12 - timeLeft.months} de 12 cartas desbloqueadas
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* DERECHA: Frase + Mensaje */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50 p-12 rounded-2xl border border-rose-100 min-h-80 flex flex-col justify-center">
+                  {/* Frase animada */}
+                  <div className="space-y-6 text-center">
+                    <p className="text-3xl lg:text-4xl font-serif italic text-gray-800 leading-relaxed min-h-32 flex items-center justify-center">
+                      <span key={fraseIndex} className="animate-fade-in">
+                        {frase}
+                      </span>
+                    </p>
+                    
+                    {/* Divider */}
+                    <div className="flex items-center gap-3 justify-center">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent" />
+                      <Heart className="w-5 h-5 text-rose-400" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent" />
+                    </div>
+
+                    {/* Mensaje del backend */}
+                    <p className="text-lg text-gray-700 font-light leading-relaxed">
+                      {message}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Status Badge */}
+                {isFinished ? (
+                  <div className="text-center p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl border border-purple-200">
+                    <p className="text-sm font-medium text-purple-900">✨ Historia Completada ✨</p>
+                  </div>
+                ) : (
+                  <div className="text-center p-4 bg-gradient-to-r from-rose-100 to-pink-100 rounded-xl border border-rose-200">
+                    <p className="text-sm font-medium text-rose-900">💖 Capítulo en Progreso</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
-
-        {/* 🔒 FOOTER */}
-        <div className="text-center text-xs text-gray-400 border-t border-white/10 pt-3">
-          {isNotStarted
-            ? "Próximamente... 💖"
-            : "Capítulo en progreso ⏳"}
-        </div>
-
       </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+      `}</style>
     </div>
   );
 }

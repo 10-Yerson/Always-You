@@ -97,6 +97,11 @@ export default function UserPanel() {
             </p>
             <ul className="space-y-1">
               <NavItem href="/client" Icon={HiHome} label="Inicio" />
+
+              <NavItem href="/client/letter" Icon={RiCalendarEventFill} label="Cartas" />
+              <NavItem href="/client/memories" Icon={MdDashboard} label=">Recuerdos" />
+              <NavItem href="/client/goals" Icon={MdDashboard} label="Metas" />
+
               <NavItem href="/client/event" Icon={RiCalendarEventFill} label="Crear Evento" />
               <NavItem href="/client/gestion" Icon={MdDashboard} label="Gestión Evento" />
               <NavItem href="/client/perfil" Icon={FaUserCircle} label="Perfil" />

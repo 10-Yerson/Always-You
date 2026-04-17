@@ -62,7 +62,6 @@ export default function HomePage() {
     }
   ]
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
 
@@ -114,79 +113,80 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Sección: Características principales */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-
-        {/* Sección: Características principales */}
-        <div className="max-w-7xl mx-auto px-4 py-12">
-
-          {/* Título de sección */}
-          <div className="mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm border border-gray-100">
-              <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />
-              <span className="text-sm text-gray-600 font-medium">Para ti</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
-              Un mundo de{" "}
-              <span className="relative inline-block">
-                emociones
-                <svg className="absolute -bottom-2 left-0 w-full" height="4" viewBox="0 0 100 4">
-                  <path d="M0,2 Q25,0 50,2 T100,2" stroke="#3B82F6" fill="none" strokeWidth="2" />
-                </svg>
-              </span>
-            </h2>
+      <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
+        <div className="relative rounded-2xl overflow-hidden shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
+          {/* Etiqueta flotante (opcional, para dar contexto) */}
+          <div className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+            <span className="text-xs text-white font-medium">💖 Momento especial</span>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {features.map((feature, index) => (
-              <a
-                key={index}
-                href={feature.href}
-                className="group relative block"
-              >
-                {/* Tarjeta con hover */}
-                <div className="relative bg-white rounded-2xl p-6 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 border border-gray-100 overflow-hidden cursor-pointer">
-
-                  {/* Número decorativo de fondo */}
-                  <div className="absolute -bottom-4 -right-2 text-7xl font-black text-gray-100 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
-
-                  {/* Icono */}
-                  <div className="relative mb-5">
-                    <div className={`relative w-14 h-14 rounded-full flex items-center justify-center text-white ${feature.color} shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                      {feature.icon}
-                    </div>
-                  </div>
-
-                  {/* Contenido */}
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                        {feature.title}
-                      </h3>
-                      <span className="text-[10px] font-semibold text-white bg-gray-400 px-2 py-0.5 rounded-full">
-                        {feature.stats}
-                      </span>
-                    </div>
-
-                    <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                      {feature.description}
-                    </p>
-
-                    {/* Flecha animada */}
-                    <div className="flex items-center gap-2 text-gray-400 group-hover:text-blue-500 transition-all duration-300">
-                      <span className="text-xs font-medium">Descubrir</span>
-                      <div className="w-0 h-px bg-blue-500 group-hover:w-5 transition-all duration-300"></div>
-                      <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
-                    </div>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
+          <img
+            src="https://res.cloudinary.com/dbgj8dqup/image/upload/v1776465505/Picsart_26-04-17_17-30-35-869_qgmlhu.jpg"
+            alt="Recuerdo especial"
+            className="w-full h-auto max-h-96 object-contain object-center bg-gradient-to-br from-gray-100 to-blue-50/30"
+            style={{ maxHeight: '480px' }} // Ajusta este valor si quieres que sea más alta o más baja
+          />
         </div>
       </div>
+
+      {/* Sección: Características principales */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Título de sección */}
+        <div className="mb-10">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm border border-gray-100">
+            <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />
+            <span className="text-sm text-gray-600 font-medium">Para ti</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
+            Un mundo de{" "}
+            <span className="relative inline-block">
+              emociones
+              <svg className="absolute -bottom-2 left-0 w-full" height="4" viewBox="0 0 100 4">
+                <path d="M0,2 Q25,0 50,2 T100,2" stroke="#3B82F6" fill="none" strokeWidth="2" />
+              </svg>
+            </span>
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {features.map((feature, index) => (
+            <a
+              key={index}
+              href={feature.href}
+              className="group relative block"
+            >
+              <div className="relative bg-white rounded-2xl p-6 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 border border-gray-100 overflow-hidden cursor-pointer">
+                <div className="absolute -bottom-4 -right-2 text-7xl font-black text-gray-100 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                <div className="relative mb-5">
+                  <div className={`relative w-14 h-14 rounded-full flex items-center justify-center text-white ${feature.color} shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                    {feature.icon}
+                  </div>
+                </div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+                      {feature.title}
+                    </h3>
+                    <span className="text-[10px] font-semibold text-white bg-gray-400 px-2 py-0.5 rounded-full">
+                      {feature.stats}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500 leading-relaxed mb-4">
+                    {feature.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-gray-400 group-hover:text-blue-500 transition-all duration-300">
+                    <span className="text-xs font-medium">Descubrir</span>
+                    <div className="w-0 h-px bg-blue-500 group-hover:w-5 transition-all duration-300"></div>
+                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
       {/* Footer */}
       <footer className="bg-white/50 backdrop-blur-sm border-t border-gray-100 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 text-center">

@@ -1,229 +1,207 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
-import axios from '../../../utils/axios'
-import Link from 'next/link';
-import { MdVerified } from "react-icons/md";
+import { useEffect, useState } from 'react'
 import {
-  FiCalendar, FiUsers, FiUser, FiFolder,
-  FiTrendingUp, FiClock, FiMapPin, FiChevronRight
-} from "react-icons/fi";
+  Heart,
+  Sparkles,
+  Mail,
+  Image,
+  Target,
+  Music,
+  ChevronRight,
+  Star,
+  Camera,
+  Headphones
+} from 'lucide-react'
 
-export default function Welcome() {
-  const [data, setData] = useState({});
-  const [stats, setStats] = useState({ total: 0, reuniones: 0, trabajos: 0 });
-  const [loading, setLoading] = useState(true);
+export default function HomePage() {
+  const [greeting, setGreeting] = useState('')
+  const [userName, setUserName] = useState('')
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get('/api/auth/user-info');
-        const userId = data.userId;
-        const userRes = await axios.get(`/api/user/${userId}`);
-        setData(userRes.data);
-        const eventsRes = await axios.get('/api/event/my');
-        setStats(eventsRes.data.stats || {});
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+    const hour = new Date().getHours()
+    if (hour < 12) setGreeting('Buenos días')
+    else if (hour < 18) setGreeting('Buenas tardes')
+    else setGreeting('Buenas noches')
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm font-medium">Cargando panel...</p>
-        </div>
-      </div>
-    );
-  }
+    setUserName('Yuyu')
+  }, [])
 
-  return (
-    <div className="h-full bg-gray-50">
+  const features = [
+    {
+      icon: <Mail className="w-6 h-6" />,
+      title: "Cartas Mensuales",
+      description: "Cada mes recibirás una carta especial que se desbloquea automáticamente.",
+      color: "bg-blue-500",
+      href: "/client/letter",
+      stats: "12 cartas"
+    },
+    {
+      icon: <Camera className="w-6 h-6" />,
+      title: "Recuerdos",
+      description: "Guarda y revive los momentos más importantes. Fotos, videos y audios.",
+      color: "bg-teal-500",
+      href: "/client/memories",
+      stats: "∞ recuerdos"
+    },
+    {
+      icon: <Target className="w-6 h-6" />,
+      title: "Metas y Sueños",
+      description: "Registra nuestras metas juntos y celebra cada logro alcanzado.",
+      color: "bg-amber-500",
+      href: "/client/goals",
+      stats: "Progreso"
+    },
+    {
+      icon: <Music className="w-6 h-6" />,
+      title: "Música",
+      description: "Nuestra banda sonora. Canciones que marcaron momentos especiales.",
+      color: "bg-purple-500",
+      href: "/client/music",
+      stats: "Playlist"
+    }
+  ]
 
-      <div className="bg-white border-b border-gray-100">
-        <div className="mx-auto px-6 py-9">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-5">
-              <div className="relative flex-shrink-0">
-                <img
-                  className="h-16 w-16 rounded-2xl object-cover ring-4 ring-green-100"
-                  src={data?.profilePicture || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
-                  alt="Profile"
-                />
-                {data?.isVerified && (
-                  <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow">
-                    <MdVerified className="text-blue-500" size={18} />
-                  </div>
-                )}
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-green-600 uppercase tracking-widest mb-0.5">Panel de colaborador</p>
-                <h1 className="text-2xl font-bold text-gray-800">¡Hola, {data?.name}! 👋</h1>
-                <p className="text-gray-400 text-sm mt-0.5">Aquí tienes un resumen de tu actividad</p>
-              </div>
-            </div>
-
-            <Link
-              href="/client/perfil"
-              className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl transition-all text-sm font-medium text-gray-600"
-            >
-              <FiUser size={15} /> Ver perfil
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto px-6 py-8 space-y-8">
-
-        <div className="grid grid-cols-3 gap-5">
-          <StatCard
-            icon={<FiCalendar size={20} />}
-            label="Total eventos"
-            value={stats.total || 0}
-            color="purple"
-          />
-          <StatCard
-            icon={<FiUsers size={20} />}
-            label="Trabajos comunitarios"
-            value={stats.trabajos || 0}
-            color="blue"
-          />
-          <StatCard
-            icon={<FiClock size={20} />}
-            label="Reuniones"
-            value={stats.reuniones || 0}
-            color="green"
-          />
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-5">
-              <FiTrendingUp className="text-gray-500" size={16} />
-              <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Acciones rápidas</h2>
-            </div>
-            <div className="space-y-2">
-              {[
-                { icon: <FiCalendar size={16} />, label: 'Mis Eventos', desc: 'Ver y gestionar tus eventos', href: '/client/gestion', color: 'text-blue-500 bg-blue-50' },
-                { icon: <FiFolder size={16} />, label: 'Historial', desc: 'Consultar actividades pasadas', href: '/client/gestion', color: 'text-purple-500 bg-purple-50' },
-                { icon: <FiUser size={16} />, label: 'Mi Perfil', desc: 'Editar información personal', href: '/client/perfil', color: 'text-green-500 bg-green-50' },
-                { icon: <FiMapPin size={16} />, label: 'Crear Evento', desc: 'Organizar un nuevo evento', href: '/client/event', color: 'text-orange-500 bg-orange-50' },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="flex items-center gap-4 p-3.5 rounded-xl hover:bg-gray-50 transition-all group"
-                >
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${item.color}`}>
-                    {item.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800">{item.label}</p>
-                    <p className="text-xs text-gray-400">{item.desc}</p>
-                  </div>
-                  <FiChevronRight size={14} className="text-gray-300 group-hover:text-gray-500 transition-colors" />
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Info del colaborador */}
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-
-            <div className="bg-gray-50 border-b border-gray-100 px-6 py-5">
-              <div className="flex items-center gap-4">
-                <img
-                  className="h-14 w-14 rounded-xl object-cover ring-4 ring-gray-200"
-                  src={data?.profilePicture || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
-                  alt="Profile"
-                />
-                <div>
-                  <p className="text-gray-800 font-bold text-lg">{data?.name} {data?.apellido}</p>
-                  <p className="text-gray-400 text-xs">Colaborador Comunitario</p>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    {data?.isActive ? (
-                      <>
-                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-600 text-xs font-medium">Cuenta verificada</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full" />
-                        <span className="text-yellow-600 text-xs font-medium">Pendiente de verificación</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-6 py-4 space-y-1">
-              {[
-                { label: 'Nombre completo', value: `${data?.name || ''} ${data?.apellido || ''}`, icon: '👤' },
-                { label: 'Email', value: data?.email, icon: '✉️' },
-                { label: 'Rol', value: 'Colaborador Comunitario', icon: '🏷️' },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">{item.icon}</span>
-                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{item.label}</span>
-                  </div>
-                  <span className="text-sm font-semibold text-gray-700 text-right max-w-[55%] truncate">{item.value}</span>
-                </div>
-              ))}
-              <div className="flex items-center justify-between py-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">🔒</span>
-                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Estado</span>
-                </div>
-                {data?.isActive ? (
-                  <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 rounded-lg">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs font-bold text-green-600">Verificado</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 rounded-lg">
-                    <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full" />
-                    <span className="text-xs font-bold text-yellow-600">Pendiente</span>
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({ icon, label, value, color }) {
-  const colors = {
-    purple: { bg: 'bg-purple-50', text: 'text-purple-600', bar: 'bg-purple-500' },
-    blue: { bg: 'bg-blue-50', text: 'text-blue-600', bar: 'bg-blue-500' },
-    green: { bg: 'bg-green-50', text: 'text-green-600', bar: 'bg-green-500' },
-  };
-  const c = colors[color];
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${c.bg} ${c.text}`}>
-          {icon}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+
+      {/* Hero Section - Bienvenida */}
+      <div className="min-h-[50vh] flex items-center justify-center px-4 relative">
+
+        {/* Elementos decorativos */}
+        <div className="absolute top-10 left-5 opacity-20">
+          <Heart className="w-6 h-6 text-blue-400" />
         </div>
-        <span className={`text-xs font-bold ${c.text}`}>Total</span>
+        <div className="absolute bottom-10 right-5 opacity-20">
+          <Sparkles className="w-5 h-5 text-blue-400" />
+        </div>
+        <div className="absolute top-1/3 right-10 opacity-10">
+          <Star className="w-4 h-4 text-blue-500" />
+        </div>
+        <div className="absolute bottom-1/3 left-10 opacity-10">
+          <Heart className="w-4 h-4 text-blue-500" />
+        </div>
+
+        {/* Contenido principal */}
+        <div className="max-w-4xl mx-auto text-center">
+
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-gray-100 shadow-sm">
+            <Heart className="w-4 h-4 text-blue-500 fill-blue-500" />
+            <span className="text-sm text-gray-600 font-medium">Always You</span>
+          </div>
+
+          {/* Título de bienvenida */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            {greeting},{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              {userName}
+            </span>
+          </h1>
+
+          {/* Línea decorativa */}
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
+          </div>
+
+          {/* Mensaje especial */}
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Bienvenido a tu espacio especial. Aquí encontrarás todas las cartas,
+            recuerdos, metas y música que hemos creado para ti.
+          </p>
+
+        </div>
       </div>
-      <p className="text-3xl font-bold text-gray-800 mb-1">{value}</p>
-      <p className="text-xs text-gray-400 mb-3">{label}</p>
-      <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-        <div className={`h-full ${c.bar} rounded-full`} style={{ width: value > 0 ? '100%' : '0%', transition: 'width 0.8s ease' }} />
+
+      {/* Sección: Características principales */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+
+        {/* Sección: Características principales */}
+        <div className="max-w-7xl mx-auto px-4 py-12">
+
+          {/* Título de sección */}
+          <div className="mb-12">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm border border-gray-100">
+              <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />
+              <span className="text-sm text-gray-600 font-medium">Para ti</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
+              Un mundo de{" "}
+              <span className="relative inline-block">
+                emociones
+                <svg className="absolute -bottom-2 left-0 w-full" height="4" viewBox="0 0 100 4">
+                  <path d="M0,2 Q25,0 50,2 T100,2" stroke="#3B82F6" fill="none" strokeWidth="2" />
+                </svg>
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {features.map((feature, index) => (
+              <a
+                key={index}
+                href={feature.href}
+                className="group relative block"
+              >
+                {/* Tarjeta con hover */}
+                <div className="relative bg-white rounded-2xl p-6 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 border border-gray-100 overflow-hidden cursor-pointer">
+
+                  {/* Número decorativo de fondo */}
+                  <div className="absolute -bottom-4 -right-2 text-7xl font-black text-gray-100 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+
+                  {/* Icono */}
+                  <div className="relative mb-5">
+                    <div className={`relative w-14 h-14 rounded-full flex items-center justify-center text-white ${feature.color} shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                      {feature.icon}
+                    </div>
+                  </div>
+
+                  {/* Contenido */}
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+                        {feature.title}
+                      </h3>
+                      <span className="text-[10px] font-semibold text-white bg-gray-400 px-2 py-0.5 rounded-full">
+                        {feature.stats}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-gray-500 leading-relaxed mb-4">
+                      {feature.description}
+                    </p>
+
+                    {/* Flecha animada */}
+                    <div className="flex items-center gap-2 text-gray-400 group-hover:text-blue-500 transition-all duration-300">
+                      <span className="text-xs font-medium">Descubrir</span>
+                      <div className="w-0 h-px bg-blue-500 group-hover:w-5 transition-all duration-300"></div>
+                      <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
+      {/* Footer */}
+      <footer className="bg-white/50 backdrop-blur-sm border-t border-gray-100 py-8 mt-12">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full mb-4">
+            <Heart className="w-3 h-3 text-pink-500 fill-pink-500" />
+            <span className="text-xs text-gray-500">Always You</span>
+          </div>
+          <p className="text-sm text-gray-400 italic max-w-md mx-auto">
+            "Porque aunque la distancia nos separe, siempre estaré contigo"
+          </p>
+          <p className="text-[10px] text-gray-300 mt-4">
+            © {new Date().getFullYear()} · Hecho con amor para ti
+          </p>
+        </div>
+      </footer>
     </div>
-  );
+  )
 }

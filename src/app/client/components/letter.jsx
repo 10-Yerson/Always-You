@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import axios from "@/utils/axios";
 import { toast } from "react-toastify";
-import { 
-  Heart, 
-  Lock, 
-  Unlock, 
-  Eye, 
-  Calendar, 
-  Music, 
-  Image as ImageIcon, 
-  Video, 
+import {
+  Heart,
+  Lock,
+  Unlock,
+  Eye,
+  Calendar,
+  Music,
+  Image as ImageIcon,
+  Video,
   ChevronRight,
   Sparkles,
   BookOpen,
@@ -62,44 +62,106 @@ export default function LettersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
-      
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white py-16">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+
+      <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
+
+        <div className="absolute top-10 left-5 opacity-20">
+          <Heart className="w-6 h-6 text-blue-400" />
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
-            <BookOpen className="w-4 h-4 text-blue-200" />
-            <span className="text-sm text-white font-medium">Nuestra historia</span>
+        <div className="absolute bottom-10 right-5 opacity-20">
+          <Sparkles className="w-5 h-5 text-blue-400" />
+        </div>
+        <div className="absolute top-1/3 right-10 opacity-10">
+          <Heart className="w-4 h-4 text-blue-500" />
+        </div>
+        <div className="absolute bottom-1/3 left-10 opacity-10">
+          <Sparkles className="w-4 h-4 text-blue-500" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-400 rounded-2xl blur-md opacity-30"></div>
+              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 transform rotate-6 hover:rotate-12 transition-transform duration-300">
+                <Heart className="w-10 h-10 text-white fill-white" />
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
-            <Heart className="w-10 h-10 text-blue-200 fill-blue-200" />
-            Cartas para ti
-            <Sparkles className="w-8 h-8 text-blue-200" />
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            Cartas para{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              ti
+            </span>
           </h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Cada carta es un pedacito de mí que llega hasta ti mes a mes
+
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
+          </div>
+          <p className="mb-5 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
+            Cada carta es un pedacito de mí que llega hasta ti,
+            mes a mes, para recordarte lo especial que eres.
           </p>
-        </div>
-        
-        {/* Wave Decoration */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-            <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-          </svg>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard icon={<BookOpen className="w-5 h-5" />} label="Total Cartas" value={stats.total} color="from-blue-500 to-blue-600" />
-          <StatCard icon={<Unlock className="w-5 h-5" />} label="Desbloqueadas" value={stats.unlocked} color="from-emerald-500 to-teal-600" />
-          <StatCard icon={<Lock className="w-5 h-5" />} label="Por venir" value={stats.locked} color="from-amber-500 to-orange-600" />
-          <StatCard icon={<Eye className="w-5 h-5" />} label="Vistas" value={stats.viewed} color="from-blue-500 to-indigo-600" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
+        <div className="flex flex-row flex-wrap justify-center gap-2 sm:gap-3">
+
+          {/* Tarjeta 1 - Total Cartas */}
+          <div className="flex-1 min-w-[80px] sm:min-w-[100px]">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+              <div className="flex flex-row items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div>
+                  <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.total}</p>
+                  <p className="text-[9px] sm:text-xs text-gray-500">
+                    <span className="sm:hidden">Total</span>
+                    <span className="hidden sm:inline">Total Cartas</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tarjeta 2 - Desbloqueadas */}
+          <div className="flex-1 min-w-[80px] sm:min-w-[100px]">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+              <div className="flex flex-row items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                  <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div>
+                  <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.unlocked}</p>
+                  <p className="text-[9px] sm:text-xs text-gray-500">
+                    <span className="sm:hidden">Desbloq</span>
+                    <span className="hidden sm:inline">Desbloqueadas</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tarjeta 3 - Por venir */}
+          <div className="flex-1 min-w-[80px] sm:min-w-[100px]">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+              <div className="flex flex-row items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                  <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div>
+                  <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.locked}</p>
+                  <p className="text-[9px] sm:text-xs text-gray-500">
+                    <span className="sm:hidden">Pend</span>
+                    <span className="hidden sm:inline">Por venir</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -169,8 +231,8 @@ function StatCard({ icon, label, value, color }) {
 function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHover, onLeave, isHovered }) {
   const getMonthName = (monthNumber) => {
     const months = [
-      "Mayo", "Junio", "Julio", "Agosto", "Septiembre", 
-      "Octubre", "Noviembre", "Diciembre", "Enero", 
+      "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+      "Octubre", "Noviembre", "Diciembre", "Enero",
       "Febrero", "Marzo", "Abril"
     ];
     return months[(monthNumber - 1) % 12];
@@ -191,12 +253,11 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
     >
       {/* Card Background - BLANCO */}
       <div className="absolute inset-0 bg-white" />
-      
+
       {/* Card Border accent según estado */}
-      <div className={`absolute top-0 left-0 right-0 h-1 ${
-        isLocked ? 'bg-gray-400' : isViewed ? 'bg-emerald-500' : 'bg-blue-500'
-      }`} />
-      
+      <div className={`absolute top-0 left-0 right-0 h-1 ${isLocked ? 'bg-gray-400' : isViewed ? 'bg-emerald-500' : 'bg-blue-500'
+        }`} />
+
       {/* Card Content */}
       <div className="relative p-6 min-h-[320px] flex flex-col justify-between">
         {/* Badges */}
@@ -287,11 +348,11 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
 // Letter Modal Component
 function LetterModal({ letter, onClose }) {
   const [showFullMessage, setShowFullMessage] = useState(false);
-  
+
   const getMonthName = (monthNumber) => {
     const months = [
-      "Mayo", "Junio", "Julio", "Agosto", "Septiembre", 
-      "Octubre", "Noviembre", "Diciembre", "Enero", 
+      "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+      "Octubre", "Noviembre", "Diciembre", "Enero",
       "Febrero", "Marzo", "Abril"
     ];
     return months[(monthNumber - 1) % 12];
@@ -307,7 +368,7 @@ function LetterModal({ letter, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
       <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Close Button */}
         <button
           onClick={onClose}

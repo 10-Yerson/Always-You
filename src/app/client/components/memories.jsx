@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import axios from "@/utils/axios";
 import { toast } from "react-toastify";
-import { 
-  Heart, 
-  Calendar, 
-  Image as ImageIcon, 
-  Video, 
-  Music, 
+import {
+  Heart,
+  Calendar,
+  Image as ImageIcon,
+  Video,
+  Music,
   Clock,
   Sparkles,
   Camera,
@@ -77,64 +77,121 @@ export default function MemoriesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
-      
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white py-16">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+      <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
+
+        <div className="absolute top-10 left-5 opacity-20">
+          <Heart className="w-6 h-6 text-blue-400" />
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
-            <BookOpen className="w-4 h-4 text-blue-200" />
-            <span className="text-sm text-white font-medium">Nuestra historia juntos</span>
+        <div className="absolute bottom-10 right-5 opacity-20">
+          <Sparkles className="w-5 h-5 text-blue-400" />
+        </div>
+        <div className="absolute top-1/3 right-10 opacity-10">
+          <Camera className="w-4 h-4 text-blue-500" />
+        </div>
+        <div className="absolute bottom-1/3 left-10 opacity-10">
+          <Sparkles className="w-4 h-4 text-blue-500" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center">
+
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-400 rounded-2xl blur-md opacity-30"></div>
+              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 transform rotate-6 hover:rotate-12 transition-transform duration-300">
+                <Camera className="w-10 h-10 text-white" />
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
-            <Camera className="w-10 h-10 text-blue-200" />
-            Nuestros Recuerdos
-            <Sparkles className="w-8 h-8 text-blue-200" />
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            Nuestros{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Recuerdos
+            </span>
           </h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Cada momento vivido es un tesoro que guardamos en el corazón
+
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
+          </div>
+
+          <p className="mb-5 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
+            Cada momento vivido es un tesoro que guardamos en el corazón,
+            porque juntos construimos recuerdos inolvidables.
           </p>
-        </div>
-        
-        {/* Wave Decoration */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-            <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-          </svg>
+
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard 
-            icon={<Heart className="w-5 h-5" />} 
-            label="Total Recuerdos" 
-            value={stats.total} 
-            color="from-blue-500 to-blue-600" 
-          />
-          <StatCard 
-            icon={<ImageIcon className="w-5 h-5" />} 
-            label="Fotos" 
-            value={stats.images} 
-            color="from-emerald-500 to-teal-600" 
-          />
-          <StatCard 
-            icon={<Video className="w-5 h-5" />} 
-            label="Videos" 
-            value={stats.videos} 
-            color="from-blue-500 to-indigo-600" 
-          />
-          <StatCard 
-            icon={<Music className="w-5 h-5" />} 
-            label="Audios" 
-            value={stats.audios} 
-            color="from-purple-500 to-pink-600" 
-          />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+
+          {/* Total Recuerdos */}
+          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.total}</p>
+                <p className="text-[9px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Total</span>
+                  <span className="hidden sm:inline">Total Recuerdos</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Fotos */}
+          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.images}</p>
+                <p className="text-[9px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Fotos</span>
+                  <span className="hidden sm:inline">Fotos</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Videos */}
+          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                <Video className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.videos}</p>
+                <p className="text-[9px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Videos</span>
+                  <span className="hidden sm:inline">Videos</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Audios */}
+          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
+                <Music className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.audios}</p>
+                <p className="text-[9px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Audios</span>
+                  <span className="hidden sm:inline">Audios</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -143,44 +200,40 @@ export default function MemoriesPage() {
         <div className="flex justify-center gap-3 flex-wrap">
           <button
             onClick={() => setFilter("all")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-              filter === "all"
-                ? "bg-blue-500 text-white shadow-md shadow-blue-200"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "all"
+              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <Heart className="w-3 h-3" />
             Todos
           </button>
           <button
             onClick={() => setFilter("image")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-              filter === "image"
-                ? "bg-emerald-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "image"
+              ? "bg-emerald-600 text-white shadow-md"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <ImageIcon className="w-3 h-3" />
             Fotos
           </button>
           <button
             onClick={() => setFilter("video")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-              filter === "video"
-                ? "bg-blue-600 text-white shadow-md shadow-blue-200"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "video"
+              ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <Video className="w-3 h-3" />
             Videos
           </button>
           <button
             onClick={() => setFilter("audio")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-              filter === "audio"
-                ? "bg-purple-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "audio"
+              ? "bg-purple-600 text-white shadow-md"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <Music className="w-3 h-3" />
             Audios
@@ -226,29 +279,13 @@ export default function MemoriesPage() {
   );
 }
 
-// Stat Card Component
-function StatCard({ icon, label, value, color }) {
-  return (
-    <div className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-      <div className="flex items-center gap-3">
-        <div className={`bg-gradient-to-br ${color} p-2 rounded-xl text-white`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-2xl font-bold text-gray-800">{value}</p>
-          <p className="text-xs text-gray-500">{label}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // Memory Card Component
 function MemoryCard({ memory, type, delay, onClick }) {
   const file = memory.image || memory.video || memory.music || memory.audio;
-  
+
   const getTypeIcon = () => {
-    switch(type) {
+    switch (type) {
       case "image": return <ImageIcon className="w-4 h-4" />;
       case "video": return <Video className="w-4 h-4" />;
       case "audio": return <Music className="w-4 h-4" />;
@@ -257,7 +294,7 @@ function MemoryCard({ memory, type, delay, onClick }) {
   };
 
   const getTypeColor = () => {
-    switch(type) {
+    switch (type) {
       case "image": return "from-emerald-500 to-teal-600";
       case "video": return "from-blue-500 to-indigo-600";
       case "audio": return "from-purple-500 to-pink-600";
@@ -266,7 +303,7 @@ function MemoryCard({ memory, type, delay, onClick }) {
   };
 
   const getTypeBg = () => {
-    switch(type) {
+    switch (type) {
       case "image": return "bg-emerald-100 text-emerald-700";
       case "video": return "bg-blue-100 text-blue-700";
       case "audio": return "bg-purple-100 text-purple-700";
@@ -288,10 +325,10 @@ function MemoryCard({ memory, type, delay, onClick }) {
     >
       {/* Top border */}
       <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${getTypeColor()}`} />
-      
+
       {/* Content */}
       <div className="relative p-5 flex flex-col">
-        
+
         {/* Header - Fecha y tipo */}
         <div className="flex justify-between items-start mb-3">
           <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -314,8 +351,8 @@ function MemoryCard({ memory, type, delay, onClick }) {
           <div className="relative overflow-hidden rounded-xl mb-3">
             {isImage && (
               <div className="relative h-48">
-                <img 
-                  src={file} 
+                <img
+                  src={file}
                   alt="Recuerdo"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -369,7 +406,7 @@ function MemoryCard({ memory, type, delay, onClick }) {
 // Memory Modal Component
 function MemoryModal({ memory, onClose }) {
   const file = memory.image || memory.video || memory.music || memory.audio;
-  
+
   const isImage = file?.match(/\.(jpeg|jpg|png|webp|gif)$/i);
   const isVideo = file?.match(/\.(mp4|webm|ogg|mov)$/i);
   const isAudio = file?.match(/\.(mp3|wav|mpeg|ogg)$/i);
@@ -384,7 +421,7 @@ function MemoryModal({ memory, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
       <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Close Button */}
         <button
           onClick={onClose}

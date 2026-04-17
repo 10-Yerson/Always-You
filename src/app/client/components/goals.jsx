@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import axios from "@/utils/axios";
 import { toast } from "react-toastify";
-import { 
-  Target, 
-  CheckCircle, 
-  Clock, 
-  Calendar, 
-  Trophy, 
+import {
+  Target,
+  CheckCircle,
+  Clock,
+  Calendar,
+  Trophy,
   Sparkles,
   Heart,
   Star,
@@ -50,8 +50,8 @@ export default function GoalsPage() {
     total: goals.length,
     completed: goals.filter(g => g.status === "completado").length,
     pending: goals.filter(g => g.status !== "completado").length,
-    percentage: goals.length > 0 
-      ? Math.round((goals.filter(g => g.status === "completado").length / goals.length) * 100) 
+    percentage: goals.length > 0
+      ? Math.round((goals.filter(g => g.status === "completado").length / goals.length) * 100)
       : 0
   };
 
@@ -69,69 +69,131 @@ export default function GoalsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
-      
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white py-16">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+      {/* Hero Section - Metas */}
+      <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
+
+        {/* Elementos decorativos sutiles */}
+        <div className="absolute top-10 left-5 opacity-20">
+          <Heart className="w-6 h-6 text-blue-400" />
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
-            <Compass className="w-4 h-4 text-blue-200" />
-            <span className="text-sm text-white font-medium">Nuestro camino juntos</span>
+        <div className="absolute bottom-10 right-5 opacity-20">
+          <Sparkles className="w-5 h-5 text-blue-400" />
+        </div>
+        <div className="absolute top-1/3 right-10 opacity-10">
+          <Target className="w-4 h-4 text-blue-500" />
+        </div>
+        <div className="absolute bottom-1/3 left-10 opacity-10">
+          <Flag className="w-4 h-4 text-blue-500" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Icono decorativo */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-400 rounded-2xl blur-md opacity-30"></div>
+              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 transform rotate-6 hover:rotate-12 transition-transform duration-300">
+                <Target className="w-10 h-10 text-white" />
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
-            <Target className="w-10 h-10 text-blue-200" />
-            Metas y Sueños
-            <Sparkles className="w-8 h-8 text-blue-200" />
+
+          {/* Título */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            Metas y{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Sueños
+            </span>
           </h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Cada meta es un paso más hacia nuestro futuro juntos
+
+          {/* Línea decorativa */}
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
+          </div>
+
+          {/* Descripción */}
+          <p className="mb-7 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
+            Cada meta es un paso más hacia nuestro futuro juntos,
+            porque juntos podemos alcanzar cualquier sueño.
           </p>
-        </div>
-        
-        {/* Wave Decoration */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-            <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-          </svg>
+
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard 
-            icon={<Flag className="w-5 h-5" />} 
-            label="Total Metas" 
-            value={stats.total} 
-            color="from-blue-500 to-blue-600" 
-          />
-          <StatCard 
-            icon={<CheckCircle className="w-5 h-5" />} 
-            label="Completadas" 
-            value={stats.completed} 
-            color="from-emerald-500 to-teal-600" 
-          />
-          <StatCard 
-            icon={<Clock className="w-5 h-5" />} 
-            label="Pendientes" 
-            value={stats.pending} 
-            color="from-amber-500 to-orange-600" 
-          />
-          <StatCard 
-            icon={<TrendingUp className="w-5 h-5" />} 
-            label="Progreso" 
-            value={`${stats.percentage}%`} 
-            color="from-blue-500 to-indigo-600" 
-          />
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 -mt-8 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+
+          {/* Total Metas */}
+          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
+                <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.total}</p>
+                <p className="text-[8px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Total</span>
+                  <span className="hidden sm:inline">Total Metas</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Completadas */}
+          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.completed}</p>
+                <p className="text-[8px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Compl</span>
+                  <span className="hidden sm:inline">Completadas</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Pendientes */}
+          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.pending}</p>
+                <p className="text-[8px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Pend</span>
+                  <span className="hidden sm:inline">Pendientes</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Progreso */}
+          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.percentage}%</p>
+                <p className="text-[8px] sm:text-xs text-gray-500">
+                  <span className="sm:hidden">Prog</span>
+                  <span className="hidden sm:inline">Progreso</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="max-w-3xl mx-auto px-6 mt-8">
+      {/* <div className="max-w-3xl mx-auto px-6 mt-8">
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
           <div className="flex justify-between items-center mb-3">
             <span className="text-sm font-medium text-gray-700">Progreso de metas cumplidas</span>
@@ -139,7 +201,7 @@ export default function GoalsPage() {
           </div>
           <div className="relative">
             <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
-              <div 
+              <div
                 className="h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-1000 relative"
                 style={{ width: `${stats.percentage}%` }}
               >
@@ -151,28 +213,26 @@ export default function GoalsPage() {
             {stats.completed} de {stats.total} metas cumplidas
           </p>
         </div>
-      </div>
+      </div> */}
 
       {/* Filter Tabs */}
       <div className="max-w-7xl mx-auto px-6 mt-8">
         <div className="flex justify-center gap-3">
           <button
             onClick={() => setFilter("all")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              filter === "all"
-                ? "bg-blue-500 text-white shadow-md shadow-blue-200"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "all"
+              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             Todas
           </button>
           <button
             onClick={() => setFilter("completed")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              filter === "completed"
-                ? "bg-emerald-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "completed"
+              ? "bg-emerald-600 text-white shadow-md"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <span className="flex items-center gap-1">
               <CheckCircle className="w-3 h-3" />
@@ -181,11 +241,10 @@ export default function GoalsPage() {
           </button>
           <button
             onClick={() => setFilter("pending")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              filter === "pending"
-                ? "bg-amber-600 text-white shadow-md"
-                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
-            }`}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "pending"
+              ? "bg-amber-600 text-white shadow-md"
+              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+              }`}
           >
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
@@ -267,10 +326,9 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
       }}
     >
       {/* Top border line según estado */}
-      <div className={`absolute top-0 left-0 right-0 h-1 ${
-        isCompleted ? 'bg-emerald-500' : 'bg-blue-500'
-      }`} />
-      
+      <div className={`absolute top-0 left-0 right-0 h-1 ${isCompleted ? 'bg-emerald-500' : 'bg-blue-500'
+        }`} />
+
       {/* Content */}
       <div className="relative p-6 min-h-[300px] flex flex-col justify-between">
         {/* Header */}
@@ -313,8 +371,8 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
           <div className="mt-2">
             {image && (
               <div className="relative overflow-hidden rounded-xl h-24">
-                <img 
-                  src={image} 
+                <img
+                  src={image}
                   alt={goal.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -379,7 +437,7 @@ function GoalModal({ goal, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
       <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -391,11 +449,10 @@ function GoalModal({ goal, onClose }) {
         </button>
 
         {/* Header */}
-        <div className={`p-6 text-white rounded-t-3xl ${
-          isCompleted 
-            ? 'bg-gradient-to-r from-emerald-700 to-teal-800'
-            : 'bg-gradient-to-r from-blue-700 to-blue-600'
-        }`}>
+        <div className={`p-6 text-white rounded-t-3xl ${isCompleted
+          ? 'bg-gradient-to-r from-emerald-700 to-teal-800'
+          : 'bg-gradient-to-r from-blue-700 to-blue-600'
+          }`}>
           <div className="flex justify-between items-center mb-4">
             <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm flex items-center gap-1">
               <Calendar className="w-3 h-3" />
@@ -422,9 +479,8 @@ function GoalModal({ goal, onClose }) {
         {/* Content */}
         <div className="p-6 space-y-4">
           {/* Status Badge */}
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
-            isCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
-          }`}>
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${isCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+            }`}>
             {isCompleted ? (
               <>
                 <CheckCircle className="w-4 h-4" />

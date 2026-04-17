@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "SIC Comunitario",
+  title: "Always You ❤️‍🩹",
   description: "Plataforma integral para la gestión comunitaria: eventos, reuniones, trabajos comunitarios, asistencias, decisiones y reportes.",
   icons: {
     icon: "/logo.png",

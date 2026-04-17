@@ -98,14 +98,17 @@ export default function LettersPage() {
           <div className="flex justify-center mb-6">
             <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
           </div>
-          <p className="mb-5 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
             Cada carta es un pedacito de mí que llega hasta ti,
             mes a mes, para recordarte lo especial que eres.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
+      {/* Espacio reducido */}
+     <div className="pt-3 sm:pt-4 md:pt-5"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-row flex-wrap justify-center gap-2 sm:gap-3">
 
           {/* Tarjeta 1 - Total Cartas */}

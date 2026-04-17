@@ -5,17 +5,18 @@ import { usePathname, useRouter } from "next/navigation";
 import axios from '@/utils/axios';
 
 // Iconos para Always You
-import { 
-  Home, 
-  Heart, 
-  Calendar, 
-  Target, 
-  Image, 
-  User, 
+import {
+  Home,
+  Heart,
+  Calendar,
+  Target,
+  Image,
+  User,
   LogOut,
   Mail,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Music
 } from 'lucide-react';
 
 export default function UserPanel() {
@@ -89,16 +90,12 @@ export default function UserPanel() {
                 Especiales
               </p>
               <ul className="space-y-1">
+                <NavItem href="/client/music" Icon={Music} label="Música" />
                 <NavItem href="/client/surprise" Icon={Sparkles} label="Sorpresas" />
                 <NavItem href="/client/timeline" Icon={Calendar} label="Línea de Tiempo" />
                 <NavItem href="/client/book" Icon={BookOpen} label="Libro de Amor" />
               </ul>
             </div>
-          </div>
-
-          {/* User Section */}
-          <div className="p-4 border-t border-gray-200">
-            <NavItem href="/client/perfil" Icon={User} label="Mi Perfil" />
           </div>
 
           {/* Logout Button */}
@@ -121,7 +118,7 @@ export default function UserPanel() {
               { href: '/client/letter', Icon: Mail, label: 'Cartas' },
               { href: '/client/memories', Icon: Image, label: 'Recuerdos' },
               { href: '/client/goals', Icon: Target, label: 'Metas' },
-              { href: '/client/perfil', Icon: User, label: 'Perfil' },
+              { href: '/client/music', Icon: Music, label: 'Música' },
             ].map(({ href, Icon, label }) => {
               const isActive = pathname === href;
               return (

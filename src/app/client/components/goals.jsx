@@ -71,7 +71,6 @@ export default function GoalsPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
 
       {/* Hero Section */}
-      {/* Hero Section - Metas */}
       <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
 
         {/* Elementos decorativos sutiles */}
@@ -113,7 +112,7 @@ export default function GoalsPage() {
           </div>
 
           {/* Descripción */}
-          <p className="mb-7 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
             Cada meta es un paso más hacia nuestro futuro juntos,
             porque juntos podemos alcanzar cualquier sueño.
           </p>
@@ -121,8 +120,10 @@ export default function GoalsPage() {
         </div>
       </div>
 
+      <div className="pt-3 sm:pt-4 md:pt-5"></div>
+
       {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 -mt-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
 
           {/* Total Metas */}

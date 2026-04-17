@@ -69,38 +69,38 @@ export default function MetasSection() {
   return (
     <section id="metas" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 mb-4">
-            <Target className="w-6 h-6 text-purple-500" />
+            <Target className="w-6 h-6 text-slate-500" />
             <h2 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900">
               Nuestras Metas
             </h2>
-            <Target className="w-6 h-6 text-purple-500" />
+            <Target className="w-6 h-6 text-slate-500" />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
             Los sueños que compartimos y los objetivos que construiremos juntos.
-            <br/><span className="text-purple-500 font-medium">Contigo, todo es posible.</span>
+            <br /><span className="text-slate-600 font-medium">Contigo, todo es posible.</span>
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100 text-center">
-            <p className="text-4xl font-serif font-bold text-purple-600 mb-2">
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 text-center">
+            <p className="text-4xl font-serif font-bold text-slate-600 mb-2">
               {metas.filter(m => m.completed).length}
             </p>
             <p className="text-gray-600 font-medium">Metas Completadas</p>
           </div>
-          <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-8 rounded-2xl border border-rose-100 text-center">
-            <p className="text-4xl font-serif font-bold text-rose-600 mb-2">
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 text-center">
+            <p className="text-4xl font-serif font-bold text-slate-600 mb-2">
               {metas.filter(m => !m.completed && m.unlocked).length}
             </p>
             <p className="text-gray-600 font-medium">En Progreso</p>
           </div>
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border border-indigo-100 text-center">
-            <p className="text-4xl font-serif font-bold text-indigo-600 mb-2">
+          <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 text-center">
+            <p className="text-4xl font-serif font-bold text-slate-600 mb-2">
               {metas.filter(m => !m.unlocked).length}
             </p>
             <p className="text-gray-600 font-medium">Por Desbloquear</p>
@@ -112,13 +112,12 @@ export default function MetasSection() {
           {metas.map((meta) => (
             <div
               key={meta.id}
-              className={`group rounded-2xl border-2 p-8 transition-all duration-300 ${
-                meta.completed
-                  ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200'
+              className={`group rounded-2xl border-2 p-8 transition-all duration-300 ${meta.completed
+                  ? 'bg-gradient-to-r from-slate-100 to-slate-200 border-slate-300'
                   : meta.unlocked
-                  ? 'bg-white border-gray-200 hover:border-rose-300 hover:shadow-lg'
-                  : 'bg-gray-50 border-gray-200 opacity-75'
-              }`}
+                    ? 'bg-white border-gray-200 hover:border-slate-300 hover:shadow-lg'
+                    : 'bg-gray-50 border-gray-200 opacity-75'
+                }`}
             >
               <div className="flex items-start gap-6">
                 {/* Ícono */}
@@ -131,7 +130,7 @@ export default function MetasSection() {
                       <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2 flex items-center gap-3">
                         {meta.title}
                         {meta.completed && (
-                          <CheckCircle2 className="w-6 h-6 text-purple-600 flex-shrink-0" />
+                          <CheckCircle2 className="w-6 h-6 text-slate-600 flex-shrink-0" />
                         )}
                         {!meta.unlocked && (
                           <Lock className="w-5 h-5 text-gray-400 flex-shrink-0" />
@@ -145,7 +144,7 @@ export default function MetasSection() {
                       <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mb-1">
                         {meta.target}
                       </p>
-                      <p className="text-2xl font-serif font-bold text-rose-500">
+                      <p className="text-2xl font-serif font-bold text-slate-600">
                         {meta.progress}%
                       </p>
                     </div>
@@ -161,15 +160,14 @@ export default function MetasSection() {
                     <div className="mt-6">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-medium text-gray-600">Progreso</span>
-                        <span className="text-xs font-bold text-rose-500">{meta.progress}/100</span>
+                        <span className="text-xs font-bold text-slate-600">{meta.progress}/100</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-700 ease-out ${
-                            meta.completed
-                              ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                              : 'bg-gradient-to-r from-rose-400 to-pink-500'
-                          }`}
+                          className={`h-full transition-all duration-700 ease-out ${meta.completed
+                              ? 'bg-gradient-to-r from-slate-500 to-slate-600'
+                              : 'bg-gradient-to-r from-slate-400 to-slate-600'
+                            }`}
                           style={{ width: `${meta.progress}%` }}
                         />
                       </div>
@@ -183,13 +181,13 @@ export default function MetasSection() {
 
         {/* CTA Section */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-rose-100 p-12 rounded-2xl border border-purple-200">
-            <Sparkles className="w-8 h-8 text-purple-600 mx-auto mb-4 animate-pulse" />
+          <div className="bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 p-12 rounded-2xl border border-slate-300">
+            <Sparkles className="w-8 h-8 text-slate-600 mx-auto mb-4 animate-pulse" />
             <h3 className="text-2xl font-serif font-bold text-gray-900 mb-3">
               Cada Meta es un Nuevo Capítulo
             </h3>
             <p className="text-gray-700 max-w-2xl mx-auto text-lg">
-              Contigo quiero alcanzar cada sueño. Porque nuestro amor no es solo un sentimiento, 
+              Contigo quiero alcanzar cada sueño. Porque nuestro amor no es solo un sentimiento,
               es una construcción de momentos hermosos, metas cumplidas y un futuro brillante juntos.
             </p>
           </div>

@@ -4,14 +4,19 @@ import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from '@/utils/axios';
 
-import { HiHome } from "react-icons/hi";
-import { RiCalendarEventFill, RiLogoutCircleRLine } from "react-icons/ri";
-import { MdDashboard } from "react-icons/md";
-import { FaUserCircle } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
-
-import { Home, CalendarPlus, LayoutDashboard, UserCircle, LogOut } from 'lucide-react';
-
+// Iconos para Always You
+import { 
+  Home, 
+  Heart, 
+  Calendar, 
+  Target, 
+  Image, 
+  User, 
+  LogOut,
+  Mail,
+  Sparkles,
+  BookOpen
+} from 'lucide-react';
 
 export default function UserPanel() {
   const router = useRouter();
@@ -26,38 +31,13 @@ export default function UserPanel() {
           href={href}
           className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group
             ${isActive
-              ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg"
-              : "text-gray-600 hover:bg-gray-100 hover:text-green-600"
+              ? "bg-blue-500 text-white shadow-lg"
+              : "text-gray-600 hover:bg-blue-50 hover:text-blue-500"
             }`}
         >
           <Icon className={`h-6 w-6 transition-transform duration-300 ${isActive ? "" : "group-hover:scale-110"}`} />
           <span className="font-medium text-sm">{label}</span>
         </a>
-      </li>
-    );
-  };
-
-  const NavItems = ({ href, Icon, onClick }) => {
-    const isActive = pathname === href;
-
-    return (
-      <li className="p-2 text-black">
-        {onClick ? (
-          <button
-            onClick={onClick}
-            className="relative flex flex-col items-center pb-3"
-          >
-            <Icon className="h-6 w-6 text-black" />
-          </button>
-        ) : (
-          <a
-            href={href}
-            className={`relative flex flex-col items-center pb-3 
-            ${isActive ? "border-b-2 border-black" : ""}`}
-          >
-            <Icon className="h-6 w-6 text-black" />
-          </a>
-        )}
       </li>
     );
   };
@@ -77,15 +57,17 @@ export default function UserPanel() {
         {/* Menu Desktop */}
         <nav className="w-full hidden md:flex md:w-64 md:flex-col bg-white fixed md:top-0 md:left-0 md:h-screen shadow-xl border-r border-gray-200 z-50">
 
-          {/* Logo Section */}
+          {/* Logo Section - Always You */}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">S</span>
+              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Heart className="w-6 h-6 text-white fill-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">SIC</h1>
-                <p className="text-xs text-gray-500">Sistema Integral</p>
+                <h1 className="text-xl font-bold text-blue-500">
+                  Always You
+                </h1>
+                <p className="text-xs text-gray-500">Siempre tú 💙</p>
               </div>
             </div>
           </div>
@@ -96,16 +78,27 @@ export default function UserPanel() {
               Menú Principal
             </p>
             <ul className="space-y-1">
-              <NavItem href="/client" Icon={HiHome} label="Inicio" />
-
-              <NavItem href="/client/letter" Icon={RiCalendarEventFill} label="Cartas" />
-              <NavItem href="/client/memories" Icon={MdDashboard} label=">Recuerdos" />
-              <NavItem href="/client/goals" Icon={MdDashboard} label="Metas" />
-
-              <NavItem href="/client/event" Icon={RiCalendarEventFill} label="Crear Evento" />
-              <NavItem href="/client/gestion" Icon={MdDashboard} label="Gestión Evento" />
-              <NavItem href="/client/perfil" Icon={FaUserCircle} label="Perfil" />
+              <NavItem href="/client" Icon={Home} label="Inicio" />
+              <NavItem href="/client/letter" Icon={Mail} label="Cartas" />
+              <NavItem href="/client/memories" Icon={Image} label="Recuerdos" />
+              <NavItem href="/client/goals" Icon={Target} label="Metas" />
             </ul>
+
+            <div className="mt-8">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-4">
+                Especiales
+              </p>
+              <ul className="space-y-1">
+                <NavItem href="/client/surprise" Icon={Sparkles} label="Sorpresas" />
+                <NavItem href="/client/timeline" Icon={Calendar} label="Línea de Tiempo" />
+                <NavItem href="/client/book" Icon={BookOpen} label="Libro de Amor" />
+              </ul>
+            </div>
+          </div>
+
+          {/* User Section */}
+          <div className="p-4 border-t border-gray-200">
+            <NavItem href="/client/perfil" Icon={User} label="Mi Perfil" />
           </div>
 
           {/* Logout Button */}
@@ -114,31 +107,30 @@ export default function UserPanel() {
               onClick={handleLogout}
               className="flex items-center gap-4 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 group"
             >
-              <FiLogOut className="h-6 w-6 group-hover:scale-110 transition-transform" />
+              <LogOut className="h-6 w-6 group-hover:scale-110 transition-transform" />
               <span className="font-medium text-sm">Cerrar Sesión</span>
             </button>
           </div>
         </nav>
-
-
 
         {/* Menu Mobile */}
         <nav className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t border-gray-100 shadow-2xl">
           <ul className="flex items-center justify-around px-2 py-2">
             {[
               { href: '/client', Icon: Home, label: 'Inicio' },
-              { href: '/client/event', Icon: CalendarPlus, label: 'Crear' },
-              { href: '/client/gestion', Icon: LayoutDashboard, label: 'Gestión' },
-              { href: '/client/perfil', Icon: UserCircle, label: 'Perfil' },
+              { href: '/client/letter', Icon: Mail, label: 'Cartas' },
+              { href: '/client/memories', Icon: Image, label: 'Recuerdos' },
+              { href: '/client/goals', Icon: Target, label: 'Metas' },
+              { href: '/client/perfil', Icon: User, label: 'Perfil' },
             ].map(({ href, Icon, label }) => {
               const isActive = pathname === href;
               return (
                 <li key={href}>
                   <a href={href} className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all">
-                    <div className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200 ${isActive ? 'bg-green-600 text-white shadow-lg shadow-green-200 scale-110' : 'text-gray-400'}`}>
+                    <div className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200 ${isActive ? 'bg-blue-500 text-white shadow-lg shadow-blue-200 scale-110' : 'text-gray-400'}`}>
                       <Icon size={20} strokeWidth={1.5} />
                     </div>
-                    <span className={`text-[10px] font-semibold transition-colors ${isActive ? 'text-green-600' : 'text-gray-400'}`}>
+                    <span className={`text-[10px] font-semibold transition-colors ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
                       {label}
                     </span>
                   </a>

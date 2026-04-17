@@ -34,7 +34,7 @@ export default function NavbarPublic() {
 
         {/* Logo */}
         <div className="flex items-center gap-3 group cursor-pointer">
-          <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-pink-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+          <div className="w-10 h-10 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
             <span className="text-white font-bold text-lg">S</span>
           </div>
           <div className="flex flex-col">
@@ -53,7 +53,7 @@ export default function NavbarPublic() {
             <li key={item.name}>
               <a
                 href={item.href}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-rose-500 hover:bg-rose-50 transition-all duration-200 group"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-slate-600 hover:bg-slate-50 transition-all duration-200 group"
               >
                 <item.icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 {item.name}
@@ -66,7 +66,7 @@ export default function NavbarPublic() {
         <div className="hidden lg:flex items-center gap-3">
           <a
             href="/auth/login"
-            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-rose-400 to-pink-500 text-white font-medium text-sm hover:shadow-lg shadow-md transform hover:scale-105 transition-all duration-200"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-slate-500 to-slate-600 text-white font-medium text-sm hover:shadow-lg shadow-md transform hover:scale-105 transition-all duration-200"
           >
             <LogIn className="w-4 h-4" />
             Acceder
@@ -111,7 +111,7 @@ export default function NavbarPublic() {
           <div className="mt-4 pt-4 border-t border-gray-100">
             <a
               href="/auth/login"
-              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-gradient-to-r from-rose-400 to-pink-500 text-white font-medium hover:shadow-lg shadow-md transition-all duration-200"
+              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-gradient-to-r from-slate-500 to-slate-600 text-white font-medium hover:shadow-lg shadow-md transition-all duration-200"
               onClick={() => setMobileMenuOpen(false)}
             >
               <LogIn className="w-5 h-5" />

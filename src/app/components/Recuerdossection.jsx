@@ -64,21 +64,21 @@ export default function RecuerdosSection() {
   ];
 
   return (
-    <section id="recuerdos" className="py-20 bg-gradient-to-b from-white to-rose-50">
+    <section id="recuerdos" className="py-20 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-2 mb-4">
-            <Heart className="w-6 h-6 text-rose-500" />
+            <Heart className="w-6 h-6 text-slate-500" />
             <h2 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900">
               Nuestros Recuerdos
             </h2>
-            <Heart className="w-6 h-6 text-rose-500" />
+            <Heart className="w-6 h-6 text-slate-500" />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
-            Cada momento contigo es un tesoro. Aquí guardamos nuestras fotos, videos y los instantes que nos definen. 
-            <br/><span className="text-rose-500 font-medium">Son las pruebas de que nuestro amor es real.</span>
+            Cada momento contigo es un tesoro. Aquí guardamos nuestras fotos, videos y los instantes que nos definen.
+            <br /><span className="text-slate-600 font-medium">Son las pruebas de que nuestro amor es real.</span>
           </p>
         </div>
 
@@ -90,7 +90,7 @@ export default function RecuerdosSection() {
               onClick={() => setSelectedMedia(recuerdo)}
               className="group cursor-pointer"
             >
-              <div className="relative h-72 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 hover:border-rose-300 transition-all duration-300 hover:shadow-xl">
+              <div className="relative h-72 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 hover:border-slate-300 transition-all duration-300 hover:shadow-xl">
                 {/* Imagen de fondo */}
                 <img
                   src={recuerdo.thumbnail}
@@ -104,7 +104,7 @@ export default function RecuerdosSection() {
                 {/* Ícono de reproducción (si es video) */}
                 {recuerdo.type === 'video' && (
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-rose-500 rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="bg-slate-500 rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300">
                       <Play className="w-8 h-8 text-white fill-white" />
                     </div>
                   </div>
@@ -113,15 +113,15 @@ export default function RecuerdosSection() {
                 {/* Tipo de contenido badge */}
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
                   {recuerdo.type === 'video' ? (
-                    <Video className="w-4 h-4 text-rose-500" />
+                    <Video className="w-4 h-4 text-slate-500" />
                   ) : (
-                    <ImageIcon className="w-4 h-4 text-rose-500" />
+                    <ImageIcon className="w-4 h-4 text-slate-500" />
                   )}
                 </div>
 
                 {/* Contenido abajo */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-xs uppercase tracking-widest text-rose-200 font-semibold mb-1">{recuerdo.date}</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-200 font-semibold mb-1">{recuerdo.date}</p>
                   <h3 className="text-lg font-serif font-bold mb-2">{recuerdo.title}</h3>
                   <p className="text-sm text-white/90 line-clamp-2">{recuerdo.description}</p>
                 </div>
@@ -172,7 +172,7 @@ export default function RecuerdosSection() {
 
               {/* Info */}
               <div className="p-8">
-                <p className="text-sm uppercase tracking-widest text-rose-500 font-semibold mb-2">
+                <p className="text-sm uppercase tracking-widest text-slate-600 font-semibold mb-2">
                   {selectedMedia.date}
                 </p>
                 <h3 className="text-3xl font-serif font-bold text-gray-900 mb-4">

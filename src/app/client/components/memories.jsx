@@ -3,10 +3,27 @@
 import { useEffect, useState } from "react";
 import axios from "@/utils/axios";
 import { toast } from "react-toastify";
+import { 
+  Heart, 
+  Calendar, 
+  Image as ImageIcon, 
+  Video, 
+  Music, 
+  Clock,
+  Sparkles,
+  Camera,
+  Film,
+  Headphones,
+  ChevronRight,
+  Star,
+  BookOpen
+} from "lucide-react";
 
 export default function MemoriesPage() {
   const [memories, setMemories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const [selectedMemory, setSelectedMemory] = useState(null);
 
   const getMemories = async () => {
     try {
@@ -15,7 +32,7 @@ export default function MemoriesPage() {
       setMemories(data);
     } catch (error) {
       console.error(error);
-      toast.error("No se pudieron cargar los recuerdos 💖");
+      toast.error("No se pudieron cargar los recuerdos 💙");
     } finally {
       setLoading(false);
     }
@@ -25,70 +42,437 @@ export default function MemoriesPage() {
     getMemories();
   }, []);
 
+  const getMemoryType = (memory) => {
+    const file = memory.image || memory.video || memory.music || memory.audio;
+    if (!file) return "text";
+    if (file?.match(/\.(jpeg|jpg|png|webp|gif)$/i)) return "image";
+    if (file?.match(/\.(mp4|webm|ogg|mov)$/i)) return "video";
+    if (file?.match(/\.(mp3|wav|mpeg|ogg)$/i)) return "audio";
+    return "text";
+  };
+
+  const filteredMemories = memories.filter(memory => {
+    if (filter === "all") return true;
+    return getMemoryType(memory) === filter;
+  });
+
+  const stats = {
+    total: memories.length,
+    images: memories.filter(m => getMemoryType(m) === "image").length,
+    videos: memories.filter(m => getMemoryType(m) === "video").length,
+    audios: memories.filter(m => getMemoryType(m) === "audio").length,
+  };
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[60vh] text-lg">
-        Cargando recuerdos 💖...
+      <div className="flex flex-col justify-center items-center h-[60vh]">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
+          <Heart className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
+        </div>
+        <p className="mt-4 text-gray-500 animate-pulse">Cargando nuestros recuerdos 💙...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-gradient-to-br from-rose-50 to-purple-100 min-h-screen">
-      <h1 className="text-2xl font-bold text-center mb-6">
-        ✨ Nuestros Recuerdos
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
+      
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white py-16">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
+            <BookOpen className="w-4 h-4 text-blue-200" />
+            <span className="text-sm text-white font-medium">Nuestra historia juntos</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
+            <Camera className="w-10 h-10 text-blue-200" />
+            Nuestros Recuerdos
+            <Sparkles className="w-8 h-8 text-blue-200" />
+          </h1>
+          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
+            Cada momento vivido es un tesoro que guardamos en el corazón
+          </p>
+        </div>
+        
+        {/* Wave Decoration */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
+            <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          </svg>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {memories.map((memory) => {
-          
-          // 🔥 detectar tipo automáticamente
-          const file =
-            memory.image || memory.video || memory.music || memory.audio;
+      {/* Stats Cards */}
+      <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <StatCard 
+            icon={<Heart className="w-5 h-5" />} 
+            label="Total Recuerdos" 
+            value={stats.total} 
+            color="from-blue-500 to-blue-600" 
+          />
+          <StatCard 
+            icon={<ImageIcon className="w-5 h-5" />} 
+            label="Fotos" 
+            value={stats.images} 
+            color="from-emerald-500 to-teal-600" 
+          />
+          <StatCard 
+            icon={<Video className="w-5 h-5" />} 
+            label="Videos" 
+            value={stats.videos} 
+            color="from-blue-500 to-indigo-600" 
+          />
+          <StatCard 
+            icon={<Music className="w-5 h-5" />} 
+            label="Audios" 
+            value={stats.audios} 
+            color="from-purple-500 to-pink-600" 
+          />
+        </div>
+      </div>
 
-          const isImage = file?.match(/\.(jpeg|jpg|png|webp)$/i);
-          const isVideo = file?.match(/\.(mp4|webm|ogg)$/i);
-          const isAudio = file?.match(/\.(mp3|wav|mpeg)$/i);
+      {/* Filter Tabs */}
+      <div className="max-w-7xl mx-auto px-6 mt-8">
+        <div className="flex justify-center gap-3 flex-wrap">
+          <button
+            onClick={() => setFilter("all")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              filter === "all"
+                ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            }`}
+          >
+            <Heart className="w-3 h-3" />
+            Todos
+          </button>
+          <button
+            onClick={() => setFilter("image")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              filter === "image"
+                ? "bg-emerald-600 text-white shadow-md"
+                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            }`}
+          >
+            <ImageIcon className="w-3 h-3" />
+            Fotos
+          </button>
+          <button
+            onClick={() => setFilter("video")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              filter === "video"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            }`}
+          >
+            <Video className="w-3 h-3" />
+            Videos
+          </button>
+          <button
+            onClick={() => setFilter("audio")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              filter === "audio"
+                ? "bg-purple-600 text-white shadow-md"
+                : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            }`}
+          >
+            <Music className="w-3 h-3" />
+            Audios
+          </button>
+        </div>
+      </div>
 
-          return (
-            <div
-              key={memory._id}
-              className="bg-white/70 backdrop-blur p-5 rounded-3xl shadow-lg hover:scale-105 transition-all"
-            >
-              {/* 📅 fecha */}
-              <p className="text-xs text-gray-500 mb-2">
-                {new Date(memory.date).toLocaleDateString()}
-              </p>
-
-              {/* 💖 texto */}
-              <p className="text-gray-700 mb-3 font-medium">
-                {memory.text}
-              </p>
-
-              {/* 🖼️ IMAGEN */}
-              {isImage && (
-                <img
-                  src={file}
-                  className="rounded-xl w-full h-48 object-cover"
-                />
-              )}
-
-              {/* 🎥 VIDEO */}
-              {isVideo && (
-                <video controls className="w-full rounded-xl">
-                  <source src={file} />
-                </video>
-              )}
-
-              {/* 🎧 AUDIO */}
-              {isAudio && (
-                <audio controls className="w-full">
-                  <source src={file} />
-                </audio>
-              )}
+      {/* Memories Grid */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        {filteredMemories.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-4">
+              <Heart className="w-12 h-12 text-gray-400" />
             </div>
-          );
-        })}
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">No hay recuerdos aún</h3>
+            <p className="text-gray-500">Cada momento especial quedará guardado aquí 💙</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredMemories.map((memory, index) => {
+              const type = getMemoryType(memory);
+              const delay = index * 100;
+
+              return (
+                <MemoryCard
+                  key={memory._id}
+                  memory={memory}
+                  type={type}
+                  delay={delay}
+                  onClick={() => setSelectedMemory(memory)}
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Memory Modal */}
+      {selectedMemory && (
+        <MemoryModal memory={selectedMemory} onClose={() => setSelectedMemory(null)} />
+      )}
+    </div>
+  );
+}
+
+// Stat Card Component
+function StatCard({ icon, label, value, color }) {
+  return (
+    <div className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+      <div className="flex items-center gap-3">
+        <div className={`bg-gradient-to-br ${color} p-2 rounded-xl text-white`}>
+          {icon}
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-gray-800">{value}</p>
+          <p className="text-xs text-gray-500">{label}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Memory Card Component
+function MemoryCard({ memory, type, delay, onClick }) {
+  const file = memory.image || memory.video || memory.music || memory.audio;
+  
+  const getTypeIcon = () => {
+    switch(type) {
+      case "image": return <ImageIcon className="w-4 h-4" />;
+      case "video": return <Video className="w-4 h-4" />;
+      case "audio": return <Music className="w-4 h-4" />;
+      default: return <Heart className="w-4 h-4" />;
+    }
+  };
+
+  const getTypeColor = () => {
+    switch(type) {
+      case "image": return "from-emerald-500 to-teal-600";
+      case "video": return "from-blue-500 to-indigo-600";
+      case "audio": return "from-purple-500 to-pink-600";
+      default: return "from-blue-500 to-blue-600";
+    }
+  };
+
+  const getTypeBg = () => {
+    switch(type) {
+      case "image": return "bg-emerald-100 text-emerald-700";
+      case "video": return "bg-blue-100 text-blue-700";
+      case "audio": return "bg-purple-100 text-purple-700";
+      default: return "bg-blue-100 text-blue-700";
+    }
+  };
+
+  const isImage = type === "image";
+  const isVideo = type === "video";
+  const isAudio = type === "audio";
+
+  return (
+    <div
+      onClick={onClick}
+      className="group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105 hover:shadow-2xl shadow-lg border border-gray-100"
+      style={{
+        animation: `fadeInUp 0.5s ease-out ${delay}ms both`
+      }}
+    >
+      {/* Top border */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${getTypeColor()}`} />
+      
+      {/* Content */}
+      <div className="relative p-5 flex flex-col">
+        
+        {/* Header - Fecha y tipo */}
+        <div className="flex justify-between items-start mb-3">
+          <span className="text-xs text-gray-500 flex items-center gap-1">
+            <Calendar className="w-3 h-3" />
+            {new Date(memory.date).toLocaleDateString()}
+          </span>
+          <div className={`px-2 py-1 rounded-full flex items-center gap-1 ${getTypeBg()}`}>
+            {getTypeIcon()}
+            <span className="text-xs font-medium capitalize">{type}</span>
+          </div>
+        </div>
+
+        {/* Texto del recuerdo */}
+        <p className="text-gray-700 mb-4 line-clamp-3 leading-relaxed">
+          {memory.text}
+        </p>
+
+        {/* Media Preview */}
+        {file && (
+          <div className="relative overflow-hidden rounded-xl mb-3">
+            {isImage && (
+              <div className="relative h-48">
+                <img 
+                  src={file} 
+                  alt="Recuerdo"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Heart className="w-8 h-8 text-white" />
+                </div>
+              </div>
+            )}
+            {isVideo && (
+              <div className="relative h-48 bg-gray-900 flex items-center justify-center">
+                <video className="w-full h-full object-cover" src={file} />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+                    <div className="w-0 h-0 border-t-10 border-t-transparent border-l-16 border-l-white border-b-10 border-b-transparent ml-1" />
+                  </div>
+                </div>
+              </div>
+            )}
+            {isAudio && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl flex items-center gap-3">
+                <div className="bg-blue-500 p-3 rounded-full shadow-md shadow-blue-200">
+                  <Headphones className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-2/3 h-full bg-blue-500 rounded-full animate-pulse" />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Audio del recuerdo</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="flex justify-between items-center mt-2 pt-3 border-t border-gray-100">
+          <div className="flex items-center gap-1">
+            <Star className="w-3 h-3 text-blue-400" />
+            <span className="text-xs text-gray-500">Momento especial</span>
+          </div>
+          <div className="text-xs text-blue-500 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+            Ver recuerdo
+            <ChevronRight className="w-3 h-3" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Memory Modal Component
+function MemoryModal({ memory, onClose }) {
+  const file = memory.image || memory.video || memory.music || memory.audio;
+  
+  const isImage = file?.match(/\.(jpeg|jpg|png|webp|gif)$/i);
+  const isVideo = file?.match(/\.(mp4|webm|ogg|mov)$/i);
+  const isAudio = file?.match(/\.(mp3|wav|mpeg|ogg)$/i);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
+      <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+        
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+        >
+          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-700 to-blue-600 p-6 text-white rounded-t-3xl">
+          <div className="flex justify-between items-center mb-4">
+            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              {new Date(memory.date).toLocaleDateString()}
+            </span>
+            <Heart className="w-6 h-6 text-blue-200" />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 p-3 rounded-full">
+              <Camera className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold">Recuerdo Especial</h2>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          {/* Memory Text */}
+          <div>
+            <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <Heart className="w-4 h-4 text-blue-500" />
+              Recuerdo
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-lg">
+              {memory.text}
+            </p>
+          </div>
+
+          {/* Image */}
+          {isImage && (
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-blue-500" />
+                Imagen
+              </h3>
+              <img
+                src={file}
+                alt="Recuerdo"
+                className="rounded-xl w-full object-cover max-h-96"
+              />
+            </div>
+          )}
+
+          {/* Video */}
+          {isVideo && (
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <Video className="w-4 h-4 text-blue-500" />
+                Video
+              </h3>
+              <video controls className="rounded-xl w-full">
+                <source src={file} />
+              </video>
+            </div>
+          )}
+
+          {/* Audio */}
+          {isAudio && (
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <Music className="w-4 h-4 text-blue-500" />
+                Audio
+              </h3>
+              <audio controls className="w-full">
+                <source src={file} />
+              </audio>
+            </div>
+          )}
+
+          {/* Footer Note */}
+          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
+            <p className="text-blue-500 text-sm italic">
+              "Cada recuerdo es un pedacito de nuestra historia que nunca se borrará 💙"
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

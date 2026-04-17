@@ -68,40 +68,40 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white pt-24 pb-20">
       {/* Decorative gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-white to-purple-50 opacity-40 pointer-events-none" />
-      
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-50 opacity-40 pointer-events-none" />
+
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        
+
         {/* Estado: NO INICIADO */}
         {isNotStarted && (
           <div className="text-center py-16 animate-fade-in">
             <div className="mb-8 flex justify-center">
-              <Sparkles className="w-12 h-12 text-rose-400 animate-pulse" />
+              <Sparkles className="w-12 h-12 text-slate-500 animate-pulse" />
             </div>
             <h2 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4">
               Preparando algo especial...
             </h2>
             <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
-              Dentro de poco comenzará nuestra historia. <br/> 
-              <span className="text-rose-500 font-medium">Cada momento contigo será un capítulo.</span>
+              Dentro de poco comenzará nuestra historia. <br />
+              <span className="text-slate-600 font-medium">Cada momento contigo será un capítulo.</span>
             </p>
-            
+
             {/* Countdown para inicio */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
-                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.months}</p>
+              <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-6 rounded-xl border border-slate-300 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-slate-600">{timeLeft.months}</p>
                 <span className="text-xs text-gray-500 uppercase tracking-widest">Meses</span>
               </div>
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
-                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.days}</p>
+              <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-6 rounded-xl border border-slate-300 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-slate-600">{timeLeft.days}</p>
                 <span className="text-xs text-gray-500 uppercase tracking-widest">Días</span>
               </div>
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
-                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.hours}</p>
+              <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-6 rounded-xl border border-slate-300 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-slate-600">{timeLeft.hours}</p>
                 <span className="text-xs text-gray-500 uppercase tracking-widest">Horas</span>
               </div>
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-xl border border-rose-100 hover:shadow-lg transition-shadow">
-                <p className="text-3xl font-serif font-bold text-rose-500">{timeLeft.minutes}</p>
+              <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-6 rounded-xl border border-slate-300 hover:shadow-lg transition-shadow">
+                <p className="text-3xl font-serif font-bold text-slate-600">{timeLeft.minutes}</p>
                 <span className="text-xs text-gray-500 uppercase tracking-widest">Min</span>
               </div>
             </div>
@@ -115,11 +115,11 @@ export default function HomePage() {
         {/* Estado: EN PROGRESO o TERMINADO */}
         {!isNotStarted && (
           <div className="space-y-12 animate-fade-in">
-            
+
             {/* Hero Section */}
             <div className="text-center mb-16">
               <div className="mb-6 flex justify-center">
-                <Heart className="w-10 h-10 text-rose-500 animate-pulse" />
+                <Heart className="w-10 h-10 text-slate-500 animate-pulse" />
               </div>
               <h1 className="text-5xl lg:text-6xl font-serif font-bold text-gray-900 mb-4">
                 Always You
@@ -131,33 +131,33 @@ export default function HomePage() {
 
             {/* Main Grid: Countdown + Frase */}
             <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-              
+
               {/* IZQUIERDA: Countdown */}
               <div className="space-y-8">
                 <div>
                   <h3 className="text-sm uppercase tracking-widest text-gray-400 font-semibold mb-4">Nuestra Cuenta Regresiva</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="group">
-                      <div className="bg-gradient-to-br from-rose-100 to-pink-100 p-8 rounded-2xl border border-rose-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <p className="text-5xl font-serif font-bold text-rose-600 text-center mb-2">{timeLeft.months}</p>
+                      <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-slate-600 text-center mb-2">{timeLeft.months}</p>
                         <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Meses</span>
                       </div>
                     </div>
                     <div className="group">
-                      <div className="bg-gradient-to-br from-rose-100 to-pink-100 p-8 rounded-2xl border border-rose-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <p className="text-5xl font-serif font-bold text-rose-600 text-center mb-2">{timeLeft.days}</p>
+                      <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-slate-600 text-center mb-2">{timeLeft.days}</p>
                         <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Días</span>
                       </div>
                     </div>
                     <div className="group">
-                      <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-2xl border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <p className="text-5xl font-serif font-bold text-purple-600 text-center mb-2">{timeLeft.hours}</p>
+                      <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-slate-600 text-center mb-2">{timeLeft.hours}</p>
                         <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Horas</span>
                       </div>
                     </div>
                     <div className="group">
-                      <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-2xl border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <p className="text-5xl font-serif font-bold text-purple-600 text-center mb-2">{timeLeft.minutes}</p>
+                      <div className="bg-gradient-to-br from-slate-100 to-slate-200 p-8 rounded-2xl border border-slate-300 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <p className="text-5xl font-serif font-bold text-slate-600 text-center mb-2">{timeLeft.minutes}</p>
                         <span className="block text-center text-sm font-medium text-gray-600 uppercase tracking-widest">Minutos</span>
                       </div>
                     </div>
@@ -168,11 +168,11 @@ export default function HomePage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-gray-700">Progreso de nuestra historia</p>
-                    <p className="text-sm font-bold text-rose-500">{progress}%</p>
+                    <p className="text-sm font-bold text-slate-600">{progress}%</p>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-1000 ease-out"
+                      className="h-full bg-gradient-to-r from-slate-500 to-slate-600 transition-all duration-1000 ease-out"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -186,7 +186,7 @@ export default function HomePage() {
 
               {/* DERECHA: Frase + Mensaje */}
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50 p-12 rounded-2xl border border-rose-100 min-h-80 flex flex-col justify-center">
+                <div className="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 p-12 rounded-2xl border border-slate-300 min-h-80 flex flex-col justify-center">
                   {/* Frase animada */}
                   <div className="space-y-6 text-center">
                     <p className="text-3xl lg:text-4xl font-serif italic text-gray-800 leading-relaxed min-h-32 flex items-center justify-center">
@@ -194,12 +194,12 @@ export default function HomePage() {
                         {frase}
                       </span>
                     </p>
-                    
+
                     {/* Divider */}
                     <div className="flex items-center gap-3 justify-center">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent" />
-                      <Heart className="w-5 h-5 text-rose-400" />
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+                      <Heart className="w-5 h-5 text-slate-500" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
                     </div>
 
                     {/* Mensaje del backend */}
@@ -211,12 +211,12 @@ export default function HomePage() {
 
                 {/* Status Badge */}
                 {isFinished ? (
-                  <div className="text-center p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl border border-purple-200">
-                    <p className="text-sm font-medium text-purple-900">✨ Historia Completada ✨</p>
+                  <div className="text-center p-4 bg-gradient-to-r from-slate-100 to-slate-200 rounded-xl border border-slate-300">
+                    <p className="text-sm font-medium text-slate-900">✨ Historia Completada ✨</p>
                   </div>
                 ) : (
-                  <div className="text-center p-4 bg-gradient-to-r from-rose-100 to-pink-100 rounded-xl border border-rose-200">
-                    <p className="text-sm font-medium text-rose-900">💖 Capítulo en Progreso</p>
+                  <div className="text-center p-4 bg-gradient-to-r from-slate-100 to-slate-200 rounded-xl border border-slate-300">
+                    <p className="text-sm font-medium text-slate-900">💖 Capítulo en Progreso</p>
                   </div>
                 )}
               </div>

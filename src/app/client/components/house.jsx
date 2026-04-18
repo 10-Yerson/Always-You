@@ -91,7 +91,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 px-2">
 
       {/* Hero Section - Bienvenida */}
       <div className="min-h-[50vh] flex items-center justify-center px-4 relative">
@@ -138,6 +138,50 @@ export default function HomePage() {
       {/* Sección: Foto + Contador de tiempo */}
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
+
+          {/* Foto con frase superpuesta - Hover mejorado */}
+          <div className="relative group rounded-2xl overflow-hidden shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
+
+            {/* Etiqueta flotante */}
+            <div className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+              <span className="text-xs text-white font-medium">💖 Momento especial</span>
+            </div>
+
+            {/* Imagen */}
+            <img
+              src="https://res.cloudinary.com/dbgj8dqup/image/upload/v1776465505/Picsart_26-04-17_17-30-35-869_qgmlhu.jpg"
+              alt="Recuerdo especial"
+              className="w-full h-auto max-h-96 object-contain object-center bg-gradient-to-br from-gray-100 to-blue-50/30 transition-all duration-500 group-hover:scale-105"
+              style={{ maxHeight: '480px' }}
+            />
+
+            {/* Frase "Volveré" superpuesta - Mejorada */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+              <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                {/* Líneas decorativas */}
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="w-10 h-px bg-gradient-to-r from-transparent to-pink-400"></div>
+                  <Heart className="w-5 h-5 text-pink-400 fill-pink-400 animate-pulse" />
+                  <div className="w-10 h-px bg-gradient-to-l from-transparent to-pink-400"></div>
+                </div>
+
+                {/* Texto principal */}
+                <p className="text-white text-2xl md:text-3xl font-bold tracking-wider drop-shadow-lg">
+                  Volveré
+                </p>
+
+                {/* Texto secundario */}
+                <p className="text-white/90 text-sm mt-2 tracking-wide">
+                  💙 Siempre, siempre tú 💙
+                </p>
+
+                {/* Línea inferior */}
+                <div className="flex justify-center mt-3">
+                  <div className="w-12 h-px bg-white/50"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Contador de tiempo - Mejorado */}
           <div className="bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -205,50 +249,6 @@ export default function HomePage() {
                 <span>Cada día que pasa me acerca más a ti</span>
                 <span>💙</span>
               </p>
-            </div>
-          </div>
-
-          {/* Foto con frase superpuesta - Hover mejorado */}
-          <div className="relative group rounded-2xl overflow-hidden shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
-
-            {/* Etiqueta flotante */}
-            <div className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
-              <span className="text-xs text-white font-medium">💖 Momento especial</span>
-            </div>
-
-            {/* Imagen */}
-            <img
-              src="https://res.cloudinary.com/dbgj8dqup/image/upload/v1776465505/Picsart_26-04-17_17-30-35-869_qgmlhu.jpg"
-              alt="Recuerdo especial"
-              className="w-full h-auto max-h-96 object-contain object-center bg-gradient-to-br from-gray-100 to-blue-50/30 transition-all duration-500 group-hover:scale-105"
-              style={{ maxHeight: '480px' }}
-            />
-
-            {/* Frase "Volveré" superpuesta - Mejorada */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                {/* Líneas decorativas */}
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="w-10 h-px bg-gradient-to-r from-transparent to-pink-400"></div>
-                  <Heart className="w-5 h-5 text-pink-400 fill-pink-400 animate-pulse" />
-                  <div className="w-10 h-px bg-gradient-to-l from-transparent to-pink-400"></div>
-                </div>
-
-                {/* Texto principal */}
-                <p className="text-white text-2xl md:text-3xl font-bold tracking-wider drop-shadow-lg">
-                  Volveré
-                </p>
-
-                {/* Texto secundario */}
-                <p className="text-white/90 text-sm mt-2 tracking-wide">
-                  💙 Siempre, siempre tú 💙
-                </p>
-
-                {/* Línea inferior */}
-                <div className="flex justify-center mt-3">
-                  <div className="w-12 h-px bg-white/50"></div>
-                </div>
-              </div>
             </div>
           </div>
 

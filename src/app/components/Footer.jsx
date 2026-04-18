@@ -1,42 +1,30 @@
 'use client';
-import { Heart, Mail, MapPin, Calendar, ArrowUp } from 'lucide-react';
-import { useState } from 'react';
+import { Heart, Mail, Calendar, MapPin, ArrowUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
-  const [scrollToTop, setScrollToTop] = useState(false);
+  const [showTop, setShowTop] = useState(false);
 
-  const handleScroll = () => {
-    setScrollToTop(window.scrollY > 300);
-  };
-
-  const scrollUp = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', handleScroll);
-  }
-
-  const currentYear = new Date().getFullYear();
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 300);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <footer className="bg-gray-900 text-white pt-20 pb-8 relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-slate-500 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-slate-400 rounded-full blur-3xl" />
-      </div>
+      {/* Glow decorativo */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-5 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-400 rounded-full blur-3xl opacity-5 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
-          {/* Brand & Description */}
+          {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
-                <span className="text-white font-bold text-lg">S</span>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20">
+                <span className="text-white font-bold text-lg">A</span>
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg">Always You</h3>
@@ -44,79 +32,59 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Una plataforma diseñada para preservar y compartir los momentos más especiales de tu vida.
-              Porque cada instante contigo es un tesoro que merece ser recordado.
+              Una plataforma diseñada para preservar y compartir los momentos más especiales.
+              Porque cada instante contigo merece ser recordado.
             </p>
-            <div className="flex items-center gap-3 text-sm text-gray-400">
-              <Heart className="w-4 h-4 text-slate-500" />
-              <span>Hecho con amor</span>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Heart className="w-4 h-4 text-blue-500 flex-shrink-0" />
+              <span>Hecho con amor para alguien especial</span>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Navegación */}
           <div>
-            <h4 className="font-serif font-bold text-lg mb-6 text-white">Navegación</h4>
+            <h4 className="font-serif font-bold text-base mb-6">Navegación</h4>
             <ul className="space-y-3">
-              <li>
-                <a href="#inicio" className="text-gray-400 hover:text-slate-400 transition-colors duration-200 text-sm">
-                  Inicio
-                </a>
-              </li>
-              <li>
-                <a href="#recuerdos" className="text-gray-400 hover:text-slate-400 transition-colors duration-200 text-sm">
-                  Recuerdos
-                </a>
-              </li>
-              <li>
-                <a href="#metas" className="text-gray-400 hover:text-slate-400 transition-colors duration-200 text-sm">
-                  Metas
-                </a>
-              </li>
-              <li>
-                <a href="#historial" className="text-gray-400 hover:text-slate-400 transition-colors duration-200 text-sm">
-                  Historial
-                </a>
-              </li>
-              <li>
-                <a href="#sobre-nosotros" className="text-gray-400 hover:text-slate-400 transition-colors duration-200 text-sm">
-                  Sobre Nosotros
-                </a>
-              </li>
+              {['inicio', 'recuerdos', 'metas', 'historial', 'sobre-nosotros'].map((link) => (
+                <li key={link}>
+                  <a
+                    href={`#${link}`}
+                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm capitalize"
+                  >
+                    {link.replace('-', ' ')}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Features */}
+          {/* Características */}
           <div>
-            <h4 className="font-serif font-bold text-lg mb-6 text-white">Características</h4>
+            <h4 className="font-serif font-bold text-base mb-6">Características</h4>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-sm text-gray-400">
-                <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
-                <span>Cartas mensuales desbloqueables</span>
-              </li>
-              <li className="flex items-start gap-2 text-sm text-gray-400">
-                <Heart className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
-                <span>Galería de recuerdos multimedia</span>
-              </li>
-              <li className="flex items-start gap-2 text-sm text-gray-400">
-                <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
-                <span>Metas y objetivos compartidos</span>
-              </li>
-              <li className="flex items-start gap-2 text-sm text-gray-400">
-                <Mail className="w-4 h-4 text-slate-400 flex-shrink-0 mt-1" />
-                <span>Historial de momentos especiales</span>
-              </li>
+              {[
+                { icon: Calendar, text: 'Cartas mensuales desbloqueables' },
+                { icon: Heart, text: 'Galería de recuerdos multimedia' },
+                { icon: MapPin, text: 'Metas y sueños compartidos' },
+                { icon: Mail, text: 'Historial de momentos especiales' },
+              ].map(({ icon: Icon, text }) => (
+                <li key={text} className="flex items-start gap-2 text-sm text-gray-400">
+                  <Icon className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                  {text}
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact & CTA */}
+          {/* Contacto */}
           <div>
-            <h4 className="font-serif font-bold text-lg mb-6 text-white">Conecta Conmigo</h4>
-            <p className="text-gray-400 text-sm mb-6">
+            <h4 className="font-serif font-bold text-base mb-6">Conecta</h4>
+            <p className="text-gray-400 text-sm mb-6 leading-relaxed">
               ¿Preguntas o sugerencias? Me encantaría escucharte.
             </p>
             <a
               href="mailto:contacto@alwaysyou.com"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-500 to-slate-600 rounded-lg font-medium text-white hover:shadow-lg transition-all duration-200 hover:scale-105 text-sm"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-medium text-white text-sm hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 hover:scale-105"
             >
               <Mail className="w-4 h-4" />
               Enviar Mensaje
@@ -125,49 +93,27 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-8" />
+        <div className="h-px bg-gray-800 mb-8" />
 
-        {/* Bottom Footer */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm text-center md:text-left">
-            © {currentYear} Always You. Todos los momentos reservados con amor.
+        {/* Bottom */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+          <p>© {new Date().getFullYear()} Always You. Todos los momentos reservados con amor.</p>
+          <p className="flex items-center gap-2">
+            Siempre serás tú <Heart className="w-4 h-4 text-blue-500" />
           </p>
-
-          <div className="flex items-center gap-6">
-            <p className="text-gray-500 text-sm">
-              Hecho con <Heart className="w-4 h-4 text-slate-500 inline" /> para alguien especial
-            </p>
-          </div>
-
-          {/* Scroll to Top Button */}
-          {scrollToTop && (
-            <button
-              onClick={scrollUp}
-              className="fixed bottom-8 right-8 bg-gradient-to-r from-slate-500 to-slate-600 p-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-40 animate-fade-in"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="w-5 h-5 text-white" />
-            </button>
-          )}
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-      `}</style>
+      {/* Scroll to top */}
+      {showTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 p-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-110 transition-all duration-300 z-40"
+          aria-label="Volver arriba"
+        >
+          <ArrowUp className="w-5 h-5 text-white" />
+        </button>
+      )}
     </footer>
   );
 }

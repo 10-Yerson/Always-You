@@ -92,8 +92,8 @@ export default function UserPanel() {
               <ul className="space-y-1">
                 <NavItem href="/client/music" Icon={Music} label="Música" />
                 <NavItem href="/client/surprise" Icon={Sparkles} label="Sorpresas" />
-                <NavItem href="/client/timeline" Icon={Calendar} label="Línea de Tiempo" />
-                <NavItem href="/client/book" Icon={BookOpen} label="Libro de Amor" />
+                {/* <NavItem href="/client/timeline" Icon={Calendar} label="Línea de Tiempo" />
+                <NavItem href="/client/book" Icon={BookOpen} label="Libro de Amor" /> */}
               </ul>
             </div>
           </div>

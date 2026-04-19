@@ -2,6 +2,15 @@
 import { useState } from 'react';
 import { CheckCircle2, Lock, Play, X } from 'lucide-react';
 
+// Extrae el thumbnail de un embed URL de Cloudinary
+// https://player.cloudinary.com/embed/?cloud_name=xxx&public_id=yyy → imagen jpg
+const getCloudinaryThumb = (embedUrl) => {
+  const params = new URLSearchParams(embedUrl.split('?')[1]);
+  const cloudName = params.get('cloud_name');
+  const publicId = params.get('public_id');
+  return `https://res.cloudinary.com/${cloudName}/video/upload/${publicId}.jpg`;
+};
+
 export default function MetasSection() {
   const [selectedMeta, setSelectedMeta] = useState(null);
 
@@ -11,22 +20,21 @@ export default function MetasSection() {
       completed: false, unlocked: true, target: 'Mes 4',
       description: 'Conocer nuevos lugares, culturas y paisajes de la mano. Este sueño ya está en camino.',
       mediaType: 'image',
-      media: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop',
+      media: 'https://res.cloudinary.com/dbgj8dqup/image/upload/ejemplo.jpg',
     },
     {
       id: 2, title: 'Decirte "Te Amo" de mil formas', icon: '💙', progress: 100,
       completed: true, unlocked: true, target: 'Mes 1',
       description: 'En cada idioma, en cada detalle, en cada carta. Que siempre lo sientas.',
       mediaType: 'video',
-      media: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      mediaThumbnail: 'https://images.unsplash.com/photo-1514888286974-6c03bf1ca47d?w=400&h=250&fit=crop',
+      media: 'https://player.cloudinary.com/embed/?cloud_name=dbgj8dqup&public_id=VID-20260412-WA0000_eziuwx',
     },
     {
       id: 3, title: 'Crear recuerdos en cada estación', icon: '🌸', progress: 50,
       completed: false, unlocked: true, target: 'Mes 9',
       description: 'Primavera, verano, otoño e invierno. Contigo en cada una.',
       mediaType: 'image',
-      media: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=250&fit=crop',
+      media: 'https://res.cloudinary.com/dbgj8dqup/image/upload/ejemplo2.jpg',
     },
     {
       id: 4, title: 'Nuestro primer hogar juntos', icon: '🏡', progress: 0,
@@ -40,15 +48,14 @@ export default function MetasSection() {
       completed: false, unlocked: true, target: 'Mes 5',
       description: 'Estar ahí en cada paso hacia lo que deseas alcanzar.',
       mediaType: 'image',
-      media: 'https://images.unsplash.com/photo-1516567867245-ad8a36ae3d91?w=400&h=250&fit=crop',
+      media: 'https://res.cloudinary.com/dbgj8dqup/image/upload/ejemplo3.jpg',
     },
     {
       id: 6, title: 'Escribirte 12 cartas', icon: '💌', progress: 15,
       completed: false, unlocked: true, target: 'Mes 12',
       description: 'Una carta por cada mes, para que sepas que siempre fui tuyo.',
       mediaType: 'video',
-      media: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      mediaThumbnail: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=250&fit=crop',
+      media: 'https://player.cloudinary.com/embed/?cloud_name=dbgj8dqup&public_id=VID-20260412-WA0000_eziuwx',
     },
   ];
 
@@ -61,7 +68,6 @@ export default function MetasSection() {
 
         {/* ── HEADER ── */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-8 mb-8">
-
           <div className="text-left">
             <h2 className="text-5xl lg:text-6xl font-serif font-bold leading-[1.05] mb-3">
               <span className="text-gray-900">Nuestras</span>
@@ -89,7 +95,6 @@ export default function MetasSection() {
               </span>
             </div>
           </div>
-
         </div>
 
         <div className="h-px bg-gray-100 mb-8" />
@@ -112,20 +117,19 @@ export default function MetasSection() {
                       : "bg-white border-gray-100 hover:border-blue-200")
                 }
               >
-                {/* ── MEDIA (imagen o video) ── */}
+                {/* ── MEDIA ── */}
                 {meta.media && !isLocked ? (
                   <div
                     className="relative w-full overflow-hidden bg-gray-100 cursor-pointer"
-                    style={{ height: '160px' }}
+                    style={{ height: '400px' }}
                     onClick={() => setSelectedMeta(meta)}
                   >
                     <img
-                      src={meta.mediaType === 'video' ? meta.mediaThumbnail : meta.media}
+                      src={meta.mediaType === 'video' ? getCloudinaryThumb(meta.media) : meta.media}
                       alt={meta.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
 
-                    {/* Overlay en hover — siempre visible para imagen y video */}
                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center">
                         {meta.mediaType === 'video' ? (
@@ -138,14 +142,12 @@ export default function MetasSection() {
                       </div>
                     </div>
 
-                    {/* Badge tipo media */}
-                    <div className="absolute top-2.5 left-2.5 bg-white/90 border border-gray-200 rounded-full px-2.5 py-1 flex items-center gap-1">
+                    <div className="absolute top-2.5 left-2.5 bg-white/90 border border-gray-200 rounded-full px-2.5 py-1">
                       <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
                         {meta.mediaType === 'video' ? 'video' : 'foto'}
                       </span>
                     </div>
 
-                    {/* Barra de progreso sobre la imagen */}
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-100">
                       <div
                         className={"h-full transition-all duration-700 " + (isCompleted ? "bg-blue-400" : "bg-blue-500")}
@@ -166,8 +168,6 @@ export default function MetasSection() {
 
                 {/* ── BODY ── */}
                 <div className="p-5">
-
-                  {/* Fila top: icono + target + estado */}
                   <div className="flex items-start justify-between mb-3">
                     <div className="text-2xl leading-none">{meta.icon}</div>
                     <div className="flex items-center gap-2">
@@ -187,17 +187,14 @@ export default function MetasSection() {
                     </div>
                   </div>
 
-                  {/* Título */}
                   <h3 className="text-base font-serif font-bold text-gray-900 leading-snug mb-2">
                     {meta.title}
                   </h3>
 
-                  {/* Descripción */}
                   <p className="text-xs text-gray-500 leading-relaxed mb-4">
                     {meta.description}
                   </p>
 
-                  {/* Footer */}
                   {isLocked ? (
                     <div className="flex items-center gap-1.5 pt-3 border-t border-gray-100">
                       <Lock className="w-3 h-3 text-gray-300" />
@@ -226,7 +223,6 @@ export default function MetasSection() {
                       )}
                     </div>
                   )}
-
                 </div>
               </div>
             );
@@ -255,11 +251,9 @@ export default function MetasSection() {
               {selectedMeta.mediaType === 'video' ? (
                 <div className="aspect-video">
                   <iframe
-                    width="100%" height="100%"
                     src={selectedMeta.media}
                     title={selectedMeta.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="autoplay; fullscreen; encrypted-media"
                     allowFullScreen
                     className="w-full h-full"
                   />

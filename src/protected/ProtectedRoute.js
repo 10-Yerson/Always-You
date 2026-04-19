@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from '../utils/axios'; 
+import { Heart } from 'lucide-react'; 
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const router = useRouter();

@@ -36,85 +36,118 @@ export default function MetasSection() {
   ];
 
   const completadas = metas.filter(m => m.completed).length;
-  const enProgreso = metas.filter(m => !m.completed && m.unlocked).length;
-  const bloqueadas = metas.filter(m => !m.unlocked).length;
+  const enProgreso  = metas.filter(m => !m.completed && m.unlocked).length;
+  const bloqueadas  = metas.filter(m => !m.unlocked).length;
 
   return (
-    <section id="metas" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="metas" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-5">
 
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <Target className="w-6 h-6 text-blue-500" />
-            <h2 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900">
-              Nuestras Metas
-            </h2>
-            <Target className="w-6 h-6 text-blue-500" />
-          </div>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto mt-4 leading-relaxed">
-            Los sueños que soñamos y los objetivos que construiremos juntos.
-            <br /><span className="text-blue-500 font-medium">Contigo, todo es posible.</span>
-          </p>
-        </div>
+        {/* ── HEADER ── */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-8 mb-8">
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
-          {[
-            { val: completadas, label: 'Metas Completadas' },
-            { val: enProgreso, label: 'En Progreso' },
-            { val: bloqueadas, label: 'Por Desbloquear' },
-          ].map(({ val, label }) => (
-            <div key={label} className="bg-blue-50 p-8 rounded-2xl border border-blue-100 text-center hover:shadow-md hover:shadow-blue-200 transition-all">
-              <p className="text-4xl font-serif font-bold text-blue-500 mb-2">{val}</p>
-              <p className="text-gray-500 font-medium">{label}</p>
+          {/* Izquierda — eyebrow + stats pills */}
+          <div className="flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-end gap-3 sm:pb-1">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+              <span className="text-xs font-medium text-blue-600 uppercase tracking-widest">
+                Sueños compartidos
+              </span>
             </div>
-          ))}
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500">
+                <span className="font-semibold text-gray-900">{completadas}</span> completadas
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-full px-3 py-1 text-xs text-gray-500">
+                <span className="font-semibold text-gray-900">{enProgreso}</span> en progreso
+              </span>
+            </div>
+          </div>
+
+          {/* Derecha — título + subtítulo */}
+          <div className="text-left sm:text-right">
+            <h2 className="text-4xl lg:text-5xl font-serif font-bold leading-[1.05] mb-3">
+              <span className="text-gray-900">Nuestras</span>
+              <br />
+              <em className="text-blue-600 not-italic font-serif">metas</em>
+            </h2>
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs sm:ml-auto">
+              Los sueños que soñamos y los objetivos que construiremos juntos.
+            </p>
+          </div>
+
         </div>
 
-        {/* Lista de Metas */}
-        <div className="space-y-5">
+        {/* Divider */}
+        <div className="h-px bg-gray-100 mb-8" />
+
+        {/* ── LISTA DE METAS ── */}
+        <div className="space-y-3">
           {metas.map((meta) => (
             <div
               key={meta.id}
-              className={`rounded-2xl border-2 p-8 transition-all duration-300 ${
-                meta.completed
-                  ? 'bg-blue-50 border-blue-200'
+              className={
+                "rounded-2xl border p-5 transition-all duration-300 " +
+                (meta.completed
+                  ? "bg-blue-50 border-blue-100"
                   : meta.unlocked
-                  ? 'bg-white border-gray-200 hover:border-blue-200 hover:shadow-md hover:shadow-blue-200'
-                  : 'bg-gray-50 border-gray-200 opacity-70'
-              }`}
+                  ? "bg-white border-gray-100 hover:border-blue-200"
+                  : "bg-gray-50 border-gray-100 opacity-60")
+              }
             >
-              <div className="flex items-start gap-6">
-                <div className="text-5xl flex-shrink-0 pt-1">{meta.icon}</div>
+              <div className="flex items-start gap-4">
+
+                {/* Icono */}
+                <div className="text-2xl flex-shrink-0 pt-0.5">{meta.icon}</div>
+
+                {/* Contenido */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
-                    <h3 className="text-2xl font-serif font-bold text-gray-900 flex items-center gap-3">
-                      {meta.title}
-                      {meta.completed && <CheckCircle2 className="w-6 h-6 text-blue-500 flex-shrink-0" />}
-                      {!meta.unlocked && <Lock className="w-5 h-5 text-gray-400 flex-shrink-0" />}
-                    </h3>
+
+                  {/* Fila superior */}
+                  <div className="flex items-start justify-between gap-4 mb-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-base font-serif font-bold text-gray-900">
+                        {meta.title}
+                      </h3>
+                      {meta.completed && (
+                        <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                      )}
+                      {!meta.unlocked && (
+                        <Lock className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                      )}
+                    </div>
+
+                    {/* Target + porcentaje */}
                     <div className="text-right flex-shrink-0">
-                      <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">{meta.target}</p>
-                      <p className="text-2xl font-serif font-bold text-blue-500">{meta.progress}%</p>
+                      <p className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">
+                        {meta.target}
+                      </p>
+                      <p className="text-sm font-bold text-blue-600">{meta.progress}%</p>
                     </div>
                   </div>
-                  <p className="text-gray-600 text-base leading-relaxed mb-5">{meta.description}</p>
 
+                  {/* Descripción */}
+                  <p className="text-xs text-gray-500 leading-relaxed mb-3">
+                    {meta.description}
+                  </p>
+
+                  {/* Barra de progreso o bloqueado */}
                   {!meta.unlocked ? (
-                    <p className="text-sm text-gray-400 italic flex items-center gap-2">
-                      <Lock className="w-4 h-4" /> Se desbloqueará en {meta.target}
-                    </p>
+                    <div className="flex items-center gap-1.5">
+                      <Lock className="w-3 h-3 text-gray-400" />
+                      <span className="text-xs text-gray-400 italic">
+                        Se desbloqueará en {meta.target}
+                      </span>
+                    </div>
                   ) : (
                     <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-xs text-gray-500 font-medium">Progreso</span>
-                        <span className="text-xs font-bold text-blue-500">{meta.progress}/100</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                      <div className="w-full bg-gray-100 rounded-full h-1 overflow-hidden">
                         <div
-                          className="h-full bg-blue-500 transition-all duration-700 ease-out rounded-full"
-                          style={{ width: `${meta.progress}%` }}
+                          className={
+                            "h-full rounded-full transition-all duration-700 ease-out " +
+                            (meta.completed ? "bg-blue-400" : "bg-blue-500")
+                          }
+                          style={{ width: meta.progress + "%" }}
                         />
                       </div>
                     </div>
@@ -123,20 +156,6 @@ export default function MetasSection() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* CTA Final */}
-        <div className="mt-16 text-center">
-          <div className="bg-blue-50 border border-blue-100 p-12 rounded-2xl hover:shadow-md hover:shadow-blue-200 transition-all">
-            <Sparkles className="w-8 h-8 text-blue-500 mx-auto mb-4 animate-pulse" />
-            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-4">
-              Cada Meta es un Nuevo Capítulo
-            </h3>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-              No importa la distancia ni el tiempo. Hay sueños que esperan pacientes, 
-              y hay personas que valen la espera. Cuando lleguemos, lo sabremos.
-            </p>
-          </div>
         </div>
       </div>
     </section>

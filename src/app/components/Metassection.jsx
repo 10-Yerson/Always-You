@@ -117,25 +117,26 @@ export default function MetasSection() {
                   <div
                     className="relative w-full overflow-hidden bg-gray-100 cursor-pointer"
                     style={{ height: '160px' }}
-                    onClick={() => meta.mediaType === 'video' && setSelectedMeta(meta)}
+                    onClick={() => setSelectedMeta(meta)}
                   >
                     <img
                       src={meta.mediaType === 'video' ? meta.mediaThumbnail : meta.media}
                       alt={meta.title}
-                      className={
-                        "w-full h-full object-cover transition-transform duration-500 " +
-                        (meta.mediaType === 'video' ? "group-hover:scale-105" : "group-hover:scale-105")
-                      }
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
 
-                    {/* Overlay oscuro en hover para video */}
-                    {meta.mediaType === 'video' && (
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center">
+                    {/* Overlay en hover — siempre visible para imagen y video */}
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center">
+                        {meta.mediaType === 'video' ? (
                           <Play className="w-5 h-5 text-white fill-white ml-0.5" />
-                        </div>
+                        ) : (
+                          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                          </svg>
+                        )}
                       </div>
-                    )}
+                    </div>
 
                     {/* Badge tipo media */}
                     <div className="absolute top-2.5 left-2.5 bg-white/90 border border-gray-200 rounded-full px-2.5 py-1 flex items-center gap-1">
@@ -144,7 +145,7 @@ export default function MetasSection() {
                       </span>
                     </div>
 
-                    {/* Barra de progreso sobre la imagen — solo si tiene media */}
+                    {/* Barra de progreso sobre la imagen */}
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-100">
                       <div
                         className={"h-full transition-all duration-700 " + (isCompleted ? "bg-blue-400" : "bg-blue-500")}
@@ -153,7 +154,6 @@ export default function MetasSection() {
                     </div>
                   </div>
                 ) : !meta.media && !isLocked ? (
-                  /* Sin media: barra de acento superior */
                   <div
                     className="h-1 w-full"
                     style={{
@@ -161,7 +161,6 @@ export default function MetasSection() {
                     }}
                   />
                 ) : (
-                  /* Bloqueada: barra gris */
                   <div className="h-1 w-full bg-gray-200" />
                 )}
 
@@ -216,7 +215,6 @@ export default function MetasSection() {
                           {meta.progress}%
                         </span>
                       </div>
-                      {/* Solo mostrar barra si no hay media (ya se muestra arriba) */}
                       {!meta.media && (
                         <div className="w-full bg-gray-100 rounded-full h-1 overflow-hidden">
                           <div
@@ -236,7 +234,7 @@ export default function MetasSection() {
         </div>
       </div>
 
-      {/* ── MODAL VIDEO ── */}
+      {/* ── MODAL ── */}
       {selectedMeta && (
         <div
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
@@ -253,16 +251,26 @@ export default function MetasSection() {
               <X className="w-4 h-4 text-gray-600" />
             </button>
 
-            <div className="aspect-video bg-black overflow-hidden rounded-t-2xl">
-              <iframe
-                width="100%" height="100%"
-                src={selectedMeta.media}
-                title={selectedMeta.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
+            <div className="overflow-hidden rounded-t-2xl bg-black">
+              {selectedMeta.mediaType === 'video' ? (
+                <div className="aspect-video">
+                  <iframe
+                    width="100%" height="100%"
+                    src={selectedMeta.media}
+                    title={selectedMeta.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+              ) : (
+                <img
+                  src={selectedMeta.media}
+                  alt={selectedMeta.title}
+                  className="w-full max-h-[60vh] object-contain"
+                />
+              )}
             </div>
 
             <div className="p-6">

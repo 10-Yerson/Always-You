@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import axios from '../utils/axios';
 import { Heart } from 'lucide-react';
 
-const ProtectedRoute = ({ children, allowedRoles }) => {
+const ProtectedRoute = ({ children, allowedRoles, loadingComponent }) => {
     const router = useRouter();
 
     const [authorized, setAuthorized] = useState(false);
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         const checkAuth = async () => {
 
@@ -35,6 +35,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
         checkAuth();
     }, [router, allowedRoles]);
+
+    // Si está cargando y hay un loadingComponent personalizado
+    if (loading && loadingComponent) {
+        return loadingComponent;
+    }
 
     if (loading) {
 

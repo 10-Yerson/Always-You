@@ -1,6 +1,6 @@
 // app/admin/layout.js
 'use client'
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import Sidebar from "../components/Sidebar";
 import { Heart } from 'lucide-react';
 

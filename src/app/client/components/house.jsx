@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import axios from 'axios' // o desde '@/utils/axios' si tienes configurado
+import axios from '@/utils/axios' // o desde '@/utils/axios' si tienes configurado
 import {
   Heart,
   Sparkles,
@@ -42,7 +42,7 @@ export default function HomePage() {
     const fetchTimeLeft = async () => {
       try {
         // Usar la ruta pública (no requiere autenticación)
-        const { data } = await axios.get('http://localhost:5000/api/letter/public-status')
+        const { data } = await axios.get('/api/letter/public-status')
 
         setTimeLeft(data.timeLeft)
         setMessage(data.message)

@@ -1,12 +1,5 @@
-import GoalsPage from '../components/goals'
-import Layout from '../layouts/Layout'
+import GoalsPage from '../../components/goals';
 
-export default function page() {
-
-  return (
-      <Layout>
-          <GoalsPage />
-      </Layout>
-  )
-}  
-
+export default function Page() {
+    return <GoalsPage />;
+}

@@ -1,12 +1,5 @@
-import LettersPage from '../components/letter'
-import Layout from '../layouts/Layout'
+import LettersPage from '../../components/letter';
 
-export default function page() {
-
-  return (
-      <Layout>
-          <LettersPage />
-      </Layout>
-  )
-}  
-
+export default function Page() {
+    return <LettersPage />;
+}

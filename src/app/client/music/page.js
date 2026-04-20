@@ -1,12 +1,5 @@
-import MusicPage from '../components/music'
-import Layout from '../layouts/Layout'
+import MusicPage from '../../components/music';
 
-export default function page() {
-
-  return (
-      <Layout>
-          <MusicPage />
-      </Layout>
-  )
-}  
-
+export default function Page() {
+    return <MusicPage />;
+}

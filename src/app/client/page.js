@@ -1,12 +1,5 @@
-'use client';
-
-import Welcome from './components/house';
-import Layout from './layouts/Layout';
+import Welcome from '../components/HomePage';
 
 export default function UserPage() {
-    return (
-        <Layout>
-            <Welcome />
-        </Layout>
-    );
+    return <Welcome />;
 }

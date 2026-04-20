@@ -1,12 +1,5 @@
-import MemoriesPage from '../components/memories'
-import Layout from '../layouts/Layout'
+import MemoriesPage from '../../components/memories';
 
-export default function page() {
-
-  return (
-      <Layout>
-          <MemoriesPage />
-      </Layout>
-  )
-}  
-
+export default function Page() {
+    return <MemoriesPage />;
+}

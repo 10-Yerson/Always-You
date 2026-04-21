@@ -228,13 +228,13 @@ export default function HomePage() {
 
           <Link
             href="/auth/login"
-            className="flex sm:hidden items-center justify-center gap-2 w-full px-4 py-2 bg-blue-500 text-white rounded-xl transition-all shadow-md shadow-blue-200 text-sm font-medium hover:bg-blue-600"
+            className="flex lg:hidden items-center justify-center gap-2 px-4 py-2.5 bg-blue-500 text-white rounded-xl transition-all shadow-md shadow-blue-200 hover:shadow-lg hover:shadow-blue-300 text-sm font-medium hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto sm:min-w-[140px]"
           >
-            <LogIn className="w-4 h-4" />
-            Iniciar Sesión
+            <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            <span>Iniciar Sesión</span>
+            <Sparkles className="w-3 h-3 opacity-70" />
           </Link>
         </div>
-
         {/* ── COUNTDOWN ── */}
         <div className="grid grid-cols-4 gap-3 mb-8">
           {isFinished ? (

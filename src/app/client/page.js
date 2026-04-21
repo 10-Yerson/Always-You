@@ -1,4 +1,4 @@
-import Welcome from '../components/HomePage';
+import Welcome from '../components/house';
 
 export default function UserPage() {
     return <Welcome />;

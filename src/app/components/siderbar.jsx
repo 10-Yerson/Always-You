@@ -52,6 +52,15 @@ export default function UserPanel() {
     }
   };
 
+  // Items del menú móvil
+  const mobileMenuItems = [
+    { href: '/client', Icon: Home, label: 'Inicio' },
+    { href: '/client/letter', Icon: Mail, label: 'Cartas' },
+    { href: '/client/memories', Icon: Image, label: 'Recuerdos' },
+    { href: '/client/goals', Icon: Target, label: 'Metas' },
+    { href: '/client/music', Icon: Music, label: 'Música' },
+  ];
+
   return (
     <>
       <div className="bg-gray-100 dark:bg-gray-900 flex-1">
@@ -110,16 +119,10 @@ export default function UserPanel() {
           </div>
         </nav>
 
-        {/* Menu Mobile */}
+        {/* Menu Mobile - CORREGIDO */}
         <nav className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t border-gray-100 shadow-2xl">
           <ul className="flex items-center justify-around px-2 py-2">
-            {[
-              { href: '/client', Icon: Home, label: 'Inicio' },
-              { href: '/client/letter', Icon: Mail, label: 'Cartas' },
-              { href: '/client/memories', Icon: Image, label: 'Recuerdos' },
-              { href: '/client/goals', Icon: Target, label: 'Metas' },
-              { href: '/client/music', Icon: Music, label: 'Música' },
-            ].map(({ href, Icon, label }) => {
+            {mobileMenuItems.map(({ href, Icon, label }) => {
               const isActive = pathname === href;
               return (
                 <li key={href}>
@@ -134,13 +137,19 @@ export default function UserPanel() {
                 </li>
               );
             })}
-
+            
+            {/* Botón de Salir - AHORA DENTRO DEL MISMO UL */}
             <li>
-              <button onClick={handleLogout} className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all">
+              <button 
+                onClick={handleLogout} 
+                className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all group"
+              >
                 <div className="w-10 h-10 flex items-center justify-center rounded-xl text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
                   <LogOut size={20} strokeWidth={1.5} />
                 </div>
-                <span className="text-[10px] font-semibold text-red-400">Salir</span>
+                <span className="text-[10px] font-semibold text-red-400 group-hover:text-red-600 transition-colors">
+                  Salir
+                </span>
               </button>
             </li>
           </ul>

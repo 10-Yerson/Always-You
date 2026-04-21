@@ -28,7 +28,7 @@ export default function NavbarPublic() {
           : 'bg-white border-b border-gray-100'
       }`}
     >
-      <nav className="mx-auto flex items-center justify-between px-6 lg:px-8 py-6 max-w-7xl">
+      <nav className="mx-auto flex items-center justify-between px-5 lg:px-8 py-6 max-w-7xl">
 
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-md shadow-blue-200 group-hover:shadow-lg group-hover:shadow-blue-200 transition-all duration-300 group-hover:scale-105">

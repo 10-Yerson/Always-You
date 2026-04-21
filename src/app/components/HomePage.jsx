@@ -200,8 +200,9 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 pb-3 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div>
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-3 flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-1 h-6 bg-blue-500 rounded-full"></div>
               <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                 {isFinished ? (
                   <span className="flex items-center gap-1">
@@ -215,13 +216,14 @@ export default function HomePage() {
                   </>
                 )}
               </h2>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1 flex items-center gap-1">
-                <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
-                {isFinished
-                  ? "Siempre, siempre tú 💙"
-                  : `${timeLeft.days} días, ${timeLeft.hours} horas y ${timeLeft.minutes} minutos`}
-              </p>
             </div>
+            <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-2 ml-3">
+              <Sparkles className="w-3 h-3 text-blue-400" />
+              {isFinished
+                ? "Siempre, siempre tú 💙"
+                : `${timeLeft.days} días, ${timeLeft.hours} horas y ${timeLeft.minutes} minutos`}
+              <Sparkles className="w-3 h-3 text-blue-400" />
+            </p>
           </div>
 
           <Link

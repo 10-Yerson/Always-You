@@ -6,19 +6,33 @@ import { Heart } from 'lucide-react';
 
 const ProtectedRoute = ({ children, allowedRoles, loadingComponent }) => {
     const router = useRouter();
-
     const [authorized, setAuthorized] = useState(false);
     const [loading, setLoading] = useState(true);
-    
-    useEffect(() => {
-        const checkAuth = async () => {
+    const [authChecked, setAuthChecked] = useState(false);
 
-            // Añadir delay artificial de 2 segundos
-            // await new Promise(resolve => setTimeout(resolve, 4000));
+    useEffect(() => {
+        // Si ya verificó, no hacer nada
+        if (authChecked) return;
+
+        const checkAuth = async () => {
+            // Verificar caché primero
+            const cachedAuth = sessionStorage.getItem('auth_checked');
+            const cachedRole = sessionStorage.getItem('user_role');
+            
+            if (cachedAuth === 'true' && cachedRole && allowedRoles.includes(cachedRole)) {
+                setAuthorized(true);
+                setLoading(false);
+                setAuthChecked(true);
+                return;
+            }
 
             try {
                 const response = await axios.get('/api/auth/check-auth', { withCredentials: true });
                 const { role } = response.data;
+                
+                // Guardar en caché
+                sessionStorage.setItem('auth_checked', 'true');
+                sessionStorage.setItem('user_role', role);
 
                 if (allowedRoles && !allowedRoles.includes(role)) {
                     router.push('/auth/login');
@@ -26,15 +40,15 @@ const ProtectedRoute = ({ children, allowedRoles, loadingComponent }) => {
                     setAuthorized(true);
                 }
             } catch (error) {
-
                 router.push('/auth/login');
             } finally {
                 setLoading(false);
+                setAuthChecked(true);
             }
         };
 
         checkAuth();
-    }, [router, allowedRoles]);
+    }, [router, allowedRoles, authChecked]);
 
     // Si está cargando y hay un loadingComponent personalizado
     if (loading && loadingComponent) {
@@ -42,7 +56,6 @@ const ProtectedRoute = ({ children, allowedRoles, loadingComponent }) => {
     }
 
     if (loading) {
-
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
                 <div className="text-center max-w-sm mx-4">

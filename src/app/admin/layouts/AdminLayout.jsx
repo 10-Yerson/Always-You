@@ -1,3 +1,5 @@
+'use client'
+
 import ProtectedRoute from "@/protected/ProtectedRoute";
 import Sidebar from "../components/Sidebar";
 import { Heart } from 'lucide-react';

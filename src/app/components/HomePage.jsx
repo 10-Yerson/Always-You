@@ -1,14 +1,15 @@
 'use client';
 import { useEffect, useState } from "react";
 import axios from "@/utils/axios";
-import { Heart, Sparkles, Clock, Calendar, CheckCircle2, MessageCircle } from 'lucide-react';
+import Link from "next/link";
+import { Heart, Sparkles, Clock, Calendar, CheckCircle2, MessageCircle, LogIn } from 'lucide-react';
 
 const FRASES = [
-  { text: "Cada mes es una parte de mí llegando a ti",         sub: "Historia en curso"        },
-  { text: "Cuando te encuentre, sabrás que siempre fuiste tú", sub: "Capítulo en progreso"     },
-  { text: "Este viaje lo haremos juntos",                      sub: "Nuestra historia"         },
-  { text: "Aún no nos conocemos, pero ya te pienso",           sub: "Preparando algo especial" },
-  { text: "Hay promesas que hice sin conocerte",               sub: "Solo para ti"             },
+  { text: "Cada mes es una parte de mí llegando a ti", sub: "Historia en curso" },
+  { text: "Cuando te encuentre, sabrás que siempre fuiste tú", sub: "Capítulo en progreso" },
+  { text: "Este viaje lo haremos juntos", sub: "Nuestra historia" },
+  { text: "Aún no nos conocemos, pero ya te pienso", sub: "Preparando algo especial" },
+  { text: "Hay promesas que hice sin conocerte", sub: "Solo para ti" },
 ];
 
 const PHOTO_URL =
@@ -33,8 +34,8 @@ function CountdownCard({ value, label, loading }) {
         {loading
           ? <Spinner />
           : <span className="text-3xl font-serif font-bold text-gray-900 leading-none">
-              {String(value).padStart(2, '0')}
-            </span>
+            {String(value).padStart(2, '0')}
+          </span>
         }
       </div>
       <span className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
@@ -67,10 +68,10 @@ function PhoneFrame({ imageUrl }) {
 }
 
 export default function HomePage() {
-  const [data, setData]             = useState(null);
+  const [data, setData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
-  const [fraseIdx, setFraseIdx]     = useState(0);
-  const [visible, setVisible]       = useState(true);
+  const [fraseIdx, setFraseIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     axios.get("/api/letter/public-status")
@@ -94,17 +95,17 @@ export default function HomePage() {
     return () => clearInterval(id);
   }, []);
 
-  const status         = data?.status       || "in_progress";
-  const progress       = data?.progress     || 0;
-  const currentMonth   = data?.currentMonth || 1;
-  const timeLeft       = data?.timeLeft     || { months: 0, days: 0, hours: 0, minutes: 0 };
-  const message        = data?.message      || "";
+  const status = data?.status || "in_progress";
+  const progress = data?.progress || 0;
+  const currentMonth = data?.currentMonth || 1;
+  const timeLeft = data?.timeLeft || { months: 0, days: 0, hours: 0, minutes: 0 };
+  const message = data?.message || "";
   const nextUnlockDate = data?.nextUnlockDate || null;
-  const viewedCount    = data?.viewedCount  || 0;
+  const viewedCount = data?.viewedCount || 0;
 
   const isNotStarted = status === "not_started";
-  const isFinished   = status === "finished";
-  const frase        = FRASES[fraseIdx];
+  const isFinished = status === "finished";
+  const frase = FRASES[fraseIdx];
 
   const nextUnlockStr = nextUnlockDate
     ? new Date(nextUnlockDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -117,14 +118,14 @@ export default function HomePage() {
   const eyebrowText = isNotStarted
     ? "Esperando el inicio"
     : isFinished
-    ? "Historia completa · 12 meses"
-    : "Historia en curso · Mes " + currentMonth;
+      ? "Historia completa · 12 meses"
+      : "Historia en curso · Mes " + currentMonth;
 
   const heroTitle = isNotStarted
     ? <><span className="text-gray-900">Algo</span><br /><em className="text-blue-600 not-italic font-serif">especial</em></>
     : isFinished
-    ? <><span className="text-gray-900">Siempre</span><br /><em className="text-blue-600 not-italic font-serif">tú</em></>
-    : <><span className="text-gray-900">Always</span><br /><em className="text-blue-600 not-italic font-serif">You</em></>;
+      ? <><span className="text-gray-900">Siempre</span><br /><em className="text-blue-600 not-italic font-serif">tú</em></>
+      : <><span className="text-gray-900">Always</span><br /><em className="text-blue-600 not-italic font-serif">You</em></>;
 
   return (
     <div className="min-h-screen bg-white pt-24 pb-5 px-5">
@@ -154,8 +155,8 @@ export default function HomePage() {
               {isNotStarted
                 ? "Dentro de poco comenzará nuestra historia. Cada momento contigo será un capítulo."
                 : isFinished
-                ? "Viviste todos los 12 capítulos. Pero nunca termina lo que sentimos."
-                : "Nuestros 12 meses de momentos especiales, cartas y recuerdos juntos."
+                  ? "Viviste todos los 12 capítulos. Pero nunca termina lo que sentimos."
+                  : "Nuestros 12 meses de momentos especiales, cartas y recuerdos juntos."
               }
             </p>
 
@@ -167,8 +168,8 @@ export default function HomePage() {
                   {loadingData
                     ? <SkeletonLine className="w-8" />
                     : <span className={"text-xs font-semibold " + (isFinished ? "text-green-600" : "text-blue-600")}>
-                        {progress}%
-                      </span>
+                      {progress}%
+                    </span>
                   }
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-1 overflow-hidden">
@@ -181,8 +182,8 @@ export default function HomePage() {
                   {loadingData
                     ? <SkeletonLine className="w-32" />
                     : <span className="text-[11px] text-gray-400">
-                        {isFinished ? "12 de 12 desbloqueadas" : currentMonth + " de 12 desbloqueadas"}
-                      </span>
+                      {isFinished ? "12 de 12 desbloqueadas" : currentMonth + " de 12 desbloqueadas"}
+                    </span>
                   }
                   {!isFinished && (
                     loadingData
@@ -198,21 +199,87 @@ export default function HomePage() {
           <PhoneFrame imageUrl={PHOTO_URL} />
         </div>
 
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 pb-3 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+                {isFinished ? (
+                  <span className="flex items-center gap-1">
+                    <span className="text-xl">🎉</span>
+                    <span>Historia completada</span>
+                  </span>
+                ) : (
+                  <>
+                    <span className="text-blue-500 font-bold text-xl sm:text-2xl">{timeLeft.months} meses</span>
+                    <span className="text-gray-600"> para estar juntos</span>
+                  </>
+                )}
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-400 mt-1 flex items-center gap-1">
+                <span className="inline-block w-1 h-1 bg-blue-500 rounded-full"></span>
+                {isFinished
+                  ? "Siempre, siempre tú 💙"
+                  : `${timeLeft.days} días, ${timeLeft.hours} horas y ${timeLeft.minutes} minutos`}
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href="/auth/login"
+            className="flex sm:hidden items-center justify-center gap-2 w-full px-4 py-2 bg-blue-500 text-white rounded-xl transition-all shadow-md shadow-blue-200 text-sm font-medium hover:bg-blue-600"
+          >
+            <LogIn className="w-4 h-4" />
+            Iniciar Sesión
+          </Link>
+        </div>
+
         {/* ── COUNTDOWN ── */}
         <div className="grid grid-cols-4 gap-3 mb-8">
           {isFinished ? (
             <>
-              <CountdownCard value={12}  label="Cartas"     loading={false} />
-              <CountdownCard value={365} label="Días"       loading={false} />
-              <CountdownCard value={12}  label="Meses"      loading={false} />
-              <CountdownCard value={100} label="% historia" loading={false} />
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl py-4 px-2 text-center shadow-md border border-blue-100">
+                <p className="text-2xl font-bold text-blue-600">12</p>
+                <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">Cartas</p>
+              </div>
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl py-4 px-2 text-center shadow-md border border-emerald-100">
+                <p className="text-2xl font-bold text-emerald-600">365</p>
+                <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">Días</p>
+              </div>
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl py-4 px-2 text-center shadow-md border border-amber-100">
+                <p className="text-2xl font-bold text-amber-600">12</p>
+                <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">Meses</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl py-4 px-2 text-center shadow-md border border-purple-100">
+                <p className="text-2xl font-bold text-purple-600">100%</p>
+                <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">Historia</p>
+              </div>
             </>
           ) : (
             <>
-              <CountdownCard value={timeLeft.months}  label="Meses"   loading={loadingData} />
-              <CountdownCard value={timeLeft.days}    label="Días"    loading={loadingData} />
-              <CountdownCard value={timeLeft.hours}   label="Horas"   loading={loadingData} />
-              <CountdownCard value={timeLeft.minutes} label="Minutos" loading={loadingData} />
+              <div className="bg-white rounded-2xl py-4 px-2 text-center shadow-md border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  {loadingData ? <Spinner /> : String(timeLeft.months).padStart(2, '0')}
+                </p>
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mt-1">Meses</p>
+              </div>
+              <div className="bg-white rounded-2xl py-4 px-2 text-center shadow-md border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  {loadingData ? <Spinner /> : String(timeLeft.days).padStart(2, '0')}
+                </p>
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mt-1">Días</p>
+              </div>
+              <div className="bg-white rounded-2xl py-4 px-2 text-center shadow-md border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  {loadingData ? <Spinner /> : String(timeLeft.hours).padStart(2, '0')}
+                </p>
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mt-1">Horas</p>
+              </div>
+              <div className="bg-white rounded-2xl py-4 px-2 text-center shadow-md border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  {loadingData ? <Spinner /> : String(timeLeft.minutes).padStart(2, '0')}
+                </p>
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mt-1">Minutos</p>
+              </div>
             </>
           )}
         </div>

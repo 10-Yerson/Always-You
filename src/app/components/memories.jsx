@@ -16,7 +16,8 @@ import {
   Headphones,
   ChevronRight,
   Star,
-  BookOpen
+  BookOpen,
+  Loader2
 } from "lucide-react";
 
 export default function MemoriesPage() {
@@ -62,18 +63,6 @@ export default function MemoriesPage() {
     videos: memories.filter(m => getMemoryType(m) === "video").length,
     audios: memories.filter(m => getMemoryType(m) === "audio").length,
   };
-
-  if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-[60vh]">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
-          <Heart className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
-        </div>
-        <p className="mt-4 text-gray-500 animate-pulse">Cargando nuestros recuerdos 💙...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
@@ -125,6 +114,7 @@ export default function MemoriesPage() {
       </div>
 
       <div className="pt-3 sm:pt-4 md:pt-5"></div>
+
       {/* Stats Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
@@ -242,9 +232,17 @@ export default function MemoriesPage() {
         </div>
       </div>
 
-      {/* Memories Grid */}
+      {/* Memories Grid con LOADER */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {filteredMemories.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col justify-center items-center py-20">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
+              <Heart className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
+            </div>
+            <p className="mt-4 text-gray-500 animate-pulse">Cargando nuestros recuerdos 💙...</p>
+          </div>
+        ) : filteredMemories.length === 0 ? (
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-4">
               <Heart className="w-12 h-12 text-gray-400" />

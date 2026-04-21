@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import axios from '@/utils/axios' // o desde '@/utils/axios' si tienes configurado
+import axios from '@/utils/axios'
 import {
   Heart,
   Sparkles,
@@ -13,7 +13,8 @@ import {
   Star,
   Camera,
   Headphones,
-  Clock
+  Clock,
+  Loader2
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -41,9 +42,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchTimeLeft = async () => {
       try {
-        // Usar la ruta pública (no requiere autenticación)
         const { data } = await axios.get('/api/letter/public-status')
-
         setTimeLeft(data.timeLeft)
         setMessage(data.message)
       } catch (error) {
@@ -139,15 +138,13 @@ export default function HomePage() {
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
 
-          {/* Foto con frase superpuesta - Hover mejorado */}
+          {/* Foto con frase superpuesta */}
           <div className="relative group rounded-2xl overflow-hidden shadow-lg bg-white/50 backdrop-blur-sm border border-gray-100">
 
-            {/* Etiqueta flotante */}
             <div className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
               <span className="text-xs text-white font-medium">💖 Momento especial</span>
             </div>
 
-            {/* Imagen */}
             <img
               src="https://res.cloudinary.com/dbgj8dqup/image/upload/v1776465505/Picsart_26-04-17_17-30-35-869_qgmlhu.jpg"
               alt="Recuerdo especial"
@@ -155,27 +152,19 @@ export default function HomePage() {
               style={{ maxHeight: '480px' }}
             />
 
-            {/* Frase "Volveré" superpuesta - Mejorada */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
               <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                {/* Líneas decorativas */}
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <div className="w-10 h-px bg-gradient-to-r from-transparent to-pink-400"></div>
                   <Heart className="w-5 h-5 text-pink-400 fill-pink-400 animate-pulse" />
                   <div className="w-10 h-px bg-gradient-to-l from-transparent to-pink-400"></div>
                 </div>
-
-                {/* Texto principal */}
                 <p className="text-white text-2xl md:text-3xl font-bold tracking-wider drop-shadow-lg">
                   Volveré
                 </p>
-
-                {/* Texto secundario */}
                 <p className="text-white/90 text-sm mt-2 tracking-wide">
                   💙 Siempre, siempre tú 💙
                 </p>
-
-                {/* Línea inferior */}
                 <div className="flex justify-center mt-3">
                   <div className="w-12 h-px bg-white/50"></div>
                 </div>
@@ -183,72 +172,94 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Contador de tiempo - Mejorado */}
+          {/* Contador de tiempo con LOADER */}
           <div className="bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="text-center">
-              {/* Badge decorativo */}
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-1.5 rounded-full mb-5 shadow-md">
                 <Clock className="w-3.5 h-3.5 text-white" />
                 <span className="text-xs text-white font-medium tracking-wide">TIEMPO PARA VOLVER</span>
               </div>
 
-              {/* Mensaje emotivo */}
+              {/* Mensaje emotivo con loader */}
               <div className="mb-5">
-                <p className="text-base sm:text-lg font-medium text-gray-700 italic">
-                  {loading ? 'Cargando...' : message}
-                </p>
-                <div className="flex justify-center gap-1 mt-2">
-                  <div className="w-6 h-px bg-blue-300"></div>
-                  <Heart className="w-3 h-3 text-pink-400 fill-pink-400" />
-                  <div className="w-6 h-px bg-blue-300"></div>
-                </div>
+                {loading ? (
+                  <div className="flex flex-col items-center justify-center gap-2 py-2">
+                    <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
+                    <p className="text-sm text-gray-500">Cargando tiempo...</p>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-base sm:text-lg font-medium text-gray-700 italic">
+                      {message}
+                    </p>
+                    <div className="flex justify-center gap-1 mt-2">
+                      <div className="w-6 h-px bg-blue-300"></div>
+                      <Heart className="w-3 h-3 text-pink-400 fill-pink-400" />
+                      <div className="w-6 h-px bg-blue-300"></div>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {/* Contador */}
-              <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-5">
-                <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
-                  <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    {timeLeft.months}
-                  </p>
-                  <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Meses</p>
+              {/* Contador con loader */}
+              {loading ? (
+                <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-5">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
+                      <div className="h-8 sm:h-10 bg-gray-200 rounded-lg animate-pulse mb-1"></div>
+                      <div className="h-3 bg-gray-100 rounded animate-pulse"></div>
+                    </div>
+                  ))}
                 </div>
-                <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
-                  <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    {timeLeft.days}
-                  </p>
-                  <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Días</p>
+              ) : (
+                <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-5">
+                  <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
+                    <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                      {timeLeft.months}
+                    </p>
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Meses</p>
+                  </div>
+                  <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
+                    <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                      {timeLeft.days}
+                    </p>
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Días</p>
+                  </div>
+                  <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
+                    <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                      {timeLeft.hours}
+                    </p>
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Horas</p>
+                  </div>
+                  <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
+                    <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                      {timeLeft.minutes}
+                    </p>
+                    <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Min</p>
+                  </div>
                 </div>
-                <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
-                  <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    {timeLeft.hours}
-                  </p>
-                  <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Horas</p>
-                </div>
-                <div className="bg-white rounded-xl p-2 sm:p-3 shadow-md border border-gray-100">
-                  <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    {timeLeft.minutes}
-                  </p>
-                  <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wide">Min</p>
-                </div>
-              </div>
+              )}
 
-              {/* Animación de latido */}
-              <div className="flex justify-center items-center gap-2 mb-4">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse delay-150"></div>
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse delay-300"></div>
-                <span className="text-xs text-gray-400 mx-1">—</span>
-                <div className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse delay-500"></div>
-                <div className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse delay-700"></div>
-                <div className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse delay-900"></div>
-              </div>
+              {/* Animación de latido - solo mostrar cuando no está cargando */}
+              {!loading && (
+                <>
+                  <div className="flex justify-center items-center gap-2 mb-4">
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse delay-150"></div>
+                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse delay-300"></div>
+                    <span className="text-xs text-gray-400 mx-1">—</span>
+                    <div className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse delay-500"></div>
+                    <div className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse delay-700"></div>
+                    <div className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse delay-900"></div>
+                  </div>
 
-              {/* Frase final */}
-              <p className="text-[11px] text-gray-400 mt-2 flex items-center justify-center gap-1">
-                <span>💙</span>
-                <span>Cada día que pasa me acerca más a ti</span>
-                <span>💙</span>
-              </p>
+                  <p className="text-[11px] text-gray-400 mt-2 flex items-center justify-center gap-1">
+                    <span>💙</span>
+                    <span>Cada día que pasa me acerca más a ti</span>
+                    <span>💙</span>
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
@@ -257,7 +268,6 @@ export default function HomePage() {
 
       {/* Sección: Características principales */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Título de sección */}
         <div className="mb-10">
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm border border-gray-100">
             <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />

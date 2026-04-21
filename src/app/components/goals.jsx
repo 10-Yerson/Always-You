@@ -14,7 +14,8 @@ import {
   Star,
   TrendingUp,
   Flag,
-  Compass
+  Compass,
+  Loader2
 } from "lucide-react";
 
 export default function GoalsPage() {
@@ -55,25 +56,12 @@ export default function GoalsPage() {
       : 0
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-[60vh]">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
-          <Target className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
-        </div>
-        <p className="mt-4 text-gray-500 animate-pulse">Cargando nuestras metas 🎯...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
 
       {/* Hero Section */}
       <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
 
-        {/* Elementos decorativos sutiles */}
         <div className="absolute top-10 left-5 opacity-20">
           <Heart className="w-6 h-6 text-blue-400" />
         </div>
@@ -88,7 +76,6 @@ export default function GoalsPage() {
         </div>
 
         <div className="max-w-4xl mx-auto text-center">
-          {/* Icono decorativo */}
           <div className="flex justify-center mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-blue-400 rounded-2xl blur-md opacity-30"></div>
@@ -98,7 +85,6 @@ export default function GoalsPage() {
             </div>
           </div>
 
-          {/* Título */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
             Metas y{" "}
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -106,12 +92,10 @@ export default function GoalsPage() {
             </span>
           </h1>
 
-          {/* Línea decorativa */}
           <div className="flex justify-center mb-6">
             <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
           </div>
 
-          {/* Descripción */}
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed relative before:content-[''] before:absolute before:-left-4 before:top-1/2 before:w-3 before:h-px before:bg-blue-300 after:content-[''] after:absolute after:-right-4 after:top-1/2 after:w-3 after:h-px after:bg-blue-300">
             Cada meta es un paso más hacia nuestro futuro juntos,
             porque juntos podemos alcanzar cualquier sueño.
@@ -193,29 +177,6 @@ export default function GoalsPage() {
         </div>
       </div>
 
-      {/* Progress Bar */}
-      {/* <div className="max-w-3xl mx-auto px-6 mt-8">
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-medium text-gray-700">Progreso de metas cumplidas</span>
-            <span className="text-sm font-bold text-blue-500">{stats.percentage}%</span>
-          </div>
-          <div className="relative">
-            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
-              <div
-                className="h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-1000 relative"
-                style={{ width: `${stats.percentage}%` }}
-              >
-                <div className="absolute inset-0 bg-white opacity-30 animate-shimmer" />
-              </div>
-            </div>
-          </div>
-          <p className="text-xs text-gray-400 mt-3 text-center">
-            {stats.completed} de {stats.total} metas cumplidas
-          </p>
-        </div>
-      </div> */}
-
       {/* Filter Tabs */}
       <div className="max-w-7xl mx-auto px-6 mt-8">
         <div className="flex justify-center gap-3">
@@ -255,9 +216,17 @@ export default function GoalsPage() {
         </div>
       </div>
 
-      {/* Goals Grid */}
+      {/* Goals Grid con LOADER */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {filteredGoals.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col justify-center items-center py-20">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
+              <Target className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
+            </div>
+            <p className="mt-4 text-gray-500 animate-pulse">Cargando nuestras metas 🎯...</p>
+          </div>
+        ) : filteredGoals.length === 0 ? (
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-4">
               <Target className="w-12 h-12 text-gray-400" />
@@ -293,23 +262,6 @@ export default function GoalsPage() {
   );
 }
 
-// Stat Card Component
-function StatCard({ icon, label, value, color }) {
-  return (
-    <div className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-      <div className="flex items-center gap-3">
-        <div className={`bg-gradient-to-br ${color} p-2 rounded-xl text-white`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-2xl font-bold text-gray-800">{value}</p>
-          <p className="text-xs text-gray-500">{label}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Goal Card Component
 function GoalCard({ goal, isCompleted, delay, onClick }) {
   const image = goal.media?.image;
@@ -327,8 +279,7 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
       }}
     >
       {/* Top border line según estado */}
-      <div className={`absolute top-0 left-0 right-0 h-1 ${isCompleted ? 'bg-emerald-500' : 'bg-blue-500'
-        }`} />
+      <div className={`absolute top-0 left-0 right-0 h-1 ${isCompleted ? 'bg-emerald-500' : 'bg-blue-500'}`} />
 
       {/* Content */}
       <div className="relative p-6 min-h-[300px] flex flex-col justify-between">

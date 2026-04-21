@@ -15,7 +15,8 @@ import {
   ChevronRight,
   Sparkles,
   BookOpen,
-  MessageCircle
+  MessageCircle,
+  Loader2
 } from "lucide-react";
 
 export default function LettersPage() {
@@ -41,18 +42,6 @@ export default function LettersPage() {
     getLetters();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-[60vh]">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
-          <Heart className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
-        </div>
-        <p className="mt-4 text-gray-500 animate-pulse">Cargando tus cartas 📖...</p>
-      </div>
-    );
-  }
-
   const stats = {
     total: letters.length,
     unlocked: letters.filter(l => l.status !== "bloqueada").length,
@@ -63,6 +52,7 @@ export default function LettersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
 
+      {/* Hero Section */}
       <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
 
         <div className="absolute top-10 left-5 opacity-20">
@@ -106,8 +96,9 @@ export default function LettersPage() {
       </div>
 
       {/* Espacio reducido */}
-     <div className="pt-3 sm:pt-4 md:pt-5"></div>
+      <div className="pt-3 sm:pt-4 md:pt-5"></div>
 
+      {/* Stats Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-row flex-wrap justify-center gap-2 sm:gap-3">
 
@@ -168,9 +159,17 @@ export default function LettersPage() {
         </div>
       </div>
 
-      {/* Letters Grid */}
+      {/* Letters Grid con LOADER */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {letters.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col justify-center items-center py-20">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-r-4 border-r-transparent"></div>
+              <Heart className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-blue-500 animate-pulse" />
+            </div>
+            <p className="mt-4 text-gray-500 animate-pulse">Cargando tus cartas 📖...</p>
+          </div>
+        ) : letters.length === 0 ? (
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-4">
               <MessageCircle className="w-12 h-12 text-gray-400" />
@@ -209,23 +208,6 @@ export default function LettersPage() {
       {selectedLetter && (
         <LetterModal letter={selectedLetter} onClose={() => setSelectedLetter(null)} />
       )}
-    </div>
-  );
-}
-
-// Stat Card Component
-function StatCard({ icon, label, value, color }) {
-  return (
-    <div className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-      <div className="flex items-center gap-3">
-        <div className={`bg-gradient-to-br ${color} p-2 rounded-xl text-white`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-2xl font-bold text-gray-800">{value}</p>
-          <p className="text-xs text-gray-500">{label}</p>
-        </div>
-      </div>
     </div>
   );
 }

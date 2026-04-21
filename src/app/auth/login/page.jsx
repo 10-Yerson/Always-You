@@ -24,6 +24,7 @@ export default function Login() {
                 router.push(role === 'admin' ? '/admin' : '/client');
             } catch (error) {
                 // No autenticado, permanece en login
+                console.log('Usuario no autenticado');
             }
         };
 

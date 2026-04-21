@@ -1,5 +1,5 @@
 
-import Dashboard from './components/Dashboard';
+import AdminDashboard from './components/Dashboard';
 import AdminLayout from "./layouts/AdminLayout";
 
 
@@ -7,7 +7,7 @@ export default function AdminPage() {
 
     return (
         <AdminLayout>
-            <Dashboard />
+            <AdminDashboard />
         </AdminLayout>
     );
 }

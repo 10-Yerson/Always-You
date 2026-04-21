@@ -4,10 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  FiUsers, FiFileText, FiHome, FiLogOut, FiClipboard,
-  FiUserPlus, FiUser, FiPlusCircle, FiShield
+  FiHome, FiLogOut, FiUser, FiMail, FiImage, FiTarget, FiMusic
 } from "react-icons/fi";
-import { Home, Users, FileText, Clipboard, UserPlus, PlusCircle, Shield, User, LogOut, UploadCloud } from "lucide-react";
+import { 
+  Home, User, LogOut, Heart, 
+  Mail, Image, Target, Music, Camera
+} from "lucide-react";
 import axios from '@/utils/axios';
 import { toast } from 'react-toastify';
 
@@ -33,19 +35,27 @@ export default function Sidebar() {
       ]
     },
     {
-      title: "Gestión de Usuarios",
+      title: "Cartas",
       items: [
-        { href: "/admin/users", icon: FiUsers, label: "Habitantes" },
-        { href: "/admin/upload", icon: FiUserPlus, label: "Cargar Usuarios" },
-        { href: "/admin/colaborador", icon: FiPlusCircle, label: "Agregar Colaborador" },
+        { href: "/admin/letters", icon: FiMail, label: "Administrar Cartas" },
       ]
     },
     {
-      title: "Administración",
+      title: "Recuerdos",
       items: [
-        { href: "/admin/secret", icon: FiClipboard, label: "Equipo de Gestión" },
-        { href: "/admin/event", icon: FiFileText, label: "Eventos Comunitarios" },
-        { href: "/admin/admins", icon: FiShield, label: "Administradores" },
+        { href: "/admin/memories", icon: FiImage, label: "Administrar Recuerdos" },
+      ]
+    },
+    {
+      title: "Metas",
+      items: [
+        { href: "/admin/goals", icon: FiTarget, label: "Administrar Metas" },
+      ]
+    },
+    {
+      title: "Música",
+      items: [
+        { href: "/admin/music", icon: FiMusic, label: "Administrar Música" },
       ]
     },
     {
@@ -59,9 +69,10 @@ export default function Sidebar() {
   // Items para el nav móvil (los más importantes)
   const mobileItems = [
     { href: "/admin", Icon: Home, label: "Inicio" },
-    { href: "/admin/users", Icon: Users, label: "Habitantes" },
-    { href: "/admin/event", Icon: FileText, label: "Eventos" },
-    { href: "/admin/colaborador", Icon: PlusCircle, label: "Crear" },
+    { href: "/admin/letters", Icon: Mail, label: "Cartas" },
+    { href: "/admin/memories", Icon: Camera, label: "Recuerdos" },
+    { href: "/admin/goals", Icon: Target, label: "Metas" },
+    { href: "/admin/music", Icon: Music, label: "Música" },
     { href: "/admin/profile", Icon: User, label: "Perfil" },
   ];
 
@@ -73,12 +84,12 @@ export default function Sidebar() {
         {/* Logo */}
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-lg">S</span>
+            <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+              <Heart className="w-5 h-5 text-white fill-white" />
             </div>
             <div>
-              <h1 className="text-base font-bold text-gray-900">SIC Admin</h1>
-              <p className="text-xs text-gray-400">Sistema Integral</p>
+              <h1 className="text-base font-bold text-gray-900">Always You</h1>
+              <p className="text-xs text-gray-400">Admin</p>
             </div>
           </div>
         </div>
@@ -99,8 +110,8 @@ export default function Sidebar() {
                         href={item.href}
                         className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                           isActive
-                            ? 'bg-green-600 text-white shadow-sm'
-                            : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
+                            ? 'bg-blue-500 text-white shadow-md'
+                            : 'text-gray-500 hover:bg-blue-50 hover:text-blue-600'
                         }`}
                       >
                         <item.icon size={17} />
@@ -136,13 +147,13 @@ export default function Sidebar() {
                 <Link href={href} className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all">
                   <div className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-green-600 text-white shadow-lg shadow-green-200 scale-110'
+                      ? 'bg-blue-500 text-white shadow-lg shadow-blue-200 scale-110'
                       : 'text-gray-400'
                   }`}>
                     <Icon size={20} strokeWidth={1.5} />
                   </div>
                   <span className={`text-[10px] font-semibold transition-colors ${
-                    isActive ? 'text-green-600' : 'text-gray-400'
+                    isActive ? 'text-blue-500' : 'text-gray-400'
                   }`}>
                     {label}
                   </span>

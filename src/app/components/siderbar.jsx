@@ -121,16 +121,16 @@ export default function UserPanel() {
 
         {/* Menu Mobile - CORREGIDO */}
         <nav className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t border-gray-100 shadow-2xl">
-          <ul className="flex items-center justify-around px-2 py-2">
+          <ul className="flex items-center justify-around px-2 py-2 overflow-x-auto">
             {mobileMenuItems.map(({ href, Icon, label }) => {
               const isActive = pathname === href;
               return (
                 <li key={href}>
-                  <a href={href} className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all">
-                    <div className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200 ${isActive ? 'bg-blue-500 text-white shadow-lg shadow-blue-200 scale-110' : 'text-gray-400'}`}>
-                      <Icon size={20} strokeWidth={1.5} />
+                  <a href={href} className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all">
+                    <div className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-200 ${isActive ? 'bg-blue-500 text-white shadow-lg shadow-blue-200 scale-110' : 'text-gray-400'}`}>
+                      <Icon size={18} strokeWidth={1.5} />
                     </div>
-                    <span className={`text-[10px] font-semibold transition-colors ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
+                    <span className={`text-[9px] font-semibold transition-colors ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
                       {label}
                     </span>
                   </a>
@@ -138,16 +138,16 @@ export default function UserPanel() {
               );
             })}
             
-            {/* Botón de Salir - AHORA DENTRO DEL MISMO UL */}
+            {/* Botón de Salir */}
             <li>
               <button 
                 onClick={handleLogout} 
-                className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all group"
+                className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all group"
               >
-                <div className="w-10 h-10 flex items-center justify-center rounded-xl text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
-                  <LogOut size={20} strokeWidth={1.5} />
+                <div className="w-9 h-9 flex items-center justify-center rounded-xl text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                  <LogOut size={18} strokeWidth={1.5} />
                 </div>
-                <span className="text-[10px] font-semibold text-red-400 group-hover:text-red-600 transition-colors">
+                <span className="text-[9px] font-semibold text-red-400 group-hover:text-red-600 transition-colors">
                   Salir
                 </span>
               </button>

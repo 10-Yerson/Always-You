@@ -16,7 +16,7 @@ import {
   Sparkles,
   BookOpen,
   MessageCircle,
-  Loader2
+  Loader2, ChevronLeft, Maximize2
 } from "lucide-react";
 
 export default function LettersPage() {
@@ -350,101 +350,195 @@ function LetterModal({ letter, onClose }) {
     };
   }, []);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
-      <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+  // Dentro del componente LetterModal
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-        {/* Close Button */}
+  // Recopilar todos los archivos multimedia
+  const mediaItems = [
+    ...(letter.imageUrl ? [{ type: 'image', url: letter.imageUrl, icon: <ImageIcon className="w-5 h-5" /> }] : []),
+    ...(letter.videoUrl ? [{ type: 'video', url: letter.videoUrl, icon: <Video className="w-5 h-5" /> }] : []),
+    ...(letter.audioUrl ? [{ type: 'audio', url: letter.audioUrl, icon: <Music className="w-5 h-5" /> }] : []),
+  ];
+
+  const currentMedia = mediaItems[currentMediaIndex];
+  const hasMultipleMedia = mediaItems.length > 1;
+
+  const nextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev + 1) % mediaItems.length);
+  };
+
+  const prevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
+
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={onClose}>
+      <div className={`relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl animate-scaleIn transition-all duration-300 ${isFullscreen ? 'h-[95vh]' : 'max-h-[90vh]'}`} onClick={(e) => e.stopPropagation()}>
+
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+          className="absolute top-3 right-3 z-20 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-700 to-blue-600 p-6 text-white rounded-t-3xl">
-          <div className="flex justify-between items-center mb-4">
-            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-              📅 {getMonthName(letter.month)} - Mes {letter.month}
+        <div className="bg-gradient-to-r from-blue-700 to-blue-600 p-4 text-white rounded-t-2xl">
+          <div className="flex justify-between items-center mb-2">
+            <span className="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-xs">
+              📅 {getMonthName(letter.month)} · Mes {letter.month}
             </span>
-            <Heart className="w-6 h-6 text-blue-200" />
+            <Heart className="w-5 h-5 text-blue-200" />
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold">{letter.title}</h2>
+          <h2 className="text-lg md:text-xl font-bold pr-6 line-clamp-1">{letter.title}</h2>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-4">
-          {/* Message */}
-          <div>
-            <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <MessageCircle className="w-4 h-4 text-blue-500" />
-              Mensaje
-            </h3>
-            <p className={`text-gray-600 leading-relaxed ${!showFullMessage && 'line-clamp-6'}`}>
-              {letter.message}
-            </p>
-            {letter.message && letter.message.length > 300 && (
-              <button
-                onClick={() => setShowFullMessage(!showFullMessage)}
-                className="text-blue-500 text-sm mt-2 hover:underline"
-              >
-                {showFullMessage ? 'Ver menos' : 'Ver más'}
-              </button>
+        <div className={`flex flex-col ${isFullscreen ? 'h-[calc(95vh-110px)]' : 'max-h-[calc(90vh-110px)]'} overflow-y-auto`}>
+          <div className="p-4 space-y-4 flex-1">
+
+            <div className="bg-gray-50 rounded-xl p-3">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <MessageCircle className="w-3.5 h-3.5 text-blue-500" />
+                <h3 className="font-medium text-gray-700 text-xs uppercase tracking-wide">Mensaje</h3>
+              </div>
+              <p className={`text-gray-600 leading-relaxed text-sm ${!showFullMessage && 'line-clamp-3'}`}>
+                {letter.message}
+              </p>
+              {letter.message && letter.message.length > 300 && (
+                <button
+                  onClick={() => setShowFullMessage(!showFullMessage)}
+                  className="text-blue-500 text-xs mt-1.5 hover:underline"
+                >
+                  {showFullMessage ? 'Ver menos' : 'Ver más'}
+                </button>
+              )}
+            </div>
+
+            {mediaItems.length > 0 && (
+              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+
+                <div className="relative">
+                  {hasMultipleMedia && (
+                    <button
+                      onClick={prevMedia}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/20 hover:bg-black/30 rounded-full flex items-center justify-center transition-all backdrop-blur-sm"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-white" />
+                    </button>
+                  )}
+
+                  <div className="p-4">
+                    {currentMedia?.type === 'image' && (
+                      <div className="relative overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center" style={{ height: '280px' }}>
+                        <img
+                          src={currentMedia.url}
+                          alt="Contenido multimedia"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+
+                    {currentMedia?.type === 'video' && (
+                      <div className="relative overflow-hidden rounded-lg bg-black flex items-center justify-center" style={{ height: '280px' }}>
+                        <video
+                          controls
+                          className="w-full h-full object-contain"
+                          preload="metadata"
+                        >
+                          <source src={currentMedia.url} />
+                        </video>
+                      </div>
+                    )}
+
+                    {currentMedia?.type === 'audio' && (
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4" style={{ height: '280px' }}>
+                        <div className="flex flex-col items-center justify-center h-full gap-3">
+                          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                            <Music className="w-8 h-8 text-white" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-gray-700">Audio de la carta</p>
+                            <p className="text-xs text-gray-400 mt-1">🎵 Disfruta de este momento especial</p>
+                          </div>
+                          <audio controls className="w-full mt-2">
+                            <source src={currentMedia.url} />
+                          </audio>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {hasMultipleMedia && (
+                    <button
+                      onClick={nextMedia}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/20 hover:bg-black/30 rounded-full flex items-center justify-center transition-all backdrop-blur-sm"
+                    >
+                      <ChevronRight className="w-5 h-5 text-white" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-t border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1">
+                      {mediaItems.map((item, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentMediaIndex(idx)}
+                          className={`px-2 py-0.5 rounded-md text-xs transition-all ${currentMediaIndex === idx
+                              ? 'bg-blue-500 text-white'
+                              : 'text-gray-500 hover:bg-gray-200'
+                            }`}
+                        >
+                          {item.type === 'image' && '📸'}
+                          {item.type === 'video' && '🎥'}
+                          {item.type === 'audio' && '🎵'}
+                        </button>
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-400">
+                      {currentMediaIndex + 1} / {mediaItems.length}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={toggleFullscreen}
+                      className="p-1.5 rounded-md hover:bg-gray-200 transition-colors"
+                      title="Pantalla completa"
+                    >
+                      <Maximize2 className="w-4 h-4 text-gray-500" />
+                    </button>
+                  </div>
+                </div>
+
+                {hasMultipleMedia && (
+                  <div className="flex justify-center gap-1.5 py-2">
+                    {mediaItems.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentMediaIndex(idx)}
+                        className={`h-1 rounded-full transition-all ${currentMediaIndex === idx
+                            ? 'w-4 bg-blue-500'
+                            : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                          }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
-          </div>
-
-          {/* Image */}
-          {letter.imageUrl && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-blue-500" />
-                Imagen
-              </h3>
-              <img
-                src={letter.imageUrl}
-                alt="Carta"
-                className="rounded-xl w-full object-cover max-h-80"
-              />
-            </div>
-          )}
-
-          {/* Video */}
-          {letter.videoUrl && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Video className="w-4 h-4 text-blue-500" />
-                Video
-              </h3>
-              <video controls className="rounded-xl w-full">
-                <source src={letter.videoUrl} />
-              </video>
-            </div>
-          )}
-
-          {/* Audio */}
-          {letter.audioUrl && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Music className="w-4 h-4 text-blue-500" />
-                Audio
-              </h3>
-              <audio controls className="w-full">
-                <source src={letter.audioUrl} />
-              </audio>
-            </div>
-          )}
-
-          {/* Footer Note */}
-          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-            <p className="text-blue-500 text-sm italic">
-              "Cada palabra escrita es un latido de mi corazón para ti 💙"
-            </p>
           </div>
         </div>
       </div>
     </div>
   );
+
 }

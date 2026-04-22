@@ -515,19 +515,16 @@ function MemoryModal({ memory, onClose }) {
 
         {/* Header con gradiente mejorado */}
         <div className="relative overflow-hidden rounded-t-2xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+          <div className="absolute inset-0 bg-blue-600"></div>
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
 
           <div className="relative p-5 text-white">
             <div className="flex justify-between items-center mb-3">
-              <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5">
+              <span className="bg-white/20 backdrop-blur-sm px-3 py-2 rounded-full text-xs font-medium flex items-center gap-1.5">
                 <Calendar className="w-3 h-3" />
                 {new Date(memory.date).toLocaleDateString()}
               </span>
-              <div className="bg-white/20 backdrop-blur-sm p-1.5 rounded-full">
-                <Heart className="w-4 h-4 text-white fill-white/20" />
-              </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm p-2.5 rounded-full">
@@ -606,13 +603,11 @@ function MemoryModal({ memory, onClose }) {
           )}
 
           {isAudio && (
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 shadow-md">
+            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
               <div className="flex items-center gap-4">
-                <div className="relative">
-                  <div className="absolute -inset-2 bg-blue-400/30 rounded-full blur-md animate-pulse"></div>
-                  <div className="relative w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                    <Music className="w-7 h-7 text-white" />
-                  </div>
+                {/* Solo círculo negro y música blanca */}
+                <div className="w-14 h-14 bg-black rounded-full flex items-center justify-center shadow-md">
+                  <Music className="w-7 h-7 text-white" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-800">Audio del recuerdo</p>
@@ -629,12 +624,12 @@ function MemoryModal({ memory, onClose }) {
               </div>
             </div>
           )}
+
           {/* Separador decorativo */}
           <div className="relative pt-2">
             <div className="absolute inset-x-0 top-0 flex justify-center">
               <div className="w-16 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent"></div>
             </div>
-            {/* Puntos decorativos */}
             <div className="flex justify-center gap-1 mt-2">
               <div className="w-1 h-1 bg-blue-300 rounded-full"></div>
               <div className="w-1 h-1 bg-blue-400 rounded-full"></div>

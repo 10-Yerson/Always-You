@@ -140,7 +140,7 @@ export default function MusicPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
 
       {/* Hero Section */}
-      <div className="min-h-[40vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
+      <div className="min-h-[0vh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 px-4 relative">
 
         <div className="absolute top-10 left-5 opacity-20">
           <Heart className="w-6 h-6 text-blue-400" />

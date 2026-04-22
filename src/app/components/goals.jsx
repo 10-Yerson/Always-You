@@ -15,7 +15,7 @@ import {
   TrendingUp,
   Flag,
   Compass,
-  Loader2
+  Loader2, ImageIcon, Video, ChevronRight , Maximize2 , ChevronLeft 
 } from "lucide-react";
 
 export default function GoalsPage() {
@@ -177,41 +177,90 @@ export default function GoalsPage() {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="max-w-7xl mx-auto px-6 mt-8">
-        <div className="flex justify-center gap-3">
+      {/* Filter Tabs - Combinación responsive (igual al de recuerdos) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10">
+
+        {/* Versión móvil: íconos grandes (se muestra en móvil) */}
+        <div className="flex justify-center flex-wrap gap-4 sm:hidden">
           <button
             onClick={() => setFilter("all")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "all"
-              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "all" ? "text-blue-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            Todas
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "all"
+              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <Target className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "all" ? "text-blue-600" : "text-gray-500"}`}>
+              Todas
+            </span>
           </button>
+
           <button
             onClick={() => setFilter("completed")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "completed"
-              ? "bg-emerald-600 text-white shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "completed" ? "text-emerald-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <span className="flex items-center gap-1">
-              <CheckCircle className="w-3 h-3" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "completed"
+              ? "bg-emerald-500 text-white shadow-md shadow-emerald-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <CheckCircle className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "completed" ? "text-emerald-600" : "text-gray-500"}`}>
               Completadas
             </span>
           </button>
+
           <button
             onClick={() => setFilter("pending")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${filter === "pending"
-              ? "bg-amber-600 text-white shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "pending" ? "text-amber-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "pending"
+              ? "bg-amber-500 text-white shadow-md shadow-amber-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <Clock className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "pending" ? "text-amber-600" : "text-gray-500"}`}>
               Pendientes
             </span>
+          </button>
+        </div>
+
+        {/* Versión desktop: borde inferior (se muestra en tablet/desktop) */}
+        <div className="hidden sm:flex justify-center gap-2 md:gap-4 lg:gap-6 border-b border-gray-100">
+          <button
+            onClick={() => setFilter("all")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "all" ? "text-blue-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <Target className="w-4 h-4" />
+            Todas
+            {filter === "all" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
+          </button>
+
+          <button
+            onClick={() => setFilter("completed")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "completed" ? "text-emerald-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <CheckCircle className="w-4 h-4" />
+            Completadas
+            {filter === "completed" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />}
+          </button>
+
+          <button
+            onClick={() => setFilter("pending")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "pending" ? "text-amber-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <Clock className="w-4 h-4" />
+            Pendientes
+            {filter === "pending" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />}
           </button>
         </div>
       </div>
@@ -322,7 +371,7 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
         {(image || video) && (
           <div className="mt-2">
             {image && (
-              <div className="relative overflow-hidden rounded-xl h-24">
+              <div className="relative overflow-hidden rounded-xl h-40">
                 <img
                   src={image}
                   alt={goal.title}
@@ -334,7 +383,7 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
               </div>
             )}
             {video && !image && (
-              <div className="relative overflow-hidden rounded-xl h-24 bg-gray-900 flex items-center justify-center">
+              <div className="relative overflow-hidden rounded-xl h-40 bg-gray-900 flex items-center justify-center">
                 <video className="w-full h-full object-cover" src={video} />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                   <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
@@ -373,11 +422,39 @@ function GoalCard({ goal, isCompleted, delay, onClick }) {
   );
 }
 
-// Goal Modal Component
+// Goal Modal Component - Estilo igual al de cartas (con carrusel)
 function GoalModal({ goal, onClose }) {
-  const image = goal.media?.image;
-  const video = goal.media?.video;
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const isCompleted = goal.status === "completado";
+
+  // Recopilar todos los archivos multimedia (solo imagen y video)
+  const mediaItems = [
+    ...(goal.media?.image ? [{ type: 'image', url: goal.media.image, icon: <ImageIcon className="w-5 h-5" /> }] : []),
+    ...(goal.media?.video ? [{ type: 'video', url: goal.media.video, icon: <Video className="w-5 h-5" /> }] : []),
+  ];
+
+  const currentMedia = mediaItems[currentMediaIndex];
+  const hasMultipleMedia = mediaItems.length > 1;
+  const isFirst = currentMediaIndex === 0;
+  const isLast = currentMediaIndex === mediaItems.length - 1;
+
+  const nextMedia = () => {
+    if (!isLast) {
+      setCurrentMediaIndex((prev) => prev + 1);
+    }
+  };
+
+  const prevMedia = () => {
+    if (!isFirst) {
+      setCurrentMediaIndex((prev) => prev - 1);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -387,109 +464,185 @@ function GoalModal({ goal, onClose }) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
-      <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={onClose}>
+      <div className={`relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl animate-scaleIn transition-all duration-300 ${isFullscreen ? 'h-[95vh]' : 'max-h-[90vh]'}`} onClick={(e) => e.stopPropagation()}>
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+          className="absolute top-3 right-3 z-20 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
         {/* Header */}
-        <div className={`p-6 text-white rounded-t-3xl ${isCompleted
+        <div className={`p-4 text-white rounded-t-2xl ${isCompleted
           ? 'bg-gradient-to-r from-emerald-700 to-teal-800'
           : 'bg-gradient-to-r from-blue-700 to-blue-600'
           }`}>
-          <div className="flex justify-between items-center mb-4">
-            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm flex items-center gap-1">
+          <div className="flex justify-between items-center mb-2">
+            <span className="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-xs flex items-center gap-1">
               <Calendar className="w-3 h-3" />
               {new Date(goal.createdAt).toLocaleDateString()}
             </span>
             {isCompleted ? (
-              <CheckCircle className="w-6 h-6 text-emerald-300" />
+              <CheckCircle className="w-5 h-5 text-emerald-300" />
             ) : (
-              <Target className="w-6 h-6 text-blue-200" />
+              <Target className="w-5 h-5 text-blue-200" />
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="bg-white/20 p-3 rounded-full">
+            <div className="bg-white/20 backdrop-blur-sm p-2.5 rounded-full">
               {isCompleted ? (
-                <Trophy className="w-8 h-8" />
+                <Trophy className="w-5 h-5" />
               ) : (
-                <Flag className="w-8 h-8" />
+                <Flag className="w-5 h-5" />
               )}
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold">{goal.title}</h2>
+            <div>
+              <h2 className="text-lg md:text-xl font-bold pr-6 line-clamp-1">{goal.title}</h2>
+              <div className="w-12 h-0.5 bg-white/40 rounded-full mt-1.5"></div>
+            </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-4">
-          {/* Status Badge */}
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${isCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
-            }`}>
-            {isCompleted ? (
-              <>
-                <CheckCircle className="w-4 h-4" />
-                <span className="text-sm font-medium">Meta cumplida</span>
-              </>
-            ) : (
-              <>
-                <Clock className="w-4 h-4" />
-                <span className="text-sm font-medium">Meta pendiente</span>
-              </>
+        <div className={`flex flex-col ${isFullscreen ? 'h-[calc(95vh-110px)]' : 'max-h-[calc(90vh-110px)]'} overflow-y-auto`}>
+          <div className="p-4 space-y-4 flex-1">
+
+            {/* Status Badge */}
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${isCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+              }`}>
+              {isCompleted ? (
+                <>
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  <span>Meta cumplida</span>
+                </>
+              ) : (
+                <>
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Meta pendiente</span>
+                </>
+              )}
+            </div>
+
+            {/* Description */}
+            <div className="bg-gray-50 rounded-xl p-3">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Target className="w-3.5 h-3.5 text-blue-500" />
+                <h3 className="font-medium text-gray-700 text-xs uppercase tracking-wide">Descripción</h3>
+              </div>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                {goal.description}
+              </p>
+            </div>
+
+            {/* Carrusel Multimedia (igual al de cartas) */}
+            {mediaItems.length > 0 && (
+              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+
+                <div className="relative">
+                  {/* Botón anterior */}
+                  {hasMultipleMedia && !isFirst && (
+                    <button
+                      onClick={prevMedia}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-all backdrop-blur-sm group"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+                    </button>
+                  )}
+
+                  <div className="p-4">
+                    {currentMedia?.type === 'image' && (
+                      <div className="relative overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center" style={{ height: '280px' }}>
+                        <img
+                          src={currentMedia.url}
+                          alt={goal.title}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+
+                    {currentMedia?.type === 'video' && (
+                      <div className="relative overflow-hidden rounded-lg bg-black flex items-center justify-center" style={{ height: '280px' }}>
+                        <video
+                          controls
+                          className="w-full h-full object-contain"
+                          preload="metadata"
+                        >
+                          <source src={currentMedia.url} />
+                        </video>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Botón siguiente */}
+                  {hasMultipleMedia && !isLast && (
+                    <button
+                      onClick={nextMedia}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-all backdrop-blur-sm group"
+                    >
+                      <ChevronRight className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Barra de controles */}
+                <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1.5">
+                      {mediaItems.map((item, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentMediaIndex(idx)}
+                          className={`group relative px-2.5 py-1 rounded-lg text-xs font-medium transition-all duration-200 ${currentMediaIndex === idx
+                            ? 'bg-blue-500 text-white shadow-md shadow-blue-200'
+                            : 'text-gray-500 hover:bg-gray-100 hover:text-blue-600'
+                            }`}
+                        >
+                          <span className="flex items-center gap-1">
+                            {item.type === 'image' && '📸'}
+                            {item.type === 'video' && '🎥'}
+                            <span className="text-[10px]">{idx + 1}</span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="w-px h-4 bg-gray-200"></div>
+
+                    <span className="text-xs font-medium text-gray-500">
+                      <span className="text-blue-600">{currentMediaIndex + 1}</span> / {mediaItems.length}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={toggleFullscreen}
+                    className="p-1.5 rounded-lg hover:bg-gray-100 transition-all duration-200 group"
+                    title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+                  >
+                    <Maximize2 className="w-4 h-4 text-gray-500 group-hover:text-blue-500 group-hover:scale-110 transition-transform" />
+                  </button>
+                </div>
+
+                {/* Indicadores de progreso */}
+                {hasMultipleMedia && (
+                  <div className="flex justify-center gap-2 py-2 bg-gray-50/50">
+                    {mediaItems.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentMediaIndex(idx)}
+                        className={`transition-all duration-300 rounded-full ${currentMediaIndex === idx
+                          ? 'w-5 h-1.5 bg-blue-500'
+                          : 'w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400'
+                          }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
-          </div>
-
-          {/* Description */}
-          <div>
-            <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Target className="w-4 h-4 text-blue-500" />
-              Descripción
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              {goal.description}
-            </p>
-          </div>
-
-          {/* Image */}
-          {image && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Heart className="w-4 h-4 text-blue-500" />
-                Recuerdo
-              </h3>
-              <img
-                src={image}
-                alt={goal.title}
-                className="rounded-xl w-full object-cover max-h-80"
-              />
-            </div>
-          )}
-
-          {/* Video */}
-          {video && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Heart className="w-4 h-4 text-blue-500" />
-                Video
-              </h3>
-              <video controls className="rounded-xl w-full">
-                <source src={video} />
-              </video>
-            </div>
-          )}
-
-          {/* Footer Note */}
-          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-            <p className="text-blue-500 text-sm italic">
-              "Cada meta cumplida es un paso más hacia nuestro sueño compartido 💙"
-            </p>
           </div>
         </div>
       </div>

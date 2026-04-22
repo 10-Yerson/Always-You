@@ -317,12 +317,11 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
           )}
         </div>
       </div>
-
-      {/* Hover Effect Overlay */}
-      {!isLocked && isHovered && (
-        <div className="absolute inset-0 bg-blue-50/80 backdrop-blur-[1px] flex items-center justify-center">
-          <div className="bg-blue-500 rounded-full p-3 animate-bounce shadow-lg shadow-blue-200">
-            <Heart className="w-6 h-6 text-white" />
+      
+       {!isLocked && isHovered && (
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-[2px] flex items-center justify-center z-10">
+          <div className="bg-white/90 backdrop-blur-md rounded-full p-3 shadow-xl animate-bounce">
+            <Heart className="w-7 h-7 text-blue-500 fill-blue-500" />
           </div>
         </div>
       )}

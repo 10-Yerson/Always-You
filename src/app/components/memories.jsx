@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Star,
   BookOpen,
+  MessageCircle,
   Loader2
 } from "lucide-react";
 
@@ -186,48 +187,116 @@ export default function MemoriesPage() {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="max-w-7xl mx-auto px-6 mt-8">
-        <div className="flex justify-center gap-3 flex-wrap">
+      {/* Filter Tabs - Combinación responsive */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10">
+
+        {/* Versión móvil: íconos grandes (se muestra en móvil) */}
+        <div className="flex justify-center flex-wrap gap-4 sm:hidden">
           <button
             onClick={() => setFilter("all")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "all"
-              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "all" ? "text-blue-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <Heart className="w-3 h-3" />
-            Todos
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "all"
+              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <Heart className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "all" ? "text-blue-600" : "text-gray-500"}`}>
+              Todos
+            </span>
           </button>
+
           <button
             onClick={() => setFilter("image")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "image"
-              ? "bg-emerald-600 text-white shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "image" ? "text-emerald-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <ImageIcon className="w-3 h-3" />
-            Fotos
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "image"
+              ? "bg-emerald-500 text-white shadow-md shadow-emerald-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <ImageIcon className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "image" ? "text-emerald-600" : "text-gray-500"}`}>
+              Fotos
+            </span>
           </button>
+
           <button
             onClick={() => setFilter("video")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "video"
-              ? "bg-blue-600 text-white shadow-md shadow-blue-200"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "video" ? "text-blue-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <Video className="w-3 h-3" />
-            Videos
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "video"
+              ? "bg-blue-500 text-white shadow-md shadow-blue-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <Video className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "video" ? "text-blue-600" : "text-gray-500"}`}>
+              Videos
+            </span>
           </button>
+
           <button
             onClick={() => setFilter("audio")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "audio"
-              ? "bg-purple-600 text-white shadow-md"
-              : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-500 border border-gray-200"
+            className={`flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 ${filter === "audio" ? "text-purple-600" : "text-gray-400 hover:text-gray-600"
               }`}
           >
-            <Music className="w-3 h-3" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${filter === "audio"
+              ? "bg-purple-500 text-white shadow-md shadow-purple-200"
+              : "bg-gray-100 text-gray-500"
+              }`}>
+              <Music className="w-6 h-6" />
+            </div>
+            <span className={`text-xs font-medium ${filter === "audio" ? "text-purple-600" : "text-gray-500"}`}>
+              Audios
+            </span>
+          </button>
+        </div>
+
+        {/* Versión desktop: borde inferior (se muestra en tablet/desktop) */}
+        <div className="hidden sm:flex justify-center gap-2 md:gap-4 lg:gap-6 border-b border-gray-100">
+          <button
+            onClick={() => setFilter("all")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "all" ? "text-blue-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <Heart className="w-4 h-4" />
+            Todos
+            {filter === "all" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
+          </button>
+
+          <button
+            onClick={() => setFilter("image")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "image" ? "text-emerald-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <ImageIcon className="w-4 h-4" />
+            Fotos
+            {filter === "image" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />}
+          </button>
+
+          <button
+            onClick={() => setFilter("video")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "video" ? "text-blue-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <Video className="w-4 h-4" />
+            Videos
+            {filter === "video" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
+          </button>
+
+          <button
+            onClick={() => setFilter("audio")}
+            className={`relative px-4 md:px-6 py-2.5 text-sm font-medium transition-all duration-300 flex items-center gap-2 ${filter === "audio" ? "text-purple-600" : "text-gray-500 hover:text-gray-700"
+              }`}
+          >
+            <Music className="w-4 h-4" />
             Audios
+            {filter === "audio" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 rounded-full" />}
           </button>
         </div>
       </div>
@@ -278,8 +347,7 @@ export default function MemoriesPage() {
   );
 }
 
-
-// Memory Card Component
+// Memory Card Component - Diseño alargado mejorado
 function MemoryCard({ memory, type, delay, onClick }) {
   const file = memory.image || memory.video || memory.music || memory.audio;
 
@@ -297,16 +365,7 @@ function MemoryCard({ memory, type, delay, onClick }) {
       case "image": return "from-emerald-500 to-teal-600";
       case "video": return "from-blue-500 to-indigo-600";
       case "audio": return "from-purple-500 to-pink-600";
-      default: return "from-blue-500 to-blue-600";
-    }
-  };
-
-  const getTypeBg = () => {
-    switch (type) {
-      case "image": return "bg-emerald-100 text-emerald-700";
-      case "video": return "bg-blue-100 text-blue-700";
-      case "audio": return "bg-purple-100 text-purple-700";
-      default: return "bg-blue-100 text-blue-700";
+      default: return "from-gray-500 to-gray-600";
     }
   };
 
@@ -317,92 +376,115 @@ function MemoryCard({ memory, type, delay, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer hover:scale-105 hover:shadow-2xl shadow-lg border border-gray-100"
+      className="group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer hover:shadow-xl hover:-translate-y-1 shadow-md border border-gray-100"
       style={{
         animation: `fadeInUp 0.5s ease-out ${delay}ms both`
       }}
     >
-      {/* Top border */}
-      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${getTypeColor()}`} />
+      {/* Banner multimedia superior */}
+      {file && (
+        <div className="relative h-56 overflow-hidden bg-gray-100">
+          {isImage && (
+            <>
+              <img
+                src={file}
+                alt="Recuerdo"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            </>
+          )}
 
-      {/* Content */}
-      <div className="relative p-5 flex flex-col">
+          {isVideo && (
+            <>
+              <video className="w-full h-full object-cover" src={file} />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-transform group-hover:scale-110">
+                  <div className="w-0 h-0 border-t-8 border-t-transparent border-l-14 border-l-white border-b-8 border-b-transparent ml-1" />
+                </div>
+              </div>
+            </>
+          )}
 
-        {/* Header - Fecha y tipo */}
-        <div className="flex justify-between items-start mb-3">
-          <span className="text-xs text-gray-500 flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
-            {new Date(memory.date).toLocaleDateString()}
-          </span>
-          <div className={`px-2 py-1 rounded-full flex items-center gap-1 ${getTypeBg()}`}>
-            {getTypeIcon()}
-            <span className="text-xs font-medium capitalize">{type}</span>
+          {isAudio && (
+            <div className="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
+              <div className="flex flex-col items-center">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-blue-400/20 rounded-full blur-md animate-pulse"></div>
+                  <div className="relative w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                    <Headphones className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                <div className="flex gap-1 mt-3">
+                  <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce"></div>
+                  <div className="w-1 h-3 bg-white/70 rounded-full animate-bounce delay-150"></div>
+                  <div className="w-1 h-4 bg-white rounded-full animate-bounce delay-300"></div>
+                  <div className="w-1 h-3 bg-white/70 rounded-full animate-bounce delay-450"></div>
+                  <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce delay-600"></div>
+                </div>
+                <p className="text-white text-xs font-medium mt-2">Audio especial</p>
+              </div>
+            </div>
+          )}
+
+          {/* Badge flotante */}
+          <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md rounded-full px-3 py-1.5">
+            <span className="text-[11px] font-medium text-white flex items-center gap-1.5">
+              {getTypeIcon()}
+              {type === 'image' && 'Foto del recuerdo'}
+              {type === 'video' && 'Video especial'}
+              {type === 'audio' && 'Audio emotivo'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Contenido */}
+      <div className="p-5">
+
+        {/* Fecha destacada - MEJORADA */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center shadow-sm">
+            <Calendar className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <p className="text-[10px] text-gray-400 uppercase tracking-wider">Fecha del recuerdo</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {new Date(memory.date).toLocaleDateString()}
+            </p>
           </div>
         </div>
 
         {/* Texto del recuerdo */}
-        <p className="text-gray-700 mb-4 line-clamp-3 leading-relaxed">
-          {memory.text}
-        </p>
+        <div className="mb-4">
+          <p className="text-gray-700 text-sm leading-relaxed line-clamp-4">
+            {memory.text}
+          </p>
+        </div>
 
-        {/* Media Preview */}
-        {file && (
-          <div className="relative overflow-hidden rounded-xl mb-3">
-            {isImage && (
-              <div className="relative h-48">
-                <img
-                  src={file}
-                  alt="Recuerdo"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Heart className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            )}
-            {isVideo && (
-              <div className="relative h-48 bg-gray-900 flex items-center justify-center">
-                <video className="w-full h-full object-cover" src={file} />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                    <div className="w-0 h-0 border-t-10 border-t-transparent border-l-16 border-l-white border-b-10 border-b-transparent ml-1" />
-                  </div>
-                </div>
-              </div>
-            )}
-            {isAudio && (
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl flex items-center gap-3">
-                <div className="bg-blue-500 p-3 rounded-full shadow-md shadow-blue-200">
-                  <Headphones className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                    <div className="w-2/3 h-full bg-blue-500 rounded-full animate-pulse" />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">Audio del recuerdo</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Separador decorativo */}
+        <div className="flex justify-center gap-1.5 my-4">
+          <div className="w-1 h-1 bg-blue-400 rounded-full" />
+          <div className="w-1 h-1 bg-blue-400 rounded-full" />
+          <div className="w-1 h-1 bg-blue-400 rounded-full" />
+        </div>
 
-        {/* Footer */}
-        <div className="flex justify-between items-center mt-2 pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-1">
-            <Star className="w-3 h-3 text-blue-400" />
-            <span className="text-xs text-gray-500">Momento especial</span>
+        {/* Footer con acciones - MEJORADO */}
+        <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center gap-2 pl-2 border-l-2 border-gray-900">
+            <span className="text-[10px] font-medium text-gray-800">Momento especial</span>
           </div>
-          <div className="text-xs text-blue-500 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            Ver recuerdo
-            <ChevronRight className="w-3 h-3" />
-          </div>
+          <button className="flex items-center gap-1.5 text-sm font-medium text-blue-600 group-hover:gap-2 transition-all">
+            <span>Ver recuerdo</span>
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-// Memory Modal Component
+// Memory Modal Component - Estilo carta con más detalles
 function MemoryModal({ memory, onClose }) {
   const file = memory.image || memory.video || memory.music || memory.audio;
 
@@ -418,95 +500,146 @@ function MemoryModal({ memory, onClose }) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={onClose}>
-      <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={onClose}>
+      <div className="relative max-w-2xl w-full max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+          className="absolute top-3 right-3 z-20 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 transition-colors hover:scale-110 transition-transform"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-700 to-blue-600 p-6 text-white rounded-t-3xl">
-          <div className="flex justify-between items-center mb-4">
-            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              {new Date(memory.date).toLocaleDateString()}
-            </span>
-            <Heart className="w-6 h-6 text-blue-200" />
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="bg-white/20 p-3 rounded-full">
-              <Camera className="w-8 h-8" />
+        {/* Header con gradiente mejorado */}
+        <div className="relative overflow-hidden rounded-t-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+
+          <div className="relative p-5 text-white">
+            <div className="flex justify-between items-center mb-3">
+              <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5">
+                <Calendar className="w-3 h-3" />
+                {new Date(memory.date).toLocaleDateString()}
+              </span>
+              <div className="bg-white/20 backdrop-blur-sm p-1.5 rounded-full">
+                <Heart className="w-4 h-4 text-white fill-white/20" />
+              </div>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold">Recuerdo Especial</h2>
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 backdrop-blur-sm p-2.5 rounded-full">
+                <Camera className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold">Recuerdo Especial</h2>
+                <div className="w-12 h-0.5 bg-white/40 rounded-full mt-1.5"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-4">
-          {/* Memory Text */}
-          <div>
-            <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Heart className="w-4 h-4 text-blue-500" />
-              Recuerdo
-            </h3>
-            <p className="text-gray-600 leading-relaxed text-lg">
+        <div className="p-5 space-y-4">
+
+          {/* Texto del recuerdo con mejor diseño */}
+          <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-2.5">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                <MessageCircle className="w-3.5 h-3.5 text-blue-600" />
+              </div>
+              <h3 className="font-semibold text-gray-700 text-sm">Este recuerdo</h3>
+              <div className="flex-1"></div>
+              <div className="flex gap-0.5">
+                <div className="w-1 h-1 bg-blue-300 rounded-full"></div>
+                <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
+              </div>
+            </div>
+            <p className="text-gray-600 leading-relaxed text-sm">
               {memory.text}
             </p>
           </div>
 
-          {/* Image */}
+          {/* Multimedia con diseño mejorado */}
           {isImage && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-blue-500" />
-                Imagen
-              </h3>
+            <div className="group relative overflow-hidden rounded-xl bg-gray-100 shadow-md">
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                  <Heart className="w-6 h-6 text-white" />
+                </div>
+              </div>
               <img
                 src={file}
                 alt="Recuerdo"
-                className="rounded-xl w-full object-cover max-h-96"
+                className="rounded-xl w-full object-cover max-h-80 transition-transform duration-700 group-hover:scale-105"
               />
+              <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm rounded-full px-2.5 py-1">
+                <span className="text-[10px] font-medium text-white flex items-center gap-1.5">
+                  <ImageIcon className="w-3 h-3" />
+                  Imagen del recuerdo
+                </span>
+              </div>
+              <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-sm rounded-full px-2 py-0.5">
+                <span className="text-[9px] text-white">📸</span>
+              </div>
             </div>
           )}
 
-          {/* Video */}
           {isVideo && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Video className="w-4 h-4 text-blue-500" />
-                Video
-              </h3>
-              <video controls className="rounded-xl w-full">
+            <div className="group relative rounded-xl overflow-hidden bg-black shadow-md">
+              <video controls className="w-full max-h-80" preload="metadata">
                 <source src={file} />
               </video>
+              <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm rounded-full px-2.5 py-1">
+                <span className="text-[10px] font-medium text-white flex items-center gap-1.5">
+                  <Video className="w-3 h-3" />
+                  Video especial
+                </span>
+              </div>
+              <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-sm rounded-full px-2 py-0.5">
+                <span className="text-[9px] text-white">🎥</span>
+              </div>
             </div>
           )}
 
-          {/* Audio */}
           {isAudio && (
-            <div>
-              <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Music className="w-4 h-4 text-blue-500" />
-                Audio
-              </h3>
-              <audio controls className="w-full">
-                <source src={file} />
-              </audio>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 shadow-md">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="absolute -inset-2 bg-blue-400/30 rounded-full blur-md animate-pulse"></div>
+                  <div className="relative w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <Music className="w-7 h-7 text-white" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-gray-800">Audio del recuerdo</p>
+                  <p className="text-xs text-gray-500 mt-0.5">🎵 Momento para recordar</p>
+                  <div className="flex gap-0.5 mt-1">
+                    <div className="w-1 h-1 bg-blue-400 rounded-full animate-pulse"></div>
+                    <div className="w-1 h-1 bg-blue-500 rounded-full animate-pulse delay-150"></div>
+                    <div className="w-1 h-1 bg-indigo-500 rounded-full animate-pulse delay-300"></div>
+                  </div>
+                  <audio controls className="w-full mt-2">
+                    <source src={file} />
+                  </audio>
+                </div>
+              </div>
             </div>
           )}
-
-          {/* Footer Note */}
-          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-            <p className="text-blue-500 text-sm italic">
-              "Cada recuerdo es un pedacito de nuestra historia que nunca se borrará 💙"
-            </p>
+          {/* Separador decorativo */}
+          <div className="relative pt-2">
+            <div className="absolute inset-x-0 top-0 flex justify-center">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent"></div>
+            </div>
+            {/* Puntos decorativos */}
+            <div className="flex justify-center gap-1 mt-2">
+              <div className="w-1 h-1 bg-blue-300 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>

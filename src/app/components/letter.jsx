@@ -363,20 +363,24 @@ function LetterModal({ letter, onClose }) {
 
   const currentMedia = mediaItems[currentMediaIndex];
   const hasMultipleMedia = mediaItems.length > 1;
+  const isFirst = currentMediaIndex === 0;
+  const isLast = currentMediaIndex === mediaItems.length - 1;
 
   const nextMedia = () => {
-    setCurrentMediaIndex((prev) => (prev + 1) % mediaItems.length);
+    if (!isLast) {
+      setCurrentMediaIndex((prev) => prev + 1);
+    }
   };
 
   const prevMedia = () => {
-    setCurrentMediaIndex((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
+    if (!isFirst) {
+      setCurrentMediaIndex((prev) => prev - 1);
+    }
   };
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
-
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={onClose}>
@@ -426,12 +430,13 @@ function LetterModal({ letter, onClose }) {
               <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
 
                 <div className="relative">
-                  {hasMultipleMedia && (
+                  {/* Botón anterior - solo visible si no es el primero */}
+                  {hasMultipleMedia && !isFirst && (
                     <button
                       onClick={prevMedia}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/20 hover:bg-black/30 rounded-full flex items-center justify-center transition-all backdrop-blur-sm"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-all backdrop-blur-sm group"
                     >
-                      <ChevronLeft className="w-5 h-5 text-white" />
+                      <ChevronLeft className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
                     </button>
                   )}
 
@@ -476,58 +481,70 @@ function LetterModal({ letter, onClose }) {
                     )}
                   </div>
 
-                  {hasMultipleMedia && (
+                  {/* Botón siguiente - solo visible si no es el último */}
+                  {hasMultipleMedia && !isLast && (
                     <button
                       onClick={nextMedia}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/20 hover:bg-black/30 rounded-full flex items-center justify-center transition-all backdrop-blur-sm"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-all backdrop-blur-sm group"
                     >
-                      <ChevronRight className="w-5 h-5 text-white" />
+                      <ChevronRight className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
                     </button>
                   )}
                 </div>
 
-                <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-t border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
+                {/* Barra de controles mejorada */}
+                <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100">
+                  <div className="flex items-center gap-3">
+                    {/* Miniaturas de navegación */}
+                    <div className="flex gap-1.5">
                       {mediaItems.map((item, idx) => (
                         <button
                           key={idx}
                           onClick={() => setCurrentMediaIndex(idx)}
-                          className={`px-2 py-0.5 rounded-md text-xs transition-all ${currentMediaIndex === idx
-                              ? 'bg-blue-500 text-white'
-                              : 'text-gray-500 hover:bg-gray-200'
+                          className={`group relative px-2.5 py-1 rounded-lg text-xs font-medium transition-all duration-200 ${currentMediaIndex === idx
+                            ? 'bg-blue-500 text-white shadow-md shadow-blue-200'
+                            : 'text-gray-500 hover:bg-gray-100 hover:text-blue-600'
                             }`}
                         >
-                          {item.type === 'image' && '📸'}
-                          {item.type === 'video' && '🎥'}
-                          {item.type === 'audio' && '🎵'}
+                          <span className="flex items-center gap-1">
+                            {item.type === 'image' && '📸'}
+                            {item.type === 'video' && '🎥'}
+                            {item.type === 'audio' && '🎵'}
+                            <span className="text-[10px]">{idx + 1}</span>
+                          </span>
                         </button>
                       ))}
                     </div>
-                    <span className="text-xs text-gray-400">
-                      {currentMediaIndex + 1} / {mediaItems.length}
+
+                    {/* Separador */}
+                    <div className="w-px h-4 bg-gray-200"></div>
+
+                    {/* Contador */}
+                    <span className="text-xs font-medium text-gray-500">
+                      <span className="text-blue-600">{currentMediaIndex + 1}</span> / {mediaItems.length}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={toggleFullscreen}
-                      className="p-1.5 rounded-md hover:bg-gray-200 transition-colors"
-                      title="Pantalla completa"
-                    >
-                      <Maximize2 className="w-4 h-4 text-gray-500" />
-                    </button>
-                  </div>
+
+                  {/* Botón de pantalla completa */}
+                  <button
+                    onClick={toggleFullscreen}
+                    className="p-1.5 rounded-lg hover:bg-gray-100 transition-all duration-200 group"
+                    title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+                  >
+                    <Maximize2 className="w-4 h-4 text-gray-500 group-hover:text-blue-500 group-hover:scale-110 transition-transform" />
+                  </button>
                 </div>
 
+                {/* Indicadores de progreso */}
                 {hasMultipleMedia && (
-                  <div className="flex justify-center gap-1.5 py-2">
+                  <div className="flex justify-center gap-2 py-2 bg-gray-50/50">
                     {mediaItems.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentMediaIndex(idx)}
-                        className={`h-1 rounded-full transition-all ${currentMediaIndex === idx
-                            ? 'w-4 bg-blue-500'
-                            : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                        className={`transition-all duration-300 rounded-full ${currentMediaIndex === idx
+                          ? 'w-5 h-1.5 bg-blue-500'
+                          : 'w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400'
                           }`}
                       />
                     ))}

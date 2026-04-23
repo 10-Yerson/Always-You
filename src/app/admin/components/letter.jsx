@@ -15,10 +15,33 @@ export default function AdminLetters() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLetter, setSelectedLetter] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+
+  // Estados para modales separados
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [letterToDelete, setLetterToDelete] = useState(null);
-  const [formData, setFormData] = useState({
+
+  // Formulario para CREAR
+  const [createForm, setCreateForm] = useState({
+    title: "",
+    message: "",
+    month: "",
+  });
+  const [createFiles, setCreateFiles] = useState({
+    image: null,
+    video: null,
+    audio: null
+  });
+  const [createPreviews, setCreatePreviews] = useState({
+    image: null,
+    video: null,
+    audio: null
+  });
+
+  // Formulario para EDITAR
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({
     title: "",
     message: "",
     month: "",
@@ -26,19 +49,21 @@ export default function AdminLetters() {
     videoUrl: "",
     audioUrl: ""
   });
-  const [editingId, setEditingId] = useState(null);
-  const [formLoading, setFormLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
-  const [audioFile, setAudioFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [previewVideo, setPreviewVideo] = useState(null);
-  const [previewAudio, setPreviewAudio] = useState(null);
-
-  // Estados para eliminar archivos existentes
+  const [editFiles, setEditFiles] = useState({
+    image: null,
+    video: null,
+    audio: null
+  });
+  const [editPreviews, setEditPreviews] = useState({
+    image: null,
+    video: null,
+    audio: null
+  });
   const [removeImage, setRemoveImage] = useState(false);
   const [removeVideo, setRemoveVideo] = useState(false);
   const [removeAudio, setRemoveAudio] = useState(false);
+
+  const [formLoading, setFormLoading] = useState(false);
 
   // Estado para el carrusel de multimedia en el modal de vista
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -73,155 +98,194 @@ export default function AdminLetters() {
     months[(letter.month - 1) % 12]?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const openModal = (letter = null) => {
-    if (letter) {
-      setEditingId(letter._id);
-      setFormData({
-        title: letter.title || "",
-        message: letter.message || "",
-        month: letter.month || "",
-        imageUrl: letter.imageUrl || "",
-        videoUrl: letter.videoUrl || "",
-        audioUrl: letter.audioUrl || ""
-      });
-      // Resetear flags de eliminación
-      setRemoveImage(false);
-      setRemoveVideo(false);
-      setRemoveAudio(false);
-    } else {
-      setEditingId(null);
-      setFormData({
-        title: "",
-        message: "",
-        month: "",
-        imageUrl: "",
-        videoUrl: "",
-        audioUrl: ""
-      });
-      setRemoveImage(false);
-      setRemoveVideo(false);
-      setRemoveAudio(false);
-    }
-    setImageFile(null);
-    setVideoFile(null);
-    setAudioFile(null);
-    setPreviewImage(null);
-    setPreviewVideo(null);
-    setPreviewAudio(null);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedLetter(null);
-    setFormData({
+  // ========== MODAL DE CREAR ==========
+  const openCreateModal = () => {
+    setCreateForm({
       title: "",
       message: "",
       month: "",
-      imageUrl: "",
-      videoUrl: "",
-      audioUrl: ""
     });
-    setEditingId(null);
-    setImageFile(null);
-    setVideoFile(null);
-    setAudioFile(null);
-    setPreviewImage(null);
-    setPreviewVideo(null);
-    setPreviewAudio(null);
-    setRemoveImage(false);
-    setRemoveVideo(false);
-    setRemoveAudio(false);
+    setCreateFiles({ image: null, video: null, audio: null });
+    setCreatePreviews({ image: null, video: null, audio: null });
+    setShowCreateModal(true);
   };
 
-  const handleImageChange = (e) => {
+  const closeCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleCreateImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
-      setPreviewImage(URL.createObjectURL(file));
-      setRemoveImage(false); // Si sube uno nuevo, no eliminar el existente
+      setCreateFiles({ ...createFiles, image: file });
+      setCreatePreviews({ ...createPreviews, image: URL.createObjectURL(file) });
     }
   };
 
-  const handleVideoChange = (e) => {
+  const handleCreateVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setVideoFile(file);
-      setPreviewVideo(URL.createObjectURL(file));
-      setRemoveVideo(false);
+      setCreateFiles({ ...createFiles, video: file });
+      setCreatePreviews({ ...createPreviews, video: URL.createObjectURL(file) });
     }
   };
 
-  const handleAudioChange = (e) => {
+  const handleCreateAudioChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setAudioFile(file);
-      setPreviewAudio(URL.createObjectURL(file));
-      setRemoveAudio(false);
+      setCreateFiles({ ...createFiles, audio: file });
+      setCreatePreviews({ ...createPreviews, audio: URL.createObjectURL(file) });
     }
   };
 
-  const handleRemoveImage = () => {
-    setRemoveImage(true);
-    setFormData({ ...formData, imageUrl: "" });
-    setPreviewImage(null);
-    setImageFile(null);
+  const handleCreateRemoveImage = () => {
+    setCreateFiles({ ...createFiles, image: null });
+    setCreatePreviews({ ...createPreviews, image: null });
   };
 
-  const handleRemoveVideo = () => {
-    setRemoveVideo(true);
-    setFormData({ ...formData, videoUrl: "" });
-    setPreviewVideo(null);
-    setVideoFile(null);
+  const handleCreateRemoveVideo = () => {
+    setCreateFiles({ ...createFiles, video: null });
+    setCreatePreviews({ ...createPreviews, video: null });
   };
 
-  const handleRemoveAudio = () => {
-    setRemoveAudio(true);
-    setFormData({ ...formData, audioUrl: "" });
-    setPreviewAudio(null);
-    setAudioFile(null);
+  const handleCreateRemoveAudio = () => {
+    setCreateFiles({ ...createFiles, audio: null });
+    setCreatePreviews({ ...createPreviews, audio: null });
   };
 
-  const handleSave = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
     setFormLoading(true);
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("title", formData.title);
-      formDataToSend.append("message", formData.message);
-      formDataToSend.append("month", formData.month);
+      formDataToSend.append("title", createForm.title);
+      formDataToSend.append("message", createForm.message);
+      formDataToSend.append("month", createForm.month);
 
-      // Enviar flags de eliminación
-      formDataToSend.append("removeImage", removeImage);
-      formDataToSend.append("removeVideo", removeVideo);
-      formDataToSend.append("removeAudio", removeAudio);
+      if (createFiles.image) formDataToSend.append("image", createFiles.image);
+      if (createFiles.video) formDataToSend.append("video", createFiles.video);
+      if (createFiles.audio) formDataToSend.append("audio", createFiles.audio);
 
-      if (imageFile) formDataToSend.append("image", imageFile);
-      if (videoFile) formDataToSend.append("video", videoFile);
-      if (audioFile) formDataToSend.append("audio", audioFile);
-
-      if (editingId) {
-        await axios.put(`/api/letter/${editingId}`, formDataToSend, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        toast.success("Carta actualizada exitosamente");
-      } else {
-        await axios.post("/api/letter", formDataToSend, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        toast.success("Carta creada exitosamente");
-      }
+      await axios.post("/api/letter", formDataToSend, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      toast.success("Carta creada exitosamente");
       fetchLetters();
-      closeModal();
+      closeCreateModal();
     } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.msg || "Error al guardar");
+      toast.error(error.response?.data?.msg || "Error al crear");
     } finally {
       setFormLoading(false);
     }
   };
 
+  // ========== MODAL DE EDITAR ==========
+  const openEditModal = (letter) => {
+    setEditingId(letter._id);
+    setEditForm({
+      title: letter.title || "",
+      message: letter.message || "",
+      month: letter.month || "",
+      imageUrl: letter.imageUrl || "",
+      videoUrl: letter.videoUrl || "",
+      audioUrl: letter.audioUrl || ""
+    });
+    setEditFiles({ image: null, video: null, audio: null });
+    setEditPreviews({ image: null, video: null, audio: null });
+    setRemoveImage(false);
+    setRemoveVideo(false);
+    setRemoveAudio(false);
+    setShowEditModal(true);
+  };
+
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setEditingId(null);
+  };
+
+  const handleEditImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditFiles({ ...editFiles, image: file });
+      setEditPreviews({ ...editPreviews, image: URL.createObjectURL(file) });
+      setRemoveImage(false);
+    }
+  };
+
+  const handleEditVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditFiles({ ...editFiles, video: file });
+      setEditPreviews({ ...editPreviews, video: URL.createObjectURL(file) });
+      setRemoveVideo(false);
+    }
+  };
+
+  const handleEditAudioChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditFiles({ ...editFiles, audio: file });
+      setEditPreviews({ ...editPreviews, audio: URL.createObjectURL(file) });
+      setRemoveAudio(false);
+    }
+  };
+
+  const handleEditRemoveImage = () => {
+    setRemoveImage(true);
+    setEditForm({ ...editForm, imageUrl: "" });
+    setEditPreviews({ ...editPreviews, image: null });
+    setEditFiles({ ...editFiles, image: null });
+  };
+
+  const handleEditRemoveVideo = () => {
+    setRemoveVideo(true);
+    setEditForm({ ...editForm, videoUrl: "" });
+    setEditPreviews({ ...editPreviews, video: null });
+    setEditFiles({ ...editFiles, video: null });
+  };
+
+  const handleEditRemoveAudio = () => {
+    setRemoveAudio(true);
+    setEditForm({ ...editForm, audioUrl: "" });
+    setEditPreviews({ ...editPreviews, audio: null });
+    setEditFiles({ ...editFiles, audio: null });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", editForm.title);
+      formDataToSend.append("message", editForm.message);
+      formDataToSend.append("month", editForm.month);
+
+      formDataToSend.append("removeImage", removeImage);
+      formDataToSend.append("removeVideo", removeVideo);
+      formDataToSend.append("removeAudio", removeAudio);
+
+      if (editFiles.image) formDataToSend.append("image", editFiles.image);
+      if (editFiles.video) formDataToSend.append("video", editFiles.video);
+      if (editFiles.audio) formDataToSend.append("audio", editFiles.audio);
+
+      await axios.put(`/api/letter/${editingId}`, formDataToSend, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      toast.success("Carta actualizada exitosamente");
+      fetchLetters();
+      closeEditModal();
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.msg || "Error al actualizar");
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  // ========== ELIMINAR ==========
   const handleDelete = async () => {
     if (!letterToDelete) return;
     try {
@@ -236,6 +300,7 @@ export default function AdminLetters() {
     }
   };
 
+  // ========== VER CARTA ==========
   const viewLetter = (letter) => {
     const items = [];
     if (letter.imageUrl) items.push({ type: 'image', url: letter.imageUrl });
@@ -273,7 +338,7 @@ export default function AdminLetters() {
           <p className="text-xs text-gray-500 ml-7">Gestiona todas las cartas</p>
         </div>
         <button
-          onClick={() => openModal()}
+          onClick={openCreateModal}
           className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-all shadow-md shadow-blue-200 text-sm font-medium w-full sm:w-auto justify-center"
         >
           <Plus className="w-4 h-4" />
@@ -293,7 +358,7 @@ export default function AdminLetters() {
         />
       </div>
 
-      {/* Estadísticas - Compactas */}
+      {/* Estadísticas */}
       <div className="flex mb-6">
         <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-full border border-gray-100 shadow-sm p-1">
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50">
@@ -316,7 +381,7 @@ export default function AdminLetters() {
         </div>
       </div>
 
-      {/* Lista de cartas - (igual que antes, sin cambios) */}
+      {/* Lista de cartas */}
       {loading ? (
         <div className="flex justify-center py-12">
           <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
@@ -325,7 +390,7 @@ export default function AdminLetters() {
         <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
           <Mail className="w-12 h-12 text-gray-300 mx-auto mb-2" />
           <p className="text-gray-500 text-sm">No hay cartas</p>
-          <button onClick={() => openModal()} className="text-blue-500 text-sm mt-2">Crear primera carta</button>
+          <button onClick={openCreateModal} className="text-blue-500 text-sm mt-2">Crear primera carta</button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -358,7 +423,7 @@ export default function AdminLetters() {
                   </div>
                   <div className="flex items-center gap-0.5 ml-2">
                     <button onClick={() => viewLetter(letter)} className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"><Eye className="w-4 h-4" /></button>
-                    <button onClick={() => openModal(letter)} className="p-2 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all"><Edit className="w-4 h-4" /></button>
+                    <button onClick={() => openEditModal(letter)} className="p-2 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all"><Edit className="w-4 h-4" /></button>
                     <button onClick={() => { setLetterToDelete(letter._id); setShowDeleteModal(true); }} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
@@ -372,7 +437,7 @@ export default function AdminLetters() {
         </div>
       )}
 
-      {/* Modal de vista con carrusel - (igual que antes) */}
+      {/* ========== MODAL DE VER ========== */}
       {selectedLetter && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedLetter(null)}>
           <div className="relative w-full max-w-md max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
@@ -396,8 +461,8 @@ export default function AdminLetters() {
                   </div>
                   {mediaItems.length > 1 && (
                     <>
-                      <button onClick={prevMedia} disabled={currentMediaIndex === 0} className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center transition-all ${currentMediaIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-black/70'}`}><ChevronLeft className="w-5 h-5 text-white" /></button>
-                      <button onClick={nextMedia} disabled={currentMediaIndex === mediaItems.length - 1} className={`absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center transition-all ${currentMediaIndex === mediaItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-black/70'}`}><ChevronRight className="w-5 h-5 text-white" /></button>
+                      <button onClick={prevMedia} disabled={currentMediaIndex === 0} className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center ${currentMediaIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-black/70'}`}><ChevronLeft className="w-5 h-5 text-white" /></button>
+                      <button onClick={nextMedia} disabled={currentMediaIndex === mediaItems.length - 1} className={`absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center ${currentMediaIndex === mediaItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-black/70'}`}><ChevronRight className="w-5 h-5 text-white" /></button>
                     </>
                   )}
                   {mediaItems.length > 1 && <div className="flex justify-center gap-1.5 mt-2">{mediaItems.map((_, idx) => (<div key={idx} className={`h-1 rounded-full transition-all ${idx === currentMediaIndex ? 'w-4 bg-blue-500' : 'w-1.5 bg-gray-300'}`} />))}</div>}
@@ -409,140 +474,64 @@ export default function AdminLetters() {
         </div>
       )}
 
-      {/* Modal de creación/edición con opciones para eliminar multimedia */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={closeModal}>
+      {/* ========== MODAL DE CREAR ========== */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={closeCreateModal}>
           <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
             <div className="sticky top-0 bg-blue-600 px-6 py-4 rounded-t-2xl">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                    {editingId ? <Edit className="w-5 h-5 text-white" /> : <Plus className="w-5 h-5 text-white" />}
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-white">{editingId ? "Editar Carta" : "Nueva Carta"}</h2>
-                    <p className="text-xs text-blue-200 mt-0.5">
-                      {editingId ? "Modifica los datos de la carta existente" : "Completa la información para crear una nueva carta"}
-                    </p>
-                  </div>
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Plus className="w-5 h-5 text-white" /></div>
+                  <div><h2 className="text-xl font-bold text-white">Nueva Carta</h2><p className="text-xs text-blue-200 mt-0.5">Completa la información para crear una nueva carta</p></div>
                 </div>
-                <button onClick={closeModal} className="p-2 hover:bg-white/20 rounded-lg transition-colors"><X className="w-5 h-5 text-white" /></button>
+                <button onClick={closeCreateModal} className="p-2 hover:bg-white/20 rounded-lg"><X className="w-5 h-5 text-white" /></button>
               </div>
             </div>
+            <form onSubmit={handleCreate} className="p-6 space-y-5">
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Título <span className="text-red-500">*</span></label>
+                <input type="text" value={createForm.title} onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" placeholder="Ej: Mi primera carta" /></div>
 
-            <form onSubmit={handleSave} className="p-6 space-y-5">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Título <span className="text-red-500">*</span></label>
-                <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition-all bg-white" placeholder="Ej: Mi primera carta" />
-              </div>
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Mensaje <span className="text-red-500">*</span></label>
+                <textarea value={createForm.message} onChange={(e) => setCreateForm({ ...createForm, message: e.target.value })} required rows={5} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm resize-none bg-white" placeholder="Escribe el mensaje de la carta..." /></div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Mensaje <span className="text-red-500">*</span></label>
-                <textarea value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required rows={5} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none bg-white" placeholder="Escribe el mensaje de la carta..." />
-              </div>
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Mes <span className="text-red-500">*</span></label>
+                <select value={createForm.month} onChange={(e) => setCreateForm({ ...createForm, month: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white cursor-pointer">
+                  <option value="">Selecciona un mes</option>{months.map((month, idx) => (<option key={idx} value={idx + 1}>Mes {idx + 1} - {month}</option>))}
+                </select></div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Mes <span className="text-red-500">*</span></label>
-                <select value={formData.month} onChange={(e) => setFormData({ ...formData, month: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white cursor-pointer">
-                  <option value="">Selecciona un mes</option>
-                  {months.map((month, idx) => (<option key={idx} value={idx + 1}>Mes {idx + 1} - {month}</option>))}
-                </select>
-              </div>
-
-              {/* Archivos multimedia con opción de eliminar */}
               <div className="space-y-4 pt-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                  <p className="text-sm font-semibold text-gray-700">Multimedia (opcional)</p>
-                </div>
-
+                <div className="flex items-center gap-2"><div className="w-1 h-5 bg-blue-500 rounded-full"></div><p className="text-sm font-semibold text-gray-700">Multimedia (opcional)</p></div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Imagen */}
                   <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
                     <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
-                        <ImageIcon className="w-6 h-6 text-blue-500" />
-                      </div>
-                      <span className="font-medium">Subir imagen</span>
-                      <span className="text-[10px] text-gray-400">JPG, PNG, GIF</span>
-                      <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center"><ImageIcon className="w-6 h-6 text-blue-500" /></div>
+                      <span className="font-medium">Subir imagen</span><span className="text-[10px] text-gray-400">JPG, PNG, GIF</span>
+                      <input type="file" accept="image/*" onChange={handleCreateImageChange} className="hidden" />
                     </label>
-
-                    {(previewImage || formData.imageUrl) && (
-                      <div className="mt-3 relative">
-                        <img src={previewImage || formData.imageUrl} alt="Preview" className="w-full h-24 object-cover rounded-lg" />
-                        <button type="button" onClick={handleRemoveImage} className="absolute top-1 right-1 bg-red-500 rounded-full p-1 hover:bg-red-600 transition">
-                          <Trash className="w-3 h-3 text-white" />
-                        </button>
-                      </div>
-                    )}
-                    {formData.imageUrl && !previewImage && !removeImage && (
-                      <p className="text-xs text-green-600 mt-1 text-center">Imagen actual (no se eliminará a menos que subas una nueva o presiones eliminar)</p>
-                    )}
-                    {removeImage && <p className="text-xs text-red-500 mt-1 text-center">Esta imagen se eliminará al guardar</p>}
+                    {createPreviews.image && (<div className="mt-3 relative"><img src={createPreviews.image} alt="Preview" className="w-full h-24 object-cover rounded-lg" /><button type="button" onClick={handleCreateRemoveImage} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
                   </div>
-
-                  {/* Video */}
                   <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
                     <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
-                        <Video className="w-6 h-6 text-blue-500" />
-                      </div>
-                      <span className="font-medium">Subir video</span>
-                      <span className="text-[10px] text-gray-400">MP4, WebM</span>
-                      <input type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
+                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center"><Video className="w-6 h-6 text-blue-500" /></div>
+                      <span className="font-medium">Subir video</span><span className="text-[10px] text-gray-400">MP4, WebM</span>
+                      <input type="file" accept="video/*" onChange={handleCreateVideoChange} className="hidden" />
                     </label>
-
-                    {(previewVideo || formData.videoUrl) && (
-                      <div className="mt-3 relative">
-                        <video src={previewVideo || formData.videoUrl} className="w-full h-24 object-cover rounded-lg" controls />
-                        <button type="button" onClick={handleRemoveVideo} className="absolute top-1 right-1 bg-red-500 rounded-full p-1 hover:bg-red-600 transition">
-                          <Trash className="w-3 h-3 text-white" />
-                        </button>
-                      </div>
-                    )}
-                    {formData.videoUrl && !previewVideo && !removeVideo && (
-                      <p className="text-xs text-blue-600 mt-1 text-center">Video actual (no se eliminará a menos que subas uno nuevo o presiones eliminar)</p>
-                    )}
-                    {removeVideo && <p className="text-xs text-red-500 mt-1 text-center">Este video se eliminará al guardar</p>}
+                    {createPreviews.video && (<div className="mt-3 relative"><video src={createPreviews.video} className="w-full h-24 object-cover rounded-lg" controls /><button type="button" onClick={handleCreateRemoveVideo} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
                   </div>
-
-                  {/* Audio */}
                   <div className="sm:col-span-2 border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
                     <label className="flex items-center justify-between gap-2 text-sm text-gray-600 cursor-pointer">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-                          <Music className="w-5 h-5 text-purple-500" />
-                        </div>
-                        <div>
-                          <span className="font-medium">Subir audio</span>
-                          <p className="text-[10px] text-gray-400">MP3, WAV</p>
-                        </div>
-                      </div>
+                      <div className="flex items-center gap-3"><div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center"><Music className="w-5 h-5 text-purple-500" /></div><div><span className="font-medium">Subir audio</span><p className="text-[10px] text-gray-400">MP3, WAV</p></div></div>
                       <span className="text-xs text-blue-500">Seleccionar archivo</span>
-                      <input type="file" accept="audio/*" onChange={handleAudioChange} className="hidden" />
+                      <input type="file" accept="audio/*" onChange={handleCreateAudioChange} className="hidden" />
                     </label>
-
-                    {(previewAudio || formData.audioUrl) && (
-                      <div className="mt-3">
-                        <audio src={previewAudio || formData.audioUrl} controls className="w-full" />
-                        <button type="button" onClick={handleRemoveAudio} className="mt-2 text-xs text-red-500 hover:text-red-600 transition flex items-center gap-1">
-                          <Trash className="w-3 h-3" /> Eliminar audio
-                        </button>
-                      </div>
-                    )}
-                    {formData.audioUrl && !previewAudio && !removeAudio && (
-                      <p className="text-xs text-purple-600 mt-1 text-center">Audio actual (no se eliminará a menos que subas uno nuevo o presiones eliminar)</p>
-                    )}
-                    {removeAudio && <p className="text-xs text-red-500 mt-1 text-center">Este audio se eliminará al guardar</p>}
+                    {createPreviews.audio && (<div className="mt-3"><audio src={createPreviews.audio} controls className="w-full" /><button type="button" onClick={handleCreateRemoveAudio} className="mt-2 text-xs text-red-500">Eliminar audio</button></div>)}
                   </div>
                 </div>
               </div>
-
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <button type="button" onClick={closeModal} className="px-6 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium transition-all">Cancelar</button>
-                <button type="submit" disabled={formLoading} className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium shadow-md shadow-blue-200 disabled:opacity-50 flex items-center gap-2 transition-all">
-                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingId ? "Actualizar Carta" : "Crear Carta")}
+                <button type="button" onClick={closeCreateModal} className="px-6 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium">Cancelar</button>
+                <button type="submit" disabled={formLoading} className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium shadow-md shadow-blue-200 disabled:opacity-50 flex items-center gap-2">
+                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Crear Carta"}
                 </button>
               </div>
             </form>
@@ -550,7 +539,88 @@ export default function AdminLetters() {
         </div>
       )}
 
-      {/* Modal de eliminación */}
+      {/* ========== MODAL DE EDITAR ========== */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={closeEditModal}>
+          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-blue-600 px-6 py-4 rounded-t-2xl">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Edit className="w-5 h-5 text-white" /></div>
+                  <div><h2 className="text-xl font-bold text-white">Editar Carta</h2><p className="text-xs text-blue-200 mt-0.5">Modifica los datos de la carta existente</p></div>
+                </div>
+                <button onClick={closeEditModal} className="p-2 hover:bg-white/20 rounded-lg"><X className="w-5 h-5 text-white" /></button>
+              </div>
+            </div>
+            <form onSubmit={handleUpdate} className="p-6 space-y-5">
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Título <span className="text-red-500">*</span></label>
+                <input type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" /></div>
+
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Mensaje <span className="text-red-500">*</span></label>
+                <textarea value={editForm.message} onChange={(e) => setEditForm({ ...editForm, message: e.target.value })} required rows={5} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm resize-none bg-white" /></div>
+
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Mes <span className="text-red-500">*</span></label>
+                <select value={editForm.month} onChange={(e) => setEditForm({ ...editForm, month: e.target.value })} required className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white cursor-pointer">
+                  <option value="">Selecciona un mes</option>{months.map((month, idx) => (<option key={idx} value={idx + 1}>Mes {idx + 1} - {month}</option>))}
+                </select></div>
+
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center gap-2"><div className="w-1 h-5 bg-blue-500 rounded-full"></div><p className="text-sm font-semibold text-gray-700">Multimedia (opcional)</p></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                    <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center"><ImageIcon className="w-6 h-6 text-blue-500" /></div>
+                      <span className="font-medium">Subir nueva imagen</span><span className="text-[10px] text-gray-400">JPG, PNG, GIF</span>
+                      <input type="file" accept="image/*" onChange={handleEditImageChange} className="hidden" />
+                    </label>
+                    {(editPreviews.image || editForm.imageUrl) && (
+                      <div className="mt-3 relative">
+                        <img src={editPreviews.image || editForm.imageUrl} alt="Preview" className="w-full h-24 object-cover rounded-lg" />
+                        <button type="button" onClick={handleEditRemoveImage} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button>
+                      </div>
+                    )}
+                    {editForm.imageUrl && !editPreviews.image && !removeImage && <p className="text-xs text-green-600 mt-1 text-center">Imagen actual</p>}
+                    {removeImage && <p className="text-xs text-red-500 mt-1 text-center">Esta imagen se eliminará al guardar</p>}
+                  </div>
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                    <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                      <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center"><Video className="w-6 h-6 text-blue-500" /></div>
+                      <span className="font-medium">Subir nuevo video</span><span className="text-[10px] text-gray-400">MP4, WebM</span>
+                      <input type="file" accept="video/*" onChange={handleEditVideoChange} className="hidden" />
+                    </label>
+                    {(editPreviews.video || editForm.videoUrl) && (
+                      <div className="mt-3 relative">
+                        <video src={editPreviews.video || editForm.videoUrl} className="w-full h-24 object-cover rounded-lg" controls />
+                        <button type="button" onClick={handleEditRemoveVideo} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button>
+                      </div>
+                    )}
+                    {editForm.videoUrl && !editPreviews.video && !removeVideo && <p className="text-xs text-blue-600 mt-1 text-center">Video actual</p>}
+                    {removeVideo && <p className="text-xs text-red-500 mt-1 text-center">Este video se eliminará al guardar</p>}
+                  </div>
+                  <div className="sm:col-span-2 border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                    <label className="flex items-center justify-between gap-2 text-sm text-gray-600 cursor-pointer">
+                      <div className="flex items-center gap-3"><div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center"><Music className="w-5 h-5 text-purple-500" /></div><div><span className="font-medium">Subir nuevo audio</span><p className="text-[10px] text-gray-400">MP3, WAV</p></div></div>
+                      <span className="text-xs text-blue-500">Seleccionar archivo</span>
+                      <input type="file" accept="audio/*" onChange={handleEditAudioChange} className="hidden" />
+                    </label>
+                    {(editPreviews.audio || editForm.audioUrl) && (<div className="mt-3"><audio src={editPreviews.audio || editForm.audioUrl} controls className="w-full" /><button type="button" onClick={handleEditRemoveAudio} className="mt-2 text-xs text-red-500">Eliminar audio</button></div>)}
+                    {editForm.audioUrl && !editPreviews.audio && !removeAudio && <p className="text-xs text-purple-600 mt-1 text-center">Audio actual</p>}
+                    {removeAudio && <p className="text-xs text-red-500 mt-1 text-center">Este audio se eliminará al guardar</p>}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <button type="button" onClick={closeEditModal} className="px-6 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl text-sm font-medium">Cancelar</button>
+                <button type="submit" disabled={formLoading} className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium shadow-md shadow-blue-200 disabled:opacity-50 flex items-center gap-2">
+                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Actualizar Carta"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========== MODAL DE ELIMINACIÓN ========== */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowDeleteModal(false)}>
           <div className="relative max-w-sm w-full bg-white rounded-2xl shadow-xl p-5 text-center">

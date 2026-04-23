@@ -55,9 +55,9 @@ export default function MusicPage() {
   useEffect(() => {
     if (audioRef.current && currentSong) {
       audioRef.current.load()
-      if (isPlaying) {
-        audioRef.current.play()
-      }
+      // Reproducir automáticamente cuando cambia la canción manualmente
+      audioRef.current.play()
+      setIsPlaying(true)
       setProgress(0)
       setCurrentTime('0:00')
     }
@@ -128,6 +128,12 @@ export default function MusicPage() {
   const formatDuration = (duration) => {
     if (!duration) return '0:00'
     return duration
+  }
+
+  // Cambiar canción manualmente (desde la lista)
+  const handleSelectSong = (index) => {
+    setCurrentSongIndex(index)
+    // La reproducción automática se manejará en el useEffect
   }
 
   // Playlists calculadas desde las canciones reales
@@ -344,14 +350,7 @@ export default function MusicPage() {
                   <div
                     key={song._id}
                     className={`flex items-center justify-between p-3 hover:bg-gray-50 transition-colors cursor-pointer ${index !== songs.length - 1 ? 'border-b border-gray-100' : ''} ${currentSongIndex === index ? 'bg-blue-50' : ''}`}
-                    onClick={() => {
-                      setCurrentSongIndex(index)
-                      if (isPlaying && audioRef.current) {
-                        setTimeout(() => {
-                          audioRef.current?.play()
-                        }, 100)
-                      }
-                    }}
+                    onClick={() => handleSelectSong(index)}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${currentSongIndex === index ? 'bg-blue-500' : 'bg-gradient-to-br from-blue-100 to-indigo-100'}`}>

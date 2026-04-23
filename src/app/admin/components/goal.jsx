@@ -7,7 +7,7 @@ import {
   Target, Plus, Edit, Trash2, Eye, Calendar,
   Image as ImageIcon, Video, Loader2,
   Search, X, Sparkles, CheckCircle, Clock,
-  Trophy
+  Trophy, Trash 
 } from "lucide-react";
 
 export default function AdminGoals() {
@@ -15,20 +15,30 @@ export default function AdminGoals() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGoal, setSelectedGoal] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    status: "pendiente"
-  });
+  
+  // Formulario para crear
+  const [createForm, setCreateForm] = useState({ title: "", description: "" });
+  const [createImage, setCreateImage] = useState(null);
+  const [createVideo, setCreateVideo] = useState(null);
+  const [createPreviewImage, setCreatePreviewImage] = useState(null);
+  const [createPreviewVideo, setCreatePreviewVideo] = useState(null);
+  
+  // Formulario para editar
   const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({ title: "", description: "", status: "pendiente", imageUrl: "", videoUrl: "" });
+  const [editImage, setEditImage] = useState(null);
+  const [editVideo, setEditVideo] = useState(null);
+  const [editPreviewImage, setEditPreviewImage] = useState(null);
+  const [editPreviewVideo, setEditPreviewVideo] = useState(null);
+  const [removeImage, setRemoveImage] = useState(false);
+  const [removeVideo, setRemoveVideo] = useState(false);
+  
   const [formLoading, setFormLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
 
-  // Obtener metas
   const fetchGoals = async () => {
     try {
       setLoading(true);
@@ -46,99 +56,106 @@ export default function AdminGoals() {
     fetchGoals();
   }, []);
 
-  // Filtrar metas
   const filteredGoals = goals.filter(goal =>
     goal.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     goal.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Abrir modal para crear/editar
-  const openModal = (goal = null) => {
-    if (goal) {
-      setEditingId(goal._id);
-      setFormData({
-        title: goal.title || "",
-        description: goal.description || "",
-        status: goal.status || "pendiente"
-      });
-    } else {
-      setEditingId(null);
-      setFormData({
-        title: "",
-        description: "",
-        status: "pendiente"
-      });
-    }
-    setImageFile(null);
-    setVideoFile(null);
-    setShowModal(true);
+  // ========== CREAR ==========
+  const openCreateModal = () => {
+    setCreateForm({ title: "", description: "" });
+    setCreateImage(null); setCreateVideo(null);
+    setCreatePreviewImage(null); setCreatePreviewVideo(null);
+    setShowCreateModal(true);
   };
 
-  // Cerrar modal
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedGoal(null);
-    setFormData({
-      title: "",
-      description: "",
-      status: "pendiente"
-    });
-    setEditingId(null);
-    setImageFile(null);
-    setVideoFile(null);
+  const closeCreateModal = () => setShowCreateModal(false);
+
+  const handleCreateImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) { setCreateImage(file); setCreatePreviewImage(URL.createObjectURL(file)); }
   };
 
-  // Guardar meta
-  const handleSave = async (e) => {
+  const handleCreateVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) { setCreateVideo(file); setCreatePreviewVideo(URL.createObjectURL(file)); }
+  };
+
+  const handleCreateRemoveImage = () => { setCreateImage(null); setCreatePreviewImage(null); };
+  const handleCreateRemoveVideo = () => { setCreateVideo(null); setCreatePreviewVideo(null); };
+
+  const handleCreate = async (e) => {
     e.preventDefault();
     setFormLoading(true);
-
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("title", formData.title);
-      formDataToSend.append("description", formData.description);
-      
-      if (imageFile) formDataToSend.append("image", imageFile);
-      if (videoFile) formDataToSend.append("video", videoFile);
-
-      if (editingId) {
-        await axios.put(`/api/goals/${editingId}`, formDataToSend, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        toast.success("Meta actualizada exitosamente");
-      } else {
-        await axios.post("/api/goals", formDataToSend, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        toast.success("Meta creada exitosamente");
-      }
+      const formData = new FormData();
+      formData.append("title", createForm.title);
+      formData.append("description", createForm.description);
+      if (createImage) formData.append("image", createImage);
+      if (createVideo) formData.append("video", createVideo);
+      await axios.post("/api/goals", formData);
+      toast.success("Meta creada exitosamente");
       fetchGoals();
-      closeModal();
+      closeCreateModal();
     } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Error al guardar la meta");
-    } finally {
-      setFormLoading(false);
-    }
+      toast.error(error.response?.data?.message || "Error al crear");
+    } finally { setFormLoading(false); }
   };
 
-  // Cambiar estado de la meta
-  const toggleStatus = async (goal) => {
-    const newStatus = goal.status === "completado" ? "pendiente" : "completado";
-    try {
-      await axios.patch(`/api/goals/${goal._id}/status`, { status: newStatus });
-      toast.success(`Meta marcada como ${newStatus === "completado" ? "completada" : "pendiente"}`);
-      fetchGoals();
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al cambiar el estado");
-    }
+  // ========== EDITAR ==========
+  const openEditModal = (goal) => {
+    setEditingId(goal._id);
+    setEditForm({
+      title: goal.title || "",
+      description: goal.description || "",
+      status: goal.status || "pendiente",
+      imageUrl: goal.media?.image || "",
+      videoUrl: goal.media?.video || ""
+    });
+    setEditImage(null); setEditVideo(null);
+    setEditPreviewImage(null); setEditPreviewVideo(null);
+    setRemoveImage(false); setRemoveVideo(false);
+    setShowEditModal(true);
   };
 
-  // Eliminar meta
+  const closeEditModal = () => setShowEditModal(false);
+
+  const handleEditImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) { setEditImage(file); setEditPreviewImage(URL.createObjectURL(file)); setRemoveImage(false); }
+  };
+
+  const handleEditVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) { setEditVideo(file); setEditPreviewVideo(URL.createObjectURL(file)); setRemoveVideo(false); }
+  };
+
+  const handleEditRemoveImage = () => { setRemoveImage(true); setEditForm({ ...editForm, imageUrl: "" }); setEditPreviewImage(null); setEditImage(null); };
+  const handleEditRemoveVideo = () => { setRemoveVideo(true); setEditForm({ ...editForm, videoUrl: "" }); setEditPreviewVideo(null); setEditVideo(null); };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("title", editForm.title);
+      formData.append("description", editForm.description);
+      formData.append("removeImage", removeImage);
+      formData.append("removeVideo", removeVideo);
+      if (editImage) formData.append("image", editImage);
+      if (editVideo) formData.append("video", editVideo);
+      await axios.put(`/api/goals/${editingId}`, formData);
+      toast.success("Meta actualizada exitosamente");
+      fetchGoals();
+      closeEditModal();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error al actualizar");
+    } finally { setFormLoading(false); }
+  };
+
+  // ========== ELIMINAR ==========
   const handleDelete = async () => {
     if (!goalToDelete) return;
-    
     try {
       await axios.delete(`/api/goals/${goalToDelete}`);
       toast.success("Meta eliminada exitosamente");
@@ -146,264 +163,184 @@ export default function AdminGoals() {
       setShowDeleteModal(false);
       setGoalToDelete(null);
     } catch (error) {
-      console.error(error);
       toast.error("Error al eliminar la meta");
     }
   };
 
-  // Ver meta
-  const viewGoal = (goal) => {
-    setSelectedGoal(goal);
+  // ========== CAMBIAR ESTADO ==========
+  const toggleStatus = async (goal) => {
+    const newStatus = goal.status === "completado" ? "pendiente" : "completado";
+    try {
+      await axios.patch(`/api/goals/${goal._id}/status`, { status: newStatus });
+      toast.success(`Meta marcada como ${newStatus === "completado" ? "completada" : "pendiente"}`);
+      fetchGoals();
+    } catch (error) {
+      toast.error("Error al cambiar el estado");
+    }
   };
+
+  // ========== VER ==========
+  const viewGoal = (goal) => setSelectedGoal(goal);
 
   const getStatusBadge = (status) => {
     if (status === "completado") {
-      return {
-        text: "Completada",
-        icon: <CheckCircle className="w-3 h-3" />,
-        color: "bg-emerald-100 text-emerald-700"
-      };
+      return { text: "Completada", icon: <CheckCircle className="w-3 h-3" />, color: "bg-emerald-100 text-emerald-700" };
     }
-    return {
-      text: "Pendiente",
-      icon: <Clock className="w-3 h-3" />,
-      color: "bg-amber-100 text-amber-700"
-    };
+    return { text: "Pendiente", icon: <Clock className="w-3 h-3" />, color: "bg-amber-100 text-amber-700" };
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                <Target className="w-4 h-4 text-amber-600" />
-              </div>
-              <h1 className="text-2xl font-bold text-gray-800">Administrar Metas</h1>
-            </div>
-            <p className="text-gray-500 ml-10">Gestiona todas las metas de la plataforma</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Target className="w-5 h-5 text-blue-600" />
+            <h1 className="text-xl font-bold text-gray-800">Administrar Metas</h1>
           </div>
-          <button
-            onClick={() => openModal()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-xl transition-all shadow-md shadow-amber-200"
-          >
-            <Plus className="w-4 h-4" />
-            Nueva Meta
-          </button>
+          <p className="text-xs text-gray-500 ml-7">Gestiona todas las metas de la plataforma</p>
         </div>
+        <button onClick={openCreateModal} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-200 text-sm font-medium w-full sm:w-auto justify-center">
+          <Plus className="w-4 h-4" /> Nueva Meta
+        </button>
       </div>
 
-      {/* Buscador y estadísticas */}
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <div className="md:col-span-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Buscar metas por título o descripción..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all bg-gray-50"
-            />
+      {/* Buscador */}
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <input type="text" placeholder="Buscar metas..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" />
+      </div>
+
+      {/* Estadísticas */}
+      <div className="flex mb-6">
+        <div className="inline-flex items-center gap-3 bg-white rounded-full border border-gray-200 shadow-sm p-1">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50">
+            <Target className="w-4 h-4 text-blue-600" />
+            <span className="text-lg font-bold text-gray-800">{goals.length}</span>
+            <span className="text-[10px] text-gray-500">Total</span>
           </div>
-        </div>
-        <div className="flex gap-3">
-          <div className="flex-1 bg-amber-50 rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-amber-600">{goals.length}</p>
-            <p className="text-xs text-gray-500">Total Metas</p>
-          </div>
-          <div className="flex-1 bg-emerald-50 rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-emerald-600">
-              {goals.filter(g => g.status === "completado").length}
-            </p>
-            <p className="text-xs text-gray-500">Completadas</p>
+          <div className="w-px h-6 bg-gray-200"></div>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full">
+            <CheckCircle className="w-4 h-4 text-emerald-500" />
+            <span className="text-lg font-bold text-gray-800">{goals.filter(g => g.status === "completado").length}</span>
+            <span className="text-[10px] text-gray-500">Completadas</span>
           </div>
         </div>
       </div>
 
-      {/* Tabla de metas */}
+      {/* Grid de metas - Tarjetas con preview multimedia */}
       {loading ? (
-        <div className="flex flex-col justify-center items-center py-20 bg-white rounded-2xl border border-gray-100">
-          <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-3" />
-          <p className="text-gray-500">Cargando metas...</p>
-        </div>
+        <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 text-blue-500 animate-spin" /></div>
       ) : filteredGoals.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Target className="w-10 h-10 text-gray-400" />
-          </div>
-          <p className="text-gray-500 mb-2">No hay metas registradas</p>
-          <button
-            onClick={() => openModal()}
-            className="text-amber-500 hover:text-amber-600 text-sm font-medium inline-flex items-center gap-1"
-          >
-            <Plus className="w-3 h-3" />
-            Crear primera meta
-          </button>
+        <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
+          <Target className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+          <p className="text-gray-500 text-sm">No hay metas</p>
+          <button onClick={openCreateModal} className="text-blue-500 text-sm mt-2">Crear primera meta</button>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Título</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Descripción</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Multimedia</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredGoals.map((goal, index) => {
-                  const statusBadge = getStatusBadge(goal.status);
-                  return (
-                    <tr key={goal._id} className="hover:bg-amber-50/30 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-sm font-bold">
-                          {index + 1}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredGoals.map((goal, index) => {
+            const statusBadge = getStatusBadge(goal.status);
+            const hasImage = !!goal.media?.image;
+            const hasVideo = !!goal.media?.video;
+            const firstMedia = hasImage ? goal.media.image : hasVideo ? goal.media.video : null;
+            const firstMediaType = hasImage ? "image" : hasVideo ? "video" : null;
+            
+            return (
+              <div key={goal._id} className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                {/* Barra superior */}
+                <div className={`h-1 ${goal.status === "completado" ? "bg-emerald-500" : "bg-blue-500"}`}></div>
+                
+                {/* Preview multimedia - primer archivo */}
+                {firstMedia && (
+                  <div className="relative h-32 overflow-hidden bg-gray-100">
+                    {firstMediaType === "image" && (
+                      <img src={firstMedia} alt="Preview" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    )}
+                    {firstMediaType === "video" && (
+                      <div className="relative w-full h-full bg-gray-900 flex items-center justify-center">
+                        <video className="w-full h-full object-cover" src={firstMedia} />
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+                            <div className="w-0 h-0 border-t-6 border-t-transparent border-l-10 border-l-white border-b-6 border-b-transparent ml-1" />
+                          </div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="font-medium text-gray-800">{goal.title}</p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="text-sm text-gray-600 line-clamp-2 max-w-xs">
-                          {goal.description}
-                        </p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-1">
-                          {goal.media?.image && <ImageIcon className="w-4 h-4 text-green-500" title="Imagen" />}
-                          {goal.media?.video && <Video className="w-4 h-4 text-blue-500" title="Video" />}
-                          {!goal.media?.image && !goal.media?.video && (
-                            <span className="text-xs text-gray-400">Sin archivos</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <button
-                          onClick={() => toggleStatus(goal)}
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${statusBadge.color} hover:opacity-80`}
-                        >
-                          {statusBadge.icon}
-                          {statusBadge.text}
-                        </button>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-center gap-2">
-                          <button
-                            onClick={() => viewGoal(goal)}
-                            className="p-2 text-blue-500 hover:bg-blue-100 rounded-lg transition-all"
-                            title="Ver"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => openModal(goal)}
-                            className="p-2 text-amber-500 hover:bg-amber-100 rounded-lg transition-all"
-                            title="Editar"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => {
-                              setGoalToDelete(goal._id);
-                              setShowDeleteModal(true);
-                            }}
-                            className="p-2 text-red-500 hover:bg-red-100 rounded-lg transition-all"
-                            title="Eliminar"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                <div className="p-4">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+                        {index + 1}
+                      </div>
+                      <button onClick={() => toggleStatus(goal)} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-medium ${statusBadge.color}`}>
+                        {statusBadge.icon}{statusBadge.text}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => viewGoal(goal)} className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg"><Eye className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => openEditModal(goal)} className="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg"><Edit className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => { setGoalToDelete(goal._id); setShowDeleteModal(true); }} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg"><Trash2 className="w-3.5 h-3.5" /></button>
+                    </div>
+                  </div>
+                  
+                  {/* Título */}
+                  <h3 className="font-semibold text-gray-800 text-sm mb-1 line-clamp-1">{goal.title}</h3>
+                  
+                  {/* Descripción */}
+                  <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">{goal.description}</p>
+                  
+                  {/* Indicadores multimedia */}
+                  {(hasImage || hasVideo) && (
+                    <div className="flex gap-1 mt-2">
+                      {hasImage && <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-green-50 text-green-600 rounded text-[9px]"><ImageIcon className="w-2.5 h-2.5" />Img</span>}
+                      {hasVideo && <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[9px]"><Video className="w-2.5 h-2.5" />Vid</span>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* Modal para crear/editar meta */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={closeModal}>
-          <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-4 flex justify-between items-center rounded-t-2xl">
-              <h2 className="text-xl font-bold text-white">
-                {editingId ? "Editar Meta" : "Nueva Meta"}
-              </h2>
-              <button onClick={closeModal} className="p-1 hover:bg-white/20 rounded-lg transition-colors">
-                <X className="w-5 h-5 text-white" />
-              </button>
+      {/* MODAL DE CREAR - Azul */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={closeCreateModal}>
+          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-blue-600 px-6 py-4 rounded-t-2xl">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3"><div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Plus className="w-5 h-5 text-white" /></div><div><h2 className="text-xl font-bold text-white">Nueva Meta</h2><p className="text-xs text-blue-200 mt-0.5">Completa la información</p></div></div>
+                <button onClick={closeCreateModal} className="p-2 hover:bg-white/20 rounded-lg"><X className="w-5 h-5 text-white" /></button>
+              </div>
             </div>
-
-            <form onSubmit={handleSave} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="Título de la meta"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  required
-                  rows={4}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
-                  placeholder="Describe la meta..."
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Imagen</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setImageFile(e.target.files[0])}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-amber-50 file:text-amber-700"
-                  />
+            <form onSubmit={handleCreate} className="p-6 space-y-5">
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Título *</label><input type="text" value={createForm.title} onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })} required className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" /></div>
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Descripción *</label><textarea value={createForm.description} onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })} required rows={4} className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm resize-none bg-white" /></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                  <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                    <ImageIcon className="w-8 h-8 text-blue-500" /><span className="font-medium">Imagen</span>
+                    <input type="file" accept="image/*" onChange={handleCreateImageChange} className="hidden" />
+                  </label>
+                  {createPreviewImage && (<div className="mt-2 relative"><img src={createPreviewImage} alt="Preview" className="w-full h-20 object-cover rounded-lg" /><button type="button" onClick={handleCreateRemoveImage} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Video</label>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={(e) => setVideoFile(e.target.files[0])}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-amber-50 file:text-amber-700"
-                  />
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                  <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                    <Video className="w-8 h-8 text-blue-500" /><span className="font-medium">Video</span>
+                    <input type="file" accept="video/*" onChange={handleCreateVideoChange} className="hidden" />
+                  </label>
+                  {createPreviewVideo && (<div className="mt-2 relative"><video src={createPreviewVideo} className="w-full h-20 object-cover rounded-lg" controls /><button type="button" onClick={handleCreateRemoveVideo} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
                 </div>
               </div>
-
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-5 py-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  disabled={formLoading}
-                  className="px-5 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-xl transition-all shadow-md shadow-amber-200 disabled:opacity-50 flex items-center gap-2"
-                >
-                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingId ? "Actualizar" : "Crear")}
+                <button type="button" onClick={closeCreateModal} className="px-5 py-2 text-gray-600 hover:bg-gray-100 rounded-xl text-sm">Cancelar</button>
+                <button type="submit" disabled={formLoading} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm shadow-md shadow-blue-200 disabled:opacity-50 flex items-center gap-2">
+                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Crear Meta"}
                 </button>
               </div>
             </form>
@@ -411,74 +348,79 @@ export default function AdminGoals() {
         </div>
       )}
 
-      {/* Modal para ver meta */}
-      {selectedGoal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedGoal(null)}>
-          <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-4 flex justify-between items-center rounded-t-2xl">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-white" />
-                <h2 className="text-xl font-bold text-white">{selectedGoal.title}</h2>
+      {/* MODAL DE EDITAR - Azul */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={closeEditModal}>
+          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-blue-600 px-6 py-4 rounded-t-2xl">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3"><div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Edit className="w-5 h-5 text-white" /></div><div><h2 className="text-xl font-bold text-white">Editar Meta</h2><p className="text-xs text-blue-200 mt-0.5">Modifica los datos</p></div></div>
+                <button onClick={closeEditModal} className="p-2 hover:bg-white/20 rounded-lg"><X className="w-5 h-5 text-white" /></button>
               </div>
-              <button onClick={() => setSelectedGoal(null)} className="p-1 hover:bg-white/20 rounded-lg">
-                <X className="w-5 h-5 text-white" />
-              </button>
             </div>
-            <div className="p-6">
-              <div className="mb-4">
-                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(selectedGoal.status).color}`}>
-                  {getStatusBadge(selectedGoal.status).icon}
-                  {getStatusBadge(selectedGoal.status).text}
-                </span>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{selectedGoal.description}</p>
-              </div>
-              {selectedGoal.media?.image && (
-                <div className="mt-4">
-                  <img src={selectedGoal.media.image} alt="Meta" className="rounded-xl max-h-64 w-full object-cover shadow-md" />
+            <form onSubmit={handleUpdate} className="p-6 space-y-5">
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Título *</label><input type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} required className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" /></div>
+              <div><label className="block text-sm font-semibold text-gray-700 mb-1.5">Descripción *</label><textarea value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} required rows={4} className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm resize-none bg-white" /></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                  <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                    <ImageIcon className="w-8 h-8 text-emerald-500" /><span className="font-medium">Nueva imagen</span>
+                    <input type="file" accept="image/*" onChange={handleEditImageChange} className="hidden" />
+                  </label>
+                  {(editPreviewImage || editForm.imageUrl) && (<div className="mt-2 relative"><img src={editPreviewImage || editForm.imageUrl} alt="Preview" className="w-full h-20 object-cover rounded-lg" /><button type="button" onClick={handleEditRemoveImage} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
+                  {editForm.imageUrl && !editPreviewImage && !removeImage && <p className="text-xs text-emerald-600 mt-1">Imagen actual</p>}
+                  {removeImage && <p className="text-xs text-red-500 mt-1">Se eliminará al guardar</p>}
                 </div>
-              )}
-              {selectedGoal.media?.video && (
-                <div className="mt-4">
-                  <video controls className="rounded-xl w-full shadow-md">
-                    <source src={selectedGoal.media.video} />
-                  </video>
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-all">
+                  <label className="flex flex-col items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                    <Video className="w-8 h-8 text-blue-500" /><span className="font-medium">Nuevo video</span>
+                    <input type="file" accept="video/*" onChange={handleEditVideoChange} className="hidden" />
+                  </label>
+                  {(editPreviewVideo || editForm.videoUrl) && (<div className="mt-2 relative"><video src={editPreviewVideo || editForm.videoUrl} className="w-full h-20 object-cover rounded-lg" controls /><button type="button" onClick={handleEditRemoveVideo} className="absolute top-1 right-1 bg-red-500 rounded-full p-1"><Trash className="w-3 h-3 text-white" /></button></div>)}
+                  {editForm.videoUrl && !editPreviewVideo && !removeVideo && <p className="text-xs text-blue-600 mt-1">Video actual</p>}
+                  {removeVideo && <p className="text-xs text-red-500 mt-1">Se eliminará al guardar</p>}
                 </div>
-              )}
-              <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-                <Sparkles className="w-4 h-4 text-amber-400 inline-block mr-1" />
-                <span className="text-xs text-gray-400">Meta creada para cumplir juntos</span>
               </div>
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <button type="button" onClick={closeEditModal} className="px-5 py-2 text-gray-600 hover:bg-gray-100 rounded-xl text-sm">Cancelar</button>
+                <button type="submit" disabled={formLoading} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm shadow-md shadow-blue-200 disabled:opacity-50 flex items-center gap-2">
+                  {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Actualizar Meta"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE VER - Azul */}
+      {selectedGoal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedGoal(null)}>
+          <div className="relative w-full max-w-md max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-blue-600 px-5 py-3 text-white rounded-t-2xl">
+              <div className="flex justify-between items-center"><h2 className="text-lg font-bold">{selectedGoal.title}</h2><button onClick={() => setSelectedGoal(null)} className="p-1 hover:bg-white/20 rounded-lg"><X className="w-5 h-5" /></button></div>
+              <p className="text-xs text-blue-200 mt-1">Meta</p>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="mb-2"><span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(selectedGoal.status).color}`}>{getStatusBadge(selectedGoal.status).icon}{getStatusBadge(selectedGoal.status).text}</span></div>
+              <div className="bg-gray-50 rounded-xl p-4"><p className="text-gray-700 text-sm leading-relaxed">{selectedGoal.description}</p></div>
+              {selectedGoal.media?.image && <img src={selectedGoal.media.image} alt="Meta" className="rounded-xl w-full max-h-64 object-cover" />}
+              {selectedGoal.media?.video && <video controls className="rounded-xl w-full max-h-64"><source src={selectedGoal.media.video} /></video>}
+              <div className="text-center pt-2"><p className="text-blue-500 text-xs italic">"Cada meta cumplida es un paso hacia nuestros sueños"</p></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal de confirmación de eliminación */}
+      {/* MODAL DE ELIMINACIÓN */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowDeleteModal(false)}>
-          <div className="relative max-w-md w-full bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 text-center">
-              <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Trash2 className="w-7 h-7 text-red-500" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">¿Eliminar meta?</h3>
-              <p className="text-gray-500 text-sm mb-6">Esta acción no se puede deshacer.</p>
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setShowDeleteModal(false)}
-                  className="px-5 py-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all shadow-md"
-                >
-                  Eliminar
-                </button>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowDeleteModal(false)}>
+          <div className="relative max-w-sm w-full bg-white rounded-2xl shadow-xl p-5 text-center">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3"><Trash2 className="w-6 h-6 text-red-500" /></div>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">¿Eliminar meta?</h3>
+            <p className="text-gray-500 text-sm mb-4">Esta acción no se puede deshacer.</p>
+            <div className="flex gap-3 justify-center">
+              <button onClick={() => setShowDeleteModal(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl text-sm">Cancelar</button>
+              <button onClick={handleDelete} className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm shadow-md">Eliminar</button>
             </div>
           </div>
         </div>

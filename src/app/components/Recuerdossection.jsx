@@ -7,40 +7,58 @@ export default function RecuerdosSection() {
 
   const recuerdos = [
     {
-      id: 1, type: 'image', title: 'Nuestro Primer Viaje',
-      thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-      fullMedia: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
-      date: '15 de Marzo', description: 'El día que decidimos explorar el mundo juntos.'
+      id: 1,
+      type: 'image',
+      title: 'Nuestro Primer Viaje',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/primer-viaje-thumb.jpg',
+      fullMedia: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/primer-viaje.jpg',
+      date: '15 de Marzo',
+      description: 'El día que decidimos explorar el mundo juntos.'
     },
     {
-      id: 2, type: 'video', title: 'Nuestro Primer Beso',
-      thumbnail: 'https://images.unsplash.com/photo-1514888286974-6c03bf1ca47d?w=400&h=300&fit=crop',
-      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      date: '22 de Febrero', description: 'El momento que cambió todo.'
+      id: 2,
+      type: 'video',
+      title: 'Nuestro Primer Beso',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/videos/primer-beso-thumb.jpg',
+      video: 'https://res.cloudinary.com/TU_CLOUD_NAME/video/upload/v123/memories/videos/primer-beso.mp4',
+      date: '22 de Febrero',
+      description: 'El momento que cambió todo.'
     },
     {
-      id: 3, type: 'image', title: 'Atardecer Especial',
-      thumbnail: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop',
-      fullMedia: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&h=600&fit=crop',
-      date: '10 de Enero', description: 'Viéndote con la luz del atardecer.'
+      id: 3,
+      type: 'image',
+      title: 'Atardecer Especial',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/atardecer-thumb.jpg',
+      fullMedia: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/atardecer.jpg',
+      date: '10 de Enero',
+      description: 'Viéndote con la luz del atardecer.'
     },
     {
-      id: 4, type: 'image', title: 'En la Lluvia',
-      thumbnail: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=300&fit=crop',
-      fullMedia: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=800&h=600&fit=crop',
-      date: '3 de Diciembre', description: 'Los mejores momentos son contigo.'
+      id: 4,
+      type: 'image',
+      title: 'En la Lluvia',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/lluvia-thumb.jpg',
+      fullMedia: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/lluvia.jpg',
+      date: '3 de Diciembre',
+      description: 'Los mejores momentos son contigo.'
     },
     {
-      id: 5, type: 'video', title: 'Nuestras Risas',
-      thumbnail: 'https://images.unsplash.com/photo-1516567867245-ad8a36ae3d91?w=400&h=300&fit=crop',
-      video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      date: '25 de Noviembre', description: 'Capturando el sonido de tu risa.'
+      id: 5,
+      type: 'video',
+      title: 'Nuestras Risas',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/videos/risas-thumb.jpg',
+      video: 'https://res.cloudinary.com/TU_CLOUD_NAME/video/upload/v123/memories/videos/risas.mp4',
+      date: '25 de Noviembre',
+      description: 'Capturando el sonido de tu risa.'
     },
     {
-      id: 6, type: 'image', title: 'Momento Cálido',
-      thumbnail: 'https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=400&h=300&fit=crop',
-      fullMedia: 'https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=800&h=600&fit=crop',
-      date: '18 de Octubre', description: 'Tus manos en las mías.'
+      id: 6,
+      type: 'image',
+      title: 'Momento Cálido',
+      thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/momento-calido-thumb.jpg',
+      fullMedia: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/momento-calido.jpg',
+      date: '18 de Octubre',
+      description: 'Tus manos en las mías.'
     },
   ];
 
@@ -142,20 +160,20 @@ export default function RecuerdosSection() {
 
               <div className="aspect-video bg-black overflow-hidden rounded-t-2xl">
                 {selectedMedia.type === 'video' ? (
-                  <iframe
-                    width="100%" height="100%"
+                  <video
+                    controls
+                    autoPlay
+                    className="w-full h-full object-contain"
                     src={selectedMedia.video}
-                    title={selectedMedia.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
+                    poster={selectedMedia.thumbnail}
+                  >
+                    Tu navegador no soporta el elemento de video.
+                  </video>
                 ) : (
                   <img
                     src={selectedMedia.fullMedia}
                     alt={selectedMedia.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain bg-black"
                   />
                 )}
               </div>

@@ -11,31 +11,31 @@ export default function RecuerdosSection() {
   const recuerdoVideo = {
     id: 1,
     type: 'video',
-    title: 'Nuestro Momento Favorito',
+    title: 'El Día que Nos Vimos por Primera Vez en el Bus',
     thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/videos/momento-favorito-thumb.jpg',
     video: 'https://player.cloudinary.com/embed/?cloud_name=dbgj8dqup&public_id=2026-04-24-150214556_r9ndmt.mp4',
-    date: '15 de Marzo',
-    description: 'Ese día que el tiempo se detuvo y solo existíamos tú y yo.'
+    date: 'Aquella tarde que nunca olvidaré',
+    description: '¿No sé si te acuerdas de la vez en el bus? Iba como siempre tranquilo a estudiar, venía de la casa así. Cuando el bus paró, te vi. Y de repente te subiste. Me dio tanta pena que no supe ni cómo respirar. Te sentaste detrás de mí, y durante todo el viaje no fui capaz de mirar atrás. Sentía que el corazón me iba a explotar. Era la primera vez que te veía, y aunque quería hacer algo, el miedo me ganó. Al final, solo me bajé. No fui capaz de hablarte. Pero ese día entendí que verte una sola vez ya era suficiente para querer verte todas las demás. Fue el viaje más largo y más corto de mi vida.'
   };
 
   const recuerdoImagen = {
     id: 2,
     type: 'image',
-    title: 'El Atardecer Perfecto',
+    title: 'Las Noches que Nos Conocimos Más',
     thumbnail: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/atardecer-perfecto-thumb.jpg',
     fullMedia: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/atardecer-perfecto.jpg',
-    date: '22 de Febrero',
-    description: 'El cielo se pintó de tus colores favoritos mientras te miraba.'
+    date: 'Cuando la distancia nos acercó',
+    description: '¿Te acuerdas cuando estaba estudiando en Popayán? Nos gustaba hablar de cosas bonitas del día a día, así bien sencillo pero bonito. Y empezamos a hacer llamadas casi todos los días por las noches. Nos contábamos todo, hablábamos de tantas cosas bonitas. Tú me cantabas y yo también te cantaba. Nos dedicábamos muchas cosas. Fue algo lindo que no voy a olvidar.'
   };
 
   const recuerdoAudio = {
     id: 3,
     type: 'audio',
-    title: 'Nuestra Canción',
+    title: 'La Boda - Cosculluela',
     audio: 'https://res.cloudinary.com/TU_CLOUD_NAME/video/upload/v123/memories/audio/nuestra-cancion.mp3',
     coverArt: 'https://res.cloudinary.com/TU_CLOUD_NAME/image/upload/v123/memories/images/cancion-art.jpg',
-    date: '10 de Enero',
-    description: 'La melodía que siempre nos recuerda por qué estamos juntos.'
+    date: 'Siempre en nuestros corazones',
+    description: 'Esta canción siempre nos va a recordar lo que sentimos el uno por el otro. Cada vez que la escucho, pienso en ti y en todo lo que hemos construido juntos. Es nuestra, como lo es este amor.'
   };
 
   const toggleAudioPlay = () => {

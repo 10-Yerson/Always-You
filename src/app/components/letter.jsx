@@ -31,7 +31,8 @@ export default function LettersPage() {
     try {
       setLoading(true);
       const { data } = await axios.get("/api/letter/user");
-      setLetters(data);
+      const sortedLetters = [...data].sort((a, b) => b.month - a.month);
+      setLetters(sortedLetters);
     } catch (error) {
       console.error(error);
       toast.error("No se pudieron cargar las cartas 💌");

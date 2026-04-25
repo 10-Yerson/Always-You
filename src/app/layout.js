@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Always You ❤️‍🩹",
-  description: "Plataforma integral para la gestión comunitaria: eventos, reuniones, trabajos comunitarios, asistencias, decisiones y reportes.",
+  description: "Un espacio dedicado a nuestros recuerdos, metas y momentos especiales. Cada día contigo es único y quiero atesorarlo para siempre.",
   icons: {
     icon: "/logo.png",
   },

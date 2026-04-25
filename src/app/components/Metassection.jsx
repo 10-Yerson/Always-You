@@ -53,21 +53,21 @@ export default function MetasSection() {
   };
 
   return (
-    <section id="metas" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section id="metas" className="py-14 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-6xl mx-auto px-5">
 
         {/* HEADER */}
         <div className="text-left mb-12">
           <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 rounded-full px-4 py-1.5 mb-4">
             <Target className="w-4 h-4" />
-            <span className="text-xs font-medium uppercase tracking-wider">Lo que viene</span>
+            <span className="text-xs font-medium uppercase tracking-wider">Metas que cumplir</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4">
             <span className="text-gray-900">Nuestro</span>
-            <br />
-            <span className="bg-blue-600 bg-clip-text text-transparent">futuro juntos</span>
+            <span className="text-blue-500"> metas </span>
           </h2>
-          <p className="text-gray-500 max-w-md">
+          <div className="w-20 sm:w-24 h-0.5 bg-gradient-to-r from-blue-300 via-blue-500 to-blue-300 mb-6" />
+          <p className="text-sm sm:text-base text-gray-500 max-w-md">
             Tres grandes sueños que estamos construyendo paso a paso, juntos.
           </p>
         </div>

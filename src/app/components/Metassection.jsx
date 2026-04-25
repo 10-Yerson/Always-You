@@ -10,37 +10,37 @@ export default function MetasSection() {
     {
       id: 1,
       type: 'video',
-      title: 'Dar la Vuelta al Mundo',
-      subtitle: '30 países, 5 continentes',
+      title: 'Conocernos en Persona',
+      subtitle: 'El encuentro más esperado',
       videoStatic: 'https://res.cloudinary.com/dbgj8dqup/video/upload/f_jpg/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
       video: 'https://res.cloudinary.com/dbgj8dqup/video/upload/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
-      date: '2025 - 2030',
-      location: '🌍 Todo el mundo',
-      progress: 15,
-      description: 'Conocer nuevos lugares, culturas y paisajes de tu mano. Cada destino será una nueva historia que contar.'
+      date: 'Muy pronto',
+      location: '💑 Donde nuestros corazones se encuentren',
+      progress: 5,
+      description: 'Llevamos años hablando, compartiendo sueños y creando una conexión única. Ahora solo falta ese abrazo que tanto hemos esperado. Verte a los ojos, sentir tu voz cerca y hacer real todo lo que hemos construido. Esa primera cita será el inicio de todo lo demás.'
     },
     {
       id: 2,
       type: 'image',
-      title: 'Nuestro Primer Hogar',
-      subtitle: 'Un espacio para soñar',
+      title: 'Compartir Momentos Juntos',
+      subtitle: 'Viajar, pasear y disfrutar la vida',
       fullMedia: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777129217/1745210661976.jpg_kym5nk.png',
-      date: '2026',
-      location: '🏡 Donde el corazón decida',
-      progress: 30,
-      description: 'Un espacio que sea nuestro, donde quepan todos nuestros sueños y donde cada rincón tenga un pedacito de nosotros.'
+      date: 'Cuando nos conozcamos',
+      location: '✈️ Donde nos lleve el corazón',
+      progress: 10,
+      description: 'Después de tanto tiempo esperando, lo primero será disfrutar el uno del otro. Viajar juntos, caminar de la mano, descubrir lugares nuevos, compartir atardeceres, reír sin parar y crear recuerdos que ningún teléfono pueda capturar. Cada momento a tu lado será una aventura.'
     },
     {
       id: 3,
       type: 'video',
-      title: 'Aprender Italiano',
-      subtitle: 'La lengua del amor',
+      title: 'Seguir Construyendo Nuestra Historia',
+      subtitle: 'Un día a la vez, juntos',
       videoStatic: 'https://res.cloudinary.com/dbgj8dqup/video/upload/f_jpg/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
       video: 'https://res.cloudinary.com/dbgj8dqup/video/upload/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
-      date: '2025',
-      location: '🇮🇹 Italia o virtual',
-      progress: 5,
-      description: 'Aprender italiano juntos para poder viajar a Italia y entender las mejores canciones de amor.'
+      date: 'Siempre',
+      location: '💙 Donde sea, contigo',
+      progress: 15,
+      description: 'No importa el destino exacto, sino que sea contigo. Seguir creciendo, amándonos y eligiéndonos cada día. Que nuestra historia siga escribiéndose, página por página, y que nunca deje de emocionarnos.'
     }
   ];
 
@@ -58,14 +58,14 @@ export default function MetasSection() {
 
         {/* HEADER */}
         <div className="text-left mb-12">
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-600 rounded-full px-4 py-1.5 mb-4">
+          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 rounded-full px-4 py-1.5 mb-4">
             <Target className="w-4 h-4" />
             <span className="text-xs font-medium uppercase tracking-wider">Lo que viene</span>
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
             <span className="text-gray-900">Nuestro</span>
             <br />
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">futuro juntos</span>
+            <span className="bg-blue-600 bg-clip-text text-transparent">futuro juntos</span>
           </h2>
           <p className="text-gray-500 max-w-md">
             Tres grandes sueños que estamos construyendo paso a paso, juntos.
@@ -126,7 +126,7 @@ export default function MetasSection() {
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
                       <div
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000"
+                        className="bg-blue-500 h-full rounded-full transition-all duration-1000"
                         style={{ width: `${meta.progress}%` }}
                       />
                     </div>

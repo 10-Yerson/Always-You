@@ -66,8 +66,8 @@ export default function RecuerdosSection() {
       <div className="max-w-7xl mx-auto px-5">
 
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 rounded-full px-4 py-1.5 mb-6">
-            <Heart className="w-4 h-4 fill-blue-500" />
+          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 rounded-full px-4 py-1.5 mb-4">
+            <Heart className="w-4 h-4" />
             <span className="text-xs font-medium uppercase tracking-wider">Tesoros del corazón</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4">

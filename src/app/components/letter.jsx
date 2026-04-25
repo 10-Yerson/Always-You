@@ -266,18 +266,26 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
 
       <div className="relative p-6 min-h-[320px] flex flex-col justify-between">
         <div className="flex justify-between items-start">
-          <div className="flex gap-2 flex-wrap">
-            <span className="bg-blue-50 px-3 py-1 rounded-full text-xs text-blue-600 font-medium">
-              📅 {getMonthName(letter.month)}
+          <div className="flex gap-3 flex-wrap">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500">
+              <Calendar className="w-3 h-3" />
+              {getMonthName(letter.month)}
             </span>
+
             {isNew && (
-              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium animate-pulse">
-                ✨ Nueva
+              <span className="inline-flex items-center gap-1">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                <span className="text-xs font-medium text-blue-600">Nueva</span>
               </span>
             )}
+
             {isViewed && !isLocked && (
-              <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">
-                👁️ Vista
+              <span className="inline-flex items-center gap-1">
+                <Eye className="w-3 h-3 text-emerald-500" />
+                <span className="text-xs font-medium text-emerald-600">Vista</span>
               </span>
             )}
           </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import { Play, X, Image as ImageIcon, Video, Music, Pause, Maximize2, Heart } from 'lucide-react';
+import { Play, X, Image as ImageIcon, Video, Music, Pause, Maximize2, Heart, ChevronRight } from 'lucide-react';
 
 export default function RecuerdosSection() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -87,7 +87,7 @@ export default function RecuerdosSection() {
 
           {/* TARJETA DE VIDEO */}
           <div onClick={() => handleMediaClick(recuerdoVideo)} className="group cursor-pointer">
-            <div className="relative h-96 rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
+            <div className="relative h-[420px] rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
               <video
                 src={recuerdoVideo.video}
                 className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
@@ -114,21 +114,25 @@ export default function RecuerdosSection() {
                 </div>
               </div>
 
-              {/* CONTENIDO INFERIOR - VIDEO */}
-              <div className="absolute bottom-0 left-0 right-0 px-5 py-6  translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
+              {/* CONTENIDO INFERIOR - VIDEO con VER MÁS */}
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1 h-3 rounded-full bg-blue-500" />
                   <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoVideo.date}</p>
                 </div>
                 <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoVideo.title}</h3>
-                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoVideo.description.substring(0, 100)}...</p>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-2">{recuerdoVideo.description.substring(0, 100)}...</p>
+                <div className="inline-flex items-center gap-1 text-blue-500 text-xs font-medium group-hover:text-blue-600 transition-colors">
+                  <span>Ver más</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* TARJETA DE IMAGEN */}
           <div onClick={() => handleMediaClick(recuerdoImagen)} className="group cursor-pointer">
-            <div className="relative h-96 rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
+            <div className="relative h-[420px] rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
               <img
                 src={recuerdoImagen.fullMedia}
                 alt={recuerdoImagen.title}
@@ -147,21 +151,25 @@ export default function RecuerdosSection() {
                 </div>
               </div>
 
-              {/* CONTENIDO INFERIOR - IMAGEN */}
+              {/* CONTENIDO INFERIOR - IMAGEN con VER MÁS */}
               <div className="absolute bottom-0 left-0 right-0 px-5 py-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1 h-3 rounded-full bg-blue-500" />
                   <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoImagen.date}</p>
                 </div>
                 <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoImagen.title}</h3>
-                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoImagen.description.substring(0, 100)}...</p>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-2">{recuerdoImagen.description.substring(0, 100)}...</p>
+                <div className="inline-flex items-center gap-1 text-blue-500 text-xs font-medium group-hover:text-blue-600 transition-colors">
+                  <span>Ver más</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* TARJETA DE AUDIO */}
           <div onClick={() => handleMediaClick(recuerdoAudio)} className="group cursor-pointer">
-            <div className="relative h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
+            <div className="relative h-[420px] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-32 h-32 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 overflow-hidden">
@@ -188,14 +196,18 @@ export default function RecuerdosSection() {
                 </div>
               </div>
 
-              {/* CONTENIDO INFERIOR - AUDIO */}
+              {/* CONTENIDO INFERIOR - AUDIO con VER MÁS */}
               <div className="absolute bottom-0 left-0 right-0 px-5 py-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1 h-3 rounded-full bg-blue-500" />
                   <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoAudio.date}</p>
                 </div>
                 <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoAudio.title}</h3>
-                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoAudio.description.substring(0, 80)}...</p>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-2">{recuerdoAudio.description.substring(0, 80)}...</p>
+                <div className="inline-flex items-center gap-1 text-blue-500 text-xs font-medium group-hover:text-blue-600 transition-colors">
+                  <span>Ver más</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             </div>
           </div>

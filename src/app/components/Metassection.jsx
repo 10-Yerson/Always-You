@@ -63,7 +63,7 @@ export default function MetasSection() {
             <span className="text-xs font-medium uppercase tracking-wider">Metas que cumplir</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4">
-            <span className="text-gray-900">Nuestro</span>
+            <span className="text-gray-900">Nuestras</span>
             <span className="text-blue-500"> metas </span>
           </h2>
           <div className="w-20 sm:w-24 h-0.5 bg-gradient-to-r from-blue-300 via-blue-500 to-blue-300 mb-6" />

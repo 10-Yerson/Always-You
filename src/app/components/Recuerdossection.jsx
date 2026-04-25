@@ -245,7 +245,7 @@ export default function RecuerdosSection() {
                   <video
                     controls
                     autoPlay
-                    className="w-full h-auto max-h-[70vh] object-contain"
+                    className="w-full h-auto max-h-[50vh] object-contain"
                     src={selectedMedia.video}
                     poster={selectedMedia.thumbnail}
                   >
@@ -256,7 +256,7 @@ export default function RecuerdosSection() {
                   <img
                     src={selectedMedia.fullMedia}
                     alt={selectedMedia.title}
-                    className="w-full h-auto max-h-[70vh] object-contain bg-black"
+                    className="w-full h-auto max-h-[50vh] object-contain bg-black"
                   />
                 )}
                 {selectedMedia.type === 'audio' && (

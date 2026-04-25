@@ -88,13 +88,13 @@ export default function MetasSection() {
                     <img
                       src={meta.videoStatic}
                       alt={meta.title}
-                      className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
                     <img
                       src={meta.fullMedia}
                       alt={meta.title}
-                      className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
 

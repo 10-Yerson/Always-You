@@ -11,10 +11,10 @@ export default function RecuerdosSection() {
   const recuerdoVideo = {
     id: 1,
     type: 'video',
-    title: 'El Día que Nos Vimos por Primera Vez en el Bus',
-    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4', // Esto debería ser una IMAGEN, no un video
+    title: 'Nuestro Primer Encuentro',
+    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1776995590/memories/images/nzrgpzdamftygtecxuyu.jpg', // Esto debería ser una IMAGEN, no un video
     video: 'https://res.cloudinary.com/dbgj8dqup/video/upload/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
-    date: 'Aquella tarde que nunca olvidaré',
+    date: 'Aquella mañana que nunca olvidaré',
     description: '¿No sé si te acuerdas de la vez en el bus? Iba como siempre tranquilo a estudiar, venía de la casa así. Cuando el bus paró, te vi. Y de repente te subiste. Me dio tanta pena que no supe ni cómo respirar. Te sentaste detrás de mí, y durante todo el viaje no fui capaz de mirar atrás. Sentía que el corazón me iba a explotar. Era la primera vez que te veía, y aunque quería hacer algo, el miedo me ganó. Al final, solo me bajé. No fui capaz de hablarte. Pero ese día entendí que verte una sola vez ya era suficiente para querer verte todas las demás. Fue el viaje más largo y más corto de mi vida.'
   };
 
@@ -116,11 +116,10 @@ export default function RecuerdosSection() {
                   <Play className="w-8 h-8 text-white fill-white ml-0.5" />
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <p className="text-[10px] uppercase tracking-widest text-blue-300 font-semibold mb-1.5">{recuerdoVideo.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5">{recuerdoVideo.title}</h3>
-                <p className="text-xs text-white/80 line-clamp-2">{recuerdoVideo.description.substring(0, 100)}...</p>
+              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500 bg-white/80 backdrop-blur-sm rounded-t-2xl">
+                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoVideo.date}</p>
+                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoVideo.title}</h3>
+                <p className="text-xs text-gray-600 line-clamp-2">{recuerdoVideo.description.substring(0, 80)}...</p>
               </div>
             </div>
           </div>
@@ -145,11 +144,10 @@ export default function RecuerdosSection() {
                   <Maximize2 className="w-6 h-6 text-white" />
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <p className="text-[10px] uppercase tracking-widest text-blue-300 font-semibold mb-1.5">{recuerdoImagen.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5">{recuerdoImagen.title}</h3>
-                <p className="text-xs text-white/80 line-clamp-2">{recuerdoImagen.description.substring(0, 100)}...</p>
+              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500 bg-white/80 backdrop-blur-sm rounded-t-2xl">
+                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoImagen.date}</p>
+                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoImagen.title}</h3>
+                <p className="text-xs text-gray-600 line-clamp-2">{recuerdoImagen.description.substring(0, 80)}...</p>
               </div>
             </div>
           </div>
@@ -182,10 +180,9 @@ export default function RecuerdosSection() {
                   <Play className="w-8 h-8 text-white fill-white ml-0.5" />
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-gray-900 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 z-10 bg-gradient-to-t from-white via-white/90 to-transparent">
+              <div className="absolute bottom-0 left-0 right-0 p-5 text-gray-900 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 z-10 bg-white/80 backdrop-blur-sm rounded-t-2xl">
                 <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoAudio.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5">{recuerdoAudio.title}</h3>
+                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoAudio.title}</h3>
                 <p className="text-xs text-gray-600 line-clamp-2">{recuerdoAudio.description.substring(0, 80)}...</p>
               </div>
             </div>

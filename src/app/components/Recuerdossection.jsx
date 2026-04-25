@@ -11,10 +11,10 @@ export default function RecuerdosSection() {
   const recuerdoVideo = {
     id: 1,
     type: 'video',
-    title: 'Nuestro Primer Encuentro',
-    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1776995590/memories/images/nzrgpzdamftygtecxuyu.jpg', // Esto debería ser una IMAGEN, no un video
+    title: 'El Día del Bus',
+    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777127948/IMG_20260425_093402.jpg_vgo5nl.png',
     video: 'https://res.cloudinary.com/dbgj8dqup/video/upload/v1777072702/ssstik.io__babys_lryrics07_1777072656115_nd5dte.mp4',
-    date: 'Aquella mañana que nunca olvidaré',
+    date: 'Aquella mañana',
     description: '¿No sé si te acuerdas de la vez en el bus? Iba como siempre tranquilo a estudiar, venía de la casa así. Cuando el bus paró, te vi. Y de repente te subiste. Me dio tanta pena que no supe ni cómo respirar. Te sentaste detrás de mí, y durante todo el viaje no fui capaz de mirar atrás. Sentía que el corazón me iba a explotar. Era la primera vez que te veía, y aunque quería hacer algo, el miedo me ganó. Al final, solo me bajé. No fui capaz de hablarte. Pero ese día entendí que verte una sola vez ya era suficiente para querer verte todas las demás. Fue el viaje más largo y más corto de mi vida.'
   };
 
@@ -22,8 +22,8 @@ export default function RecuerdosSection() {
     id: 2,
     type: 'image',
     title: 'Las Noches que Nos Conocimos Más',
-    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777072323/1745210661976_hgcrjq.jpg',
-    fullMedia: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777072323/1745210661976_hgcrjq.jpg',
+    thumbnail: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777129217/1745210661976.jpg_kym5nk.png',
+    fullMedia: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777129217/1745210661976.jpg_kym5nk.png',
     date: 'Cuando la distancia nos acercó',
     description: '¿Te acuerdas cuando estaba estudiando en Popayán? Nos gustaba hablar de cosas bonitas del día a día, así bien sencillo pero bonito. Y empezamos a hacer llamadas casi todos los días por las noches. Nos contábamos todo, hablábamos de tantas cosas bonitas. Tú me cantabas y yo también te cantaba. Nos dedicábamos muchas cosas. Fue algo lindo que no voy a olvidar.'
   };
@@ -50,11 +50,9 @@ export default function RecuerdosSection() {
   };
 
   const handleMediaClick = (media) => {
-    // Ahora TODOS los tipos (video, imagen, audio) abren modal
     setSelectedMedia(media);
   };
 
-  // Función para cerrar el modal y también pausar el audio si estaba sonando
   const closeModal = () => {
     if (selectedMedia?.type === 'audio' && audioRef.current) {
       audioRef.current.pause();
@@ -89,11 +87,10 @@ export default function RecuerdosSection() {
 
           {/* TARJETA DE VIDEO */}
           <div onClick={() => handleMediaClick(recuerdoVideo)} className="group cursor-pointer">
-            <div className="relative h-80 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
-              {/* Video con poster para mostrar miniatura */}
+            <div className="relative h-96 rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
               <video
                 src={recuerdoVideo.video}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                 muted
                 loop
                 playsInline
@@ -116,17 +113,22 @@ export default function RecuerdosSection() {
                   <Play className="w-8 h-8 text-white fill-white ml-0.5" />
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500 bg-white/80 backdrop-blur-sm rounded-t-2xl">
-                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoVideo.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoVideo.title}</h3>
-                <p className="text-xs text-gray-600 line-clamp-2">{recuerdoVideo.description.substring(0, 80)}...</p>
+
+              {/* CONTENIDO INFERIOR - VIDEO */}
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-6  translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-1 h-3 rounded-full bg-blue-500" />
+                  <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoVideo.date}</p>
+                </div>
+                <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoVideo.title}</h3>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoVideo.description.substring(0, 100)}...</p>
               </div>
             </div>
           </div>
 
           {/* TARJETA DE IMAGEN */}
           <div onClick={() => handleMediaClick(recuerdoImagen)} className="group cursor-pointer">
-            <div className="relative h-80 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
+            <div className="relative h-96 rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
               <img
                 src={recuerdoImagen.fullMedia}
                 alt={recuerdoImagen.title}
@@ -144,17 +146,22 @@ export default function RecuerdosSection() {
                   <Maximize2 className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500 bg-white/80 backdrop-blur-sm rounded-t-2xl">
-                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoImagen.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoImagen.title}</h3>
-                <p className="text-xs text-gray-600 line-clamp-2">{recuerdoImagen.description.substring(0, 80)}...</p>
+
+              {/* CONTENIDO INFERIOR - IMAGEN */}
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-1 h-3 rounded-full bg-blue-500" />
+                  <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoImagen.date}</p>
+                </div>
+                <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoImagen.title}</h3>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoImagen.description.substring(0, 100)}...</p>
               </div>
             </div>
           </div>
 
           {/* TARJETA DE AUDIO */}
           <div onClick={() => handleMediaClick(recuerdoAudio)} className="group cursor-pointer">
-            <div className="relative h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
+            <div className="relative h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 border border-gray-200 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100 transition-all duration-500">
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-32 h-32 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 overflow-hidden">
@@ -180,10 +187,15 @@ export default function RecuerdosSection() {
                   <Play className="w-8 h-8 text-white fill-white ml-0.5" />
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-gray-900 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 z-10 bg-white/80 backdrop-blur-sm rounded-t-2xl">
-                <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold mb-1.5">{recuerdoAudio.date}</p>
-                <h3 className="text-lg font-serif font-bold mb-1.5 text-gray-900">{recuerdoAudio.title}</h3>
-                <p className="text-xs text-gray-600 line-clamp-2">{recuerdoAudio.description.substring(0, 80)}...</p>
+
+              {/* CONTENIDO INFERIOR - AUDIO */}
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10 bg-gradient-to-t from-white via-white/95 to-transparent rounded-t-2xl">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-1 h-3 rounded-full bg-blue-500" />
+                  <p className="text-[10px] uppercase tracking-widest text-blue-600 font-semibold">{recuerdoAudio.date}</p>
+                </div>
+                <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight mb-1">{recuerdoAudio.title}</h3>
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{recuerdoAudio.description.substring(0, 80)}...</p>
               </div>
             </div>
           </div>
@@ -221,7 +233,7 @@ export default function RecuerdosSection() {
                   <video
                     controls
                     autoPlay
-                    className="w-full h-auto max-h-[50vh] object-contain"
+                    className="w-full h-auto max-h-[70vh] object-contain"
                     src={selectedMedia.video}
                     poster={selectedMedia.thumbnail}
                   >
@@ -232,7 +244,7 @@ export default function RecuerdosSection() {
                   <img
                     src={selectedMedia.fullMedia}
                     alt={selectedMedia.title}
-                    className="w-full h-auto max-h-[50vh] object-contain bg-black"
+                    className="w-full h-auto max-h-[70vh] object-contain bg-black"
                   />
                 )}
                 {selectedMedia.type === 'audio' && (

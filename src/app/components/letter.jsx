@@ -16,7 +16,9 @@ import {
   Sparkles,
   BookOpen,
   MessageCircle,
-  Loader2, ChevronLeft, Maximize2
+  Loader2,
+  ChevronLeft,
+  Maximize2
 } from "lucide-react";
 
 export default function LettersPage() {
@@ -35,6 +37,23 @@ export default function LettersPage() {
       toast.error("No se pudieron cargar las cartas 💌");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Función para marcar carta como vista
+  const markLetterAsSeen = async (letterId) => {
+    try {
+      await axios.put(`/api/letter/seen/${letterId}`);
+      // Actualizar el estado local
+      setLetters(prevLetters =>
+        prevLetters.map(letter =>
+          letter._id === letterId
+            ? { ...letter, status: "vista" }
+            : letter
+        )
+      );
+    } catch (error) {
+      console.error("Error al marcar como vista:", error);
     }
   };
 
@@ -206,7 +225,11 @@ export default function LettersPage() {
 
       {/* Letter Modal */}
       {selectedLetter && (
-        <LetterModal letter={selectedLetter} onClose={() => setSelectedLetter(null)} />
+        <LetterModal
+          letter={selectedLetter}
+          onClose={() => setSelectedLetter(null)}
+          onMarkAsSeen={() => markLetterAsSeen(selectedLetter._id)}
+        />
       )}
     </div>
   );
@@ -236,24 +259,20 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
         animation: `fadeInUp 0.5s ease-out ${delay}ms both`
       }}
     >
-      {/* Card Background - BLANCO */}
       <div className="absolute inset-0 bg-white" />
 
-      {/* Card Border accent según estado */}
       <div className={`absolute top-0 left-0 right-0 h-1 ${isLocked ? 'bg-gray-400' : isViewed ? 'bg-emerald-500' : 'bg-blue-500'
         }`} />
 
-      {/* Card Content */}
       <div className="relative p-6 min-h-[320px] flex flex-col justify-between">
-        {/* Badges */}
         <div className="flex justify-between items-start">
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <span className="bg-blue-50 px-3 py-1 rounded-full text-xs text-blue-600 font-medium">
               📅 {getMonthName(letter.month)}
             </span>
             {isNew && (
               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium animate-pulse">
-                ✨ Nuevo
+                ✨ Nueva
               </span>
             )}
             {isViewed && !isLocked && (
@@ -273,7 +292,6 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
           )}
         </div>
 
-        {/* Main Content */}
         <div className="text-center my-6">
           {isLocked ? (
             <>
@@ -317,8 +335,8 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
           )}
         </div>
       </div>
-      
-       {!isLocked && isHovered && (
+
+      {!isLocked && isHovered && (
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-[2px] flex items-center justify-center z-10">
           <div className="bg-white/90 backdrop-blur-md rounded-full p-3 shadow-xl animate-bounce">
             <Heart className="w-7 h-7 text-blue-500 fill-blue-500" />
@@ -330,8 +348,11 @@ function LetterCard({ letter, isLocked, isNew, isViewed, delay, onSelect, onHove
 }
 
 // Letter Modal Component
-function LetterModal({ letter, onClose }) {
+function LetterModal({ letter, onClose, onMarkAsSeen }) {
   const [showFullMessage, setShowFullMessage] = useState(false);
+  const [hasMarkedAsSeen, setHasMarkedAsSeen] = useState(false);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const getMonthName = (monthNumber) => {
     const months = [
@@ -342,18 +363,6 @@ function LetterModal({ letter, onClose }) {
     return months[(monthNumber - 1) % 12];
   };
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
-
-  // Dentro del componente LetterModal
-  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // Recopilar todos los archivos multimedia
   const mediaItems = [
     ...(letter.imageUrl ? [{ type: 'image', url: letter.imageUrl, icon: <ImageIcon className="w-5 h-5" /> }] : []),
     ...(letter.videoUrl ? [{ type: 'video', url: letter.videoUrl, icon: <Video className="w-5 h-5" /> }] : []),
@@ -366,24 +375,32 @@ function LetterModal({ letter, onClose }) {
   const isLast = currentMediaIndex === mediaItems.length - 1;
 
   const nextMedia = () => {
-    if (!isLast) {
-      setCurrentMediaIndex((prev) => prev + 1);
-    }
+    if (!isLast) setCurrentMediaIndex((prev) => prev + 1);
   };
 
   const prevMedia = () => {
-    if (!isFirst) {
-      setCurrentMediaIndex((prev) => prev - 1);
-    }
+    if (!isFirst) setCurrentMediaIndex((prev) => prev - 1);
   };
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
+  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    // Marcar como vista SOLO si la carta está en estado "disponible" (nueva)
+    if (letter.status === "disponible" && !hasMarkedAsSeen && onMarkAsSeen) {
+      onMarkAsSeen();
+      setHasMarkedAsSeen(true);
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [letter, hasMarkedAsSeen, onMarkAsSeen]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={onClose}>
-      <div className={`relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl animate-scaleIn transition-all duration-300 ${isFullscreen ? 'h-[95vh]' : 'max-h-[90vh]'}`} onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onClick={onClose}>
+      <div className={`relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl transition-all duration-300 ${isFullscreen ? 'h-[95vh]' : 'max-h-[90vh]'}`} onClick={(e) => e.stopPropagation()}>
 
         <button
           onClick={onClose}
@@ -427,9 +444,7 @@ function LetterModal({ letter, onClose }) {
 
             {mediaItems.length > 0 && (
               <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-
                 <div className="relative">
-                  {/* Botón anterior - solo visible si no es el primero */}
                   {hasMultipleMedia && !isFirst && (
                     <button
                       onClick={prevMedia}
@@ -480,7 +495,6 @@ function LetterModal({ letter, onClose }) {
                     )}
                   </div>
 
-                  {/* Botón siguiente - solo visible si no es el último */}
                   {hasMultipleMedia && !isLast && (
                     <button
                       onClick={nextMedia}
@@ -491,10 +505,8 @@ function LetterModal({ letter, onClose }) {
                   )}
                 </div>
 
-                {/* Barra de controles mejorada */}
                 <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100">
                   <div className="flex items-center gap-3">
-                    {/* Miniaturas de navegación */}
                     <div className="flex gap-1.5">
                       {mediaItems.map((item, idx) => (
                         <button
@@ -514,17 +526,12 @@ function LetterModal({ letter, onClose }) {
                         </button>
                       ))}
                     </div>
-
-                    {/* Separador */}
                     <div className="w-px h-4 bg-gray-200"></div>
-
-                    {/* Contador */}
                     <span className="text-xs font-medium text-gray-500">
                       <span className="text-blue-600">{currentMediaIndex + 1}</span> / {mediaItems.length}
                     </span>
                   </div>
 
-                  {/* Botón de pantalla completa */}
                   <button
                     onClick={toggleFullscreen}
                     className="p-1.5 rounded-lg hover:bg-gray-100 transition-all duration-200 group"
@@ -534,7 +541,6 @@ function LetterModal({ letter, onClose }) {
                   </button>
                 </div>
 
-                {/* Indicadores de progreso */}
                 {hasMultipleMedia && (
                   <div className="flex justify-center gap-2 py-2 bg-gray-50/50">
                     {mediaItems.map((_, idx) => (

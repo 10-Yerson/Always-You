@@ -24,7 +24,7 @@ export default function MetasSection() {
       type: 'image',
       title: 'Compartir Momentos Juntos',
       subtitle: 'Viajar, pasear y disfrutar la vida',
-      fullMedia: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777129217/1745210661976.jpg_kym5nk.png',
+      fullMedia: 'https://res.cloudinary.com/dbgj8dqup/image/upload/v1777141880/IMG_20260425_132327.jpg_1.png_tcpzsm.png',
       date: 'Cuando nos conozcamos',
       location: '✈️ Donde nos lleve el corazón',
       progress: 10,
@@ -82,7 +82,7 @@ export default function MetasSection() {
             >
               <div className="flex flex-col md:flex-row">
                 {/* MEDIA - 40% (estático, sin reproducción) */}
-                <div className="relative md:w-2/5 h-64 md:h-auto overflow-hidden bg-gray-100">
+                <div className="relative md:w-2/5 h-64 md:h-auto overflow-hidden bg-white">
                   {meta.type === 'video' ? (
                     // Video como imagen estática (usando Cloudinary con f_jpg)
                     <img

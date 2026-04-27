@@ -119,81 +119,9 @@ export default function MemoriesPage() {
 
       <div className="pt-3 sm:pt-4 md:pt-5"></div>
 
-      {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
-
-          {/* Total Recuerdos */}
-          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
-                <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.total}</p>
-                <p className="text-[9px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Total</span>
-                  <span className="hidden sm:inline">Total Recuerdos</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Fotos */}
-          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
-                <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.images}</p>
-                <p className="text-[9px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Fotos</span>
-                  <span className="hidden sm:inline">Fotos</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Videos */}
-          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
-                <Video className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.videos}</p>
-                <p className="text-[9px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Videos</span>
-                  <span className="hidden sm:inline">Videos</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Audios */}
-          <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white">
-                <Music className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-sm sm:text-2xl font-bold text-gray-800">{stats.audios}</p>
-                <p className="text-[9px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Audios</span>
-                  <span className="hidden sm:inline">Audios</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Filter Tabs - Combinación responsive */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10">
 
-        {/* Versión móvil: íconos grandes (se muestra en móvil) */}
+        {/* Versión móvil: íconos grandes con números (se muestra en móvil) */}
         <div className="flex justify-center flex-wrap gap-4 sm:hidden">
           <button
             onClick={() => setFilter("all")}
@@ -209,6 +137,9 @@ export default function MemoriesPage() {
             <span className={`text-xs font-medium ${filter === "all" ? "text-blue-600" : "text-gray-500"}`}>
               Todos
             </span>
+            {stats.total > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.total}</span>
+            )}
           </button>
 
           <button
@@ -225,6 +156,9 @@ export default function MemoriesPage() {
             <span className={`text-xs font-medium ${filter === "image" ? "text-emerald-600" : "text-gray-500"}`}>
               Fotos
             </span>
+            {stats.images > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.images}</span>
+            )}
           </button>
 
           <button
@@ -241,6 +175,9 @@ export default function MemoriesPage() {
             <span className={`text-xs font-medium ${filter === "video" ? "text-blue-600" : "text-gray-500"}`}>
               Videos
             </span>
+            {stats.videos > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.videos}</span>
+            )}
           </button>
 
           <button
@@ -257,10 +194,13 @@ export default function MemoriesPage() {
             <span className={`text-xs font-medium ${filter === "audio" ? "text-purple-600" : "text-gray-500"}`}>
               Audios
             </span>
+            {stats.audios > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.audios}</span>
+            )}
           </button>
         </div>
 
-        {/* Versión desktop: borde inferior (se muestra en tablet/desktop) */}
+        {/* Versión desktop: botones con números (se muestra en tablet/desktop) */}
         <div className="hidden sm:flex justify-center gap-2 md:gap-4 lg:gap-6 border-b border-gray-100">
           <button
             onClick={() => setFilter("all")}
@@ -268,7 +208,12 @@ export default function MemoriesPage() {
               }`}
           >
             <Heart className="w-4 h-4" />
-            Todos
+            <span>Todos</span>
+            {stats.total > 0 && (
+              <span className={`text-xs font-semibold ${filter === "all" ? "text-blue-400" : "text-gray-400"}`}>
+                ({stats.total})
+              </span>
+            )}
             {filter === "all" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
           </button>
 
@@ -278,7 +223,12 @@ export default function MemoriesPage() {
               }`}
           >
             <ImageIcon className="w-4 h-4" />
-            Fotos
+            <span>Fotos</span>
+            {stats.images > 0 && (
+              <span className={`text-xs font-semibold ${filter === "image" ? "text-emerald-400" : "text-gray-400"}`}>
+                ({stats.images})
+              </span>
+            )}
             {filter === "image" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />}
           </button>
 
@@ -288,7 +238,12 @@ export default function MemoriesPage() {
               }`}
           >
             <Video className="w-4 h-4" />
-            Videos
+            <span>Videos</span>
+            {stats.videos > 0 && (
+              <span className={`text-xs font-semibold ${filter === "video" ? "text-blue-400" : "text-gray-400"}`}>
+                ({stats.videos})
+              </span>
+            )}
             {filter === "video" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
           </button>
 
@@ -298,7 +253,12 @@ export default function MemoriesPage() {
               }`}
           >
             <Music className="w-4 h-4" />
-            Audios
+            <span>Audios</span>
+            {stats.audios > 0 && (
+              <span className={`text-xs font-semibold ${filter === "audio" ? "text-purple-400" : "text-gray-400"}`}>
+                ({stats.audios})
+              </span>
+            )}
             {filter === "audio" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 rounded-full" />}
           </button>
         </div>

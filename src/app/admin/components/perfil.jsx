@@ -261,66 +261,71 @@ export default function AdminPanel() {
         <div className="p-6 max-w-7xl mx-auto">
             <h1 className="text-3xl font-bold mb-6">Panel de Administración</h1>
 
-            {/* Tabs estilo neón - Versión calmada sin naranja */}
-            <div className="flex gap-4 mb-8 p-2 bg-white rounded-2xl shadow-lg">
+            {/* Tabs estilo neón - Versión responsive */}
+            <div className="flex flex-wrap gap-2 sm:gap-4 mb-6 sm:mb-8 p-2 bg-white rounded-2xl shadow-lg">
+
+                {/* Mi Perfil */}
                 <button
                     onClick={() => setActiveTab('profile')}
-                    className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'profile'
+                    className={`relative flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-0 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'profile'
                         ? 'text-slate-700 bg-slate-100 shadow-md border border-slate-200'
                         : 'text-gray-400 hover:text-slate-600 hover:bg-slate-50'
                         }`}
                 >
-                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'profile' ? 'bg-slate-400 shadow-lg shadow-slate-200' : 'opacity-0'
+                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 sm:w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'profile' ? 'bg-slate-400 shadow-lg shadow-slate-200' : 'opacity-0'
                         }`}></span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
-                    Mi Perfil
+                    <span className="text-xs sm:text-base">Mi Perfil</span>
                 </button>
 
+                {/* Usuarios */}
                 <button
                     onClick={() => setActiveTab('users')}
-                    className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'users'
+                    className={`relative flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-0 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'users'
                         ? 'text-teal-700 bg-teal-50 shadow-md border border-teal-200'
                         : 'text-gray-400 hover:text-teal-600 hover:bg-teal-50'
                         }`}
                 >
-                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'users' ? 'bg-teal-400 shadow-lg shadow-teal-200' : 'opacity-0'
+                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 sm:w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'users' ? 'bg-teal-400 shadow-lg shadow-teal-200' : 'opacity-0'
                         }`}></span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V17h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V17h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                     </svg>
-                    Usuarios
+                    <span className="text-xs sm:text-base">Usuarios</span>
                 </button>
 
+                {/* Administradores */}
                 <button
                     onClick={() => setActiveTab('admins')}
-                    className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'admins'
+                    className={`relative flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-0 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'admins'
                         ? 'text-indigo-700 bg-indigo-50 shadow-md border border-indigo-200'
                         : 'text-gray-400 hover:text-indigo-600 hover:bg-indigo-50'
                         }`}
                 >
-                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'admins' ? 'bg-indigo-400 shadow-lg shadow-indigo-200' : 'opacity-0'
+                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 sm:w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'admins' ? 'bg-indigo-400 shadow-lg shadow-indigo-200' : 'opacity-0'
                         }`}></span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
                     </svg>
-                    Administradores
+                    <span className="text-xs sm:text-base">Administradores</span>
                 </button>
 
+                {/* Registrar */}
                 <button
                     onClick={() => setActiveTab('register')}
-                    className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'register'
+                    className={`relative flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-0 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'register'
                         ? 'text-cyan-700 bg-cyan-50 shadow-md border border-cyan-200'
                         : 'text-gray-400 hover:text-cyan-600 hover:bg-cyan-50'
                         }`}
                 >
-                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'register' ? 'bg-cyan-400 shadow-lg shadow-cyan-200' : 'opacity-0'
+                    <span className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 sm:w-12 h-1 rounded-full transition-all duration-300 ${activeTab === 'register' ? 'bg-cyan-400 shadow-lg shadow-cyan-200' : 'opacity-0'
                         }`}></span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                     </svg>
-                    Registrar
+                    <span className="text-xs sm:text-base">Registrar</span>
                 </button>
             </div>
 

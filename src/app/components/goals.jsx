@@ -15,7 +15,7 @@ import {
   TrendingUp,
   Flag,
   Compass,
-  Loader2, ImageIcon, Video, ChevronRight , Maximize2 , ChevronLeft 
+  Loader2, ImageIcon, Video, ChevronRight, Maximize2, ChevronLeft
 } from "lucide-react";
 
 export default function GoalsPage() {
@@ -106,81 +106,10 @@ export default function GoalsPage() {
 
       <div className="pt-3 sm:pt-4 md:pt-5"></div>
 
-      {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
-
-          {/* Total Metas */}
-          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
-                <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.total}</p>
-                <p className="text-[8px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Total</span>
-                  <span className="hidden sm:inline">Total Metas</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Completadas */}
-          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.completed}</p>
-                <p className="text-[8px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Compl</span>
-                  <span className="hidden sm:inline">Completadas</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Pendientes */}
-          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.pending}</p>
-                <p className="text-[8px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Pend</span>
-                  <span className="hidden sm:inline">Pendientes</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Progreso */}
-          <div className="bg-white rounded-lg sm:rounded-2xl p-2 sm:p-4 shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-1.5 sm:p-3 rounded-lg sm:rounded-xl text-white">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <p className="text-base sm:text-2xl font-bold text-gray-800">{stats.percentage}%</p>
-                <p className="text-[8px] sm:text-xs text-gray-500">
-                  <span className="sm:hidden">Prog</span>
-                  <span className="hidden sm:inline">Progreso</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Filter Tabs - Combinación responsive (igual al de recuerdos) */}
+      {/* Filter Tabs - Combinación responsive con estadísticas integradas */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10">
 
-        {/* Versión móvil: íconos grandes (se muestra en móvil) */}
+        {/* Versión móvil: íconos grandes con números (se muestra en móvil) */}
         <div className="flex justify-center flex-wrap gap-4 sm:hidden">
           <button
             onClick={() => setFilter("all")}
@@ -196,6 +125,9 @@ export default function GoalsPage() {
             <span className={`text-xs font-medium ${filter === "all" ? "text-blue-600" : "text-gray-500"}`}>
               Todas
             </span>
+            {stats.total > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.total}</span>
+            )}
           </button>
 
           <button
@@ -212,6 +144,9 @@ export default function GoalsPage() {
             <span className={`text-xs font-medium ${filter === "completed" ? "text-emerald-600" : "text-gray-500"}`}>
               Completadas
             </span>
+            {stats.completed > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.completed}</span>
+            )}
           </button>
 
           <button
@@ -228,10 +163,13 @@ export default function GoalsPage() {
             <span className={`text-xs font-medium ${filter === "pending" ? "text-amber-600" : "text-gray-500"}`}>
               Pendientes
             </span>
+            {stats.pending > 0 && (
+              <span className="text-[10px] font-semibold text-gray-400">{stats.pending}</span>
+            )}
           </button>
         </div>
 
-        {/* Versión desktop: borde inferior (se muestra en tablet/desktop) */}
+        {/* Versión desktop: botones con números (se muestra en tablet/desktop) */}
         <div className="hidden sm:flex justify-center gap-2 md:gap-4 lg:gap-6 border-b border-gray-100">
           <button
             onClick={() => setFilter("all")}
@@ -239,7 +177,12 @@ export default function GoalsPage() {
               }`}
           >
             <Target className="w-4 h-4" />
-            Todas
+            <span>Todas</span>
+            {stats.total > 0 && (
+              <span className={`text-xs font-semibold ${filter === "all" ? "text-blue-400" : "text-gray-400"}`}>
+                ({stats.total})
+              </span>
+            )}
             {filter === "all" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />}
           </button>
 
@@ -249,7 +192,12 @@ export default function GoalsPage() {
               }`}
           >
             <CheckCircle className="w-4 h-4" />
-            Completadas
+            <span>Completadas</span>
+            {stats.completed > 0 && (
+              <span className={`text-xs font-semibold ${filter === "completed" ? "text-emerald-400" : "text-gray-400"}`}>
+                ({stats.completed})
+              </span>
+            )}
             {filter === "completed" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />}
           </button>
 
@@ -259,7 +207,12 @@ export default function GoalsPage() {
               }`}
           >
             <Clock className="w-4 h-4" />
-            Pendientes
+            <span>Pendientes</span>
+            {stats.pending > 0 && (
+              <span className={`text-xs font-semibold ${filter === "pending" ? "text-amber-400" : "text-gray-400"}`}>
+                ({stats.pending})
+              </span>
+            )}
             {filter === "pending" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />}
           </button>
         </div>

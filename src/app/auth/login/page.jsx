@@ -97,19 +97,29 @@ export default function Login() {
                     <div className="grid lg:grid-cols-2">
 
                         {/* Panel Izquierdo - FORMULARIO */}
-                        <div className="p-8 lg:p-12 bg-white relative overflow-hidden">
+                        <div className="px-8 py-6 lg:p-12 bg-white relative overflow-hidden">
 
+                            <div className="mb-3 relative z-10 flex justify-end">
+                                <Link
+                                    href="/"
+                                    className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 group"
+                                >
+                                    <svg className="w-3 h-3 text-gray-700 group-hover:text-blue-500 group-hover:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                    </svg>
+                                </Link>
+                            </div>
                             {/* Elementos decorativos de fondo */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-blue-50 rounded-full blur-3xl opacity-30"></div>
                             <div className="absolute bottom-0 left-0 w-40 h-40 bg-indigo-50 rounded-full blur-3xl opacity-30"></div>
 
                             {/* Corazones decorativos flotantes */}
-                            <div className="absolute top-20 right-10 opacity-10 animate-float">
+                            {/* <div className="absolute top-20 right-10 opacity-10 animate-float">
                                 <Heart className="w-8 h-8 text-blue-400" />
                             </div>
                             <div className="absolute bottom-20 left-10 opacity-10 animate-float-delay">
                                 <Heart className="w-6 h-6 text-blue-400" />
-                            </div>
+                            </div> */}
 
                             {/* Logo móvil */}
                             <div className="lg:hidden flex items-center justify-center mb-8 relative z-10">
@@ -126,11 +136,6 @@ export default function Login() {
 
                             {/* Header */}
                             <div className="mb-8 text-center lg:text-left relative z-10">
-                                <div className="hidden lg:flex items-center gap-2 mb-4">
-                                    <div className="w-8 h-px bg-gradient-to-r from-blue-400 to-transparent"></div>
-                                    <Heart className="w-3 h-3 text-blue-400 fill-blue-400" />
-                                    <div className="w-8 h-px bg-gradient-to-l from-blue-400 to-transparent"></div>
-                                </div>
 
                                 <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full mb-4 lg:hidden">
                                     <Heart className="w-3 h-3 text-blue-500 fill-blue-500" />

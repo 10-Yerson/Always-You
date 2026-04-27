@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Always You 💙",
+  title: "Always You",
   description: "Un espacio dedicado a nuestros recuerdos, metas y momentos especiales. Cada día contigo es único y quiero atesorarlo para siempre.",
   icons: {
     icon: "/logo.png",

@@ -199,27 +199,49 @@ export default function LettersPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {letters.map((letter, index) => {
-              const isLocked = letter.status === "bloqueada";
-              const isNew = letter.status === "disponible";
-              const isViewed = letter.status === "vista";
-              const delay = index * 100;
+            {(() => {
+              const sortedByMonth = [...letters].sort((a, b) => a.month - b.month);
 
-              return (
-                <LetterCard
-                  key={letter._id}
-                  letter={letter}
-                  isLocked={isLocked}
-                  isNew={isNew}
-                  isViewed={isViewed}
-                  delay={delay}
-                  onSelect={() => !isLocked && setSelectedLetter(letter)}
-                  onHover={() => setHoveredLetter(letter._id)}
-                  onLeave={() => setHoveredLetter(null)}
-                  isHovered={hoveredLetter === letter._id}
-                />
-              );
-            })}
+              let nextLockedByMonth = null;
+              for (let i = 0; i < sortedByMonth.length; i++) {
+                if (sortedByMonth[i].status === "bloqueada") {
+                  nextLockedByMonth = sortedByMonth[i];
+                  break;
+                }
+              }
+              let hasAddedLocked = false;
+
+              const cardsToShow = letters.filter((letter) => {
+                if (letter.status !== "bloqueada") return true;
+                if (!hasAddedLocked && nextLockedByMonth && letter._id === nextLockedByMonth._id) {
+                  hasAddedLocked = true;
+                  return true;
+                }
+                return false;
+              });
+
+              return cardsToShow.map((letter, index) => {
+                const isLocked = letter.status === "bloqueada";
+                const isNew = letter.status === "disponible";
+                const isViewed = letter.status === "vista";
+                const delay = index * 100;
+
+                return (
+                  <LetterCard
+                    key={letter._id}
+                    letter={letter}
+                    isLocked={isLocked}
+                    isNew={isNew}
+                    isViewed={isViewed}
+                    delay={delay}
+                    onSelect={() => !isLocked && setSelectedLetter(letter)}
+                    onHover={() => setHoveredLetter(letter._id)}
+                    onLeave={() => setHoveredLetter(null)}
+                    isHovered={hoveredLetter === letter._id}
+                  />
+                );
+              });
+            })()}
           </div>
         )}
       </div>

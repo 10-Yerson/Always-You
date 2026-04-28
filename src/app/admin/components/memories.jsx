@@ -396,7 +396,7 @@ export default function AdminMemories() {
       {/* MODAL DE VER */}
       {selectedMemory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedMemory(null)}>
-          <div className="relative w-full max-w-md max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="sticky top-0 bg-blue-600 px-5 py-3 text-white rounded-t-2xl">
               <div className="flex justify-between items-center"><h2 className="text-lg font-bold">Recuerdo Especial</h2><button onClick={() => setSelectedMemory(null)} className="p-1 hover:bg-white/20 rounded-lg"><X className="w-5 h-5" /></button></div>
               <p className="text-xs text-blue-200 mt-1">{new Date(selectedMemory.date).toLocaleDateString()}</p>

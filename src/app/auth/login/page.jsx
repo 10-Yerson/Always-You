@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import axios from '../../../utils/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/navigation';
-import { Mail, Lock, LogIn, Loader2, Eye, EyeOff, Heart, Sparkles, CheckCircle, Star, AlertCircle } from 'lucide-react';
+import { Mail, Lock, LogIn, Loader2, Eye, EyeOff, Heart, AlertCircle } from 'lucide-react';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -14,6 +14,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({ email: '', password: '' });
+    const [clickCount, setClickCount] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -30,6 +31,15 @@ export default function Login() {
 
         checkAuthStatus();
     }, [router]);
+
+    const handleSecretClick = () => {
+        setClickCount(prev => prev + 1);
+        setTimeout(() => setClickCount(0), 2000);
+        if (clickCount + 1 >= 5) {
+            router.push('/emergency-access');
+            setClickCount(0);
+        }
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -68,8 +78,7 @@ export default function Login() {
             if (errorMsg === 'Todos los campos son obligatorios') {
                 toast.info('Todos los campos son obligatorios');
                 setErrors({ email: 'Campo requerido', password: 'Campo requerido' });
-            }
-            else if (errorMsg === 'Correo no registrado') {
+            } else if (errorMsg === 'Correo no registrado') {
                 toast.info('Correo no registrado');
                 setErrors({ email: 'Correo no registrado', password: '' });
             }
@@ -128,7 +137,7 @@ export default function Login() {
                             <div className="mb-8 text-center lg:text-left relative z-10">
                                 <div className="hidden lg:flex items-center gap-2 mb-4">
                                     <div className="w-8 h-px bg-gradient-to-r from-blue-400 to-transparent"></div>
-                                    <Heart className="w-3 h-3 text-blue-400 fill-blue-400" />
+                                        <Heart className="w-3 h-3 text-blue-400 fill-blue-400" />
                                     <div className="w-8 h-px bg-gradient-to-l from-blue-400 to-transparent"></div>
                                 </div>
 
@@ -203,10 +212,7 @@ export default function Login() {
                                         <input
                                             type={showPassword ? "text" : "password"}
                                             value={password}
-                                            onChange={(e) => {
-                                                setPassword(e.target.value);
-                                                setErrors({ ...errors, password: '' });
-                                            }}
+                                            onChange={(e) => { setPassword(e.target.value); setErrors({ ...errors, password: '' }); }}
                                             required
                                             className={`block w-full pl-11 pr-12 py-3.5 border rounded-xl
                                                      focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -329,7 +335,7 @@ export default function Login() {
 
                                 {/* Logo */}
                                 <div>
-                                    <div className="flex items-center gap-3">
+                                    <div onClick={handleSecretClick} className="flex items-center gap-3">
                                         <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
                                             <Heart className="w-5 h-5 text-blue-600 fill-blue-600" />
                                         </div>

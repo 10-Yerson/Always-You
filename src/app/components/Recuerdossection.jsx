@@ -1,11 +1,12 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Play, X, Image as ImageIcon, Video, Music, Pause, Maximize2, Heart, ChevronRight } from 'lucide-react';
 
 export default function RecuerdosSection() {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const modalAudioRef = useRef(null); // Referencia para el audio en el modal
 
   // Datos únicos: un video, una imagen, un audio
   const recuerdoVideo = {
@@ -38,6 +39,7 @@ export default function RecuerdosSection() {
     description: 'Esta canción siempre nos va a recordar lo que sentimos el uno por el otro. Cada vez que la escucho, pienso en ti y en todo lo que hemos construido juntos. Es nuestra, como lo es este amor.'
   };
 
+  // Función para reproducir/pausar audio en la tarjeta
   const toggleAudioPlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -49,17 +51,51 @@ export default function RecuerdosSection() {
     }
   };
 
+  // Función para reproducir/pausar audio en el modal
+  const toggleModalAudioPlay = () => {
+    if (modalAudioRef.current) {
+      if (isPlaying) {
+        modalAudioRef.current.pause();
+      } else {
+        modalAudioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   const handleMediaClick = (media) => {
     setSelectedMedia(media);
   };
 
   const closeModal = () => {
-    if (selectedMedia?.type === 'audio' && audioRef.current) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    // Pausar audio del modal al cerrar
+    if (modalAudioRef.current) {
+      modalAudioRef.current.pause();
+      modalAudioRef.current.currentTime = 0;
     }
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsPlaying(false);
     setSelectedMedia(null);
   };
+
+  // Efecto para reproducir audio automáticamente cuando se abre el modal de audio
+  useEffect(() => {
+    if (selectedMedia?.type === 'audio' && modalAudioRef.current) {
+      const playAudio = async () => {
+        try {
+          await modalAudioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.log('Autoplay bloqueado por el navegador:', error);
+          // Si el autoplay está bloqueado, el usuario tendrá que hacer clic
+          setIsPlaying(false);
+        }
+      };
+      playAudio();
+    }
+  }, [selectedMedia]);
 
   return (
     <section id="recuerdos" className="py-16 bg-white">
@@ -226,7 +262,7 @@ export default function RecuerdosSection() {
         {/* MODAL PARA VIDEO, IMAGEN Y AUDIO */}
         {selectedMedia && (
           <div
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90"
             onClick={closeModal}
           >
             <div
@@ -274,9 +310,20 @@ export default function RecuerdosSection() {
                         </div>
                       )}
                     </div>
+
+                    {/* Reproductor de audio en el modal */}
+                    <audio
+                      ref={modalAudioRef}
+                      src={selectedMedia.audio}
+                      onEnded={() => setIsPlaying(false)}
+                      onPause={() => setIsPlaying(false)}
+                      onPlay={() => setIsPlaying(true)}
+                      className="hidden"
+                    />
+
                     <div className="flex items-center gap-4">
                       <button
-                        onClick={toggleAudioPlay}
+                        onClick={toggleModalAudioPlay}
                         className="bg-blue-500 rounded-full p-4 hover:bg-blue-600 transition-colors shadow-lg"
                       >
                         {isPlaying ? (
